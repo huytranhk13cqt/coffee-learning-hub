@@ -334,8 +334,10 @@ CREATE TABLE lesson_comparison (
     CONSTRAINT fk_comparison_lesson_2
         FOREIGN KEY (lesson_id_2) REFERENCES lesson(id)
         ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    CONSTRAINT chk_comparison_order CHECK (lesson_id_1 < lesson_id_2)
+        ON UPDATE CASCADE
+    -- NOTE: CHECK (lesson_id_1 < lesson_id_2) removed — MySQL 8.0 bug #3823:
+    -- columns in FK with ON DELETE/UPDATE cannot also be in CHECK constraint.
+    -- Enforced via triggers tr_comparison_order_insert/update below.
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 COMMENT='Comparisons between pairs of tenses';
 
@@ -737,25 +739,48 @@ DELIMITER ;
 
 
 -- ============================================================================
--- TRIGGERS (2 triggers — giữ nguyên)
+-- TRIGGERS (4 triggers)
 -- ============================================================================
 
 DELIMITER //
 
--- Trigger 1: Auto-set exercises_total khi tạo progress record mới
+-- Trigger 1-2: Enforce lesson_id_1 < lesson_id_2 in lesson_comparison
+-- (Replaces CHECK constraint removed due to MySQL 8.0 bug #3823)
+CREATE TRIGGER tr_comparison_order_insert
+BEFORE INSERT ON lesson_comparison
+FOR EACH ROW
+BEGIN
+    IF NEW.lesson_id_1 >= NEW.lesson_id_2 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'lesson_id_1 must be less than lesson_id_2';
+    END IF;
+END //
+
+CREATE TRIGGER tr_comparison_order_update
+BEFORE UPDATE ON lesson_comparison
+FOR EACH ROW
+BEGIN
+    IF NEW.lesson_id_1 >= NEW.lesson_id_2 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'lesson_id_1 must be less than lesson_id_2';
+    END IF;
+END //
+
+-- Trigger 3: Auto-set exercises_total khi tạo progress record mới
 -- Lưu ý: exercises_total KHÔNG auto-update nếu admin thêm exercise sau
 --         → Giải pháp lâu dài: check ở application layer (query COUNT thay vì dùng cached value)
 CREATE TRIGGER tr_progress_set_total
 BEFORE INSERT ON user_progress
 FOR EACH ROW
 BEGIN
-    SELECT COUNT(*) INTO NEW.exercises_total
-    FROM exercise
-    WHERE lesson_id = NEW.lesson_id AND is_active = TRUE;
+    SET NEW.exercises_total = (
+        SELECT COUNT(*) FROM exercise
+        WHERE lesson_id = NEW.lesson_id AND is_active = TRUE
+    );
 END //
 
 
--- Trigger 2: Auto-complete khi đã làm hết exercises + đọc theory
+-- Trigger 4: Auto-complete khi đã làm hết exercises + đọc theory
 CREATE TRIGGER tr_progress_check_completion
 BEFORE UPDATE ON user_progress
 FOR EACH ROW
