@@ -9,6 +9,8 @@ dotenv.config({ path: join(__dirname, '..', '.env') });
 import { getPool, closePool } from './config/database.js';
 import { TenseGroupRepository } from './repositories/tenseGroupRepository.js';
 import { TenseGroupController } from './controllers/tenseGroupController.js';
+import { LessonRepository } from './repositories/lessonRepository.js';
+import { LessonController } from './controllers/lessonController.js';
 import { createApp } from './app.js';
 
 const port = parseInt(process.env.PORT, 10) || 3001;
@@ -19,7 +21,10 @@ const pool = getPool();
 const tenseGroupRepo = new TenseGroupRepository(pool);
 const tenseGroupController = new TenseGroupController(tenseGroupRepo);
 
-const app = createApp({ tenseGroupController });
+const lessonRepo = new LessonRepository(pool);
+const lessonController = new LessonController(lessonRepo);
+
+const app = createApp({ tenseGroupController, lessonController });
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
