@@ -1,25 +1,23 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: grammar-mysql
+  postgres:
+    image: postgres:17
+    container_name: relax-postgres
     restart: unless-stopped
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "${DB_PORT:-5432}:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
-      MYSQL_DATABASE: ${DB_NAME:-grammar_learning}
-      MYSQL_USER: ${DB_USER:-grammar_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-grammarpass}
+      POSTGRES_DB: ${DB_NAME:-knowledge_learning}
+      POSTGRES_USER: ${DB_USER:-relax_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-relaxpass}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
       - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       - ./database/seed_data.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-relax_user} -d ${DB_NAME:-knowledge_learning}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  mysql_data:
+  postgres_data:

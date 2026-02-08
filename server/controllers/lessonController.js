@@ -3,21 +3,13 @@ export class LessonController {
     this.lessonRepo = lessonRepo;
   }
 
-  getBySlug = async (req, res, next) => {
-    try {
-      const lesson = await this.lessonRepo.findFullBySlug(req.params.slug);
-      res.json({ data: lesson });
-    } catch (err) {
-      next(err);
-    }
+  getBySlug = async (request) => {
+    const lesson = await this.lessonRepo.findFullBySlug(request.params.slug);
+    return { data: lesson };
   };
 
-  getByGroup = async (req, res, next) => {
-    try {
-      const lessons = await this.lessonRepo.findByGroup(req.params.groupId);
-      res.json({ data: lessons });
-    } catch (err) {
-      next(err);
-    }
+  getByGroup = async (request) => {
+    const lessons = await this.lessonRepo.findByGroup(request.params.groupId);
+    return { data: lessons };
   };
 }

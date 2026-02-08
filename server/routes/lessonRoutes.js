@@ -1,17 +1,11 @@
-import { Router } from 'express';
-
-export function createLessonRoutes(controller) {
-  const router = Router();
-
-  router.get('/:slug', controller.getBySlug);
-
-  return router;
+export function lessonRoutes(controller) {
+  return async function (fastify) {
+    fastify.get('/:slug', controller.getBySlug);
+  };
 }
 
-export function createGroupLessonRoutes(controller) {
-  const router = Router();
-
-  router.get('/:groupId/lessons', controller.getByGroup);
-
-  return router;
+export function groupLessonRoutes(controller) {
+  return async function (fastify) {
+    fastify.get('/:groupId/lessons', controller.getByGroup);
+  };
 }

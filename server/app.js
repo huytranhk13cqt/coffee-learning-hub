@@ -1,33 +1,41 @@
-import express from 'express';
-import cors from 'cors';
-import { createTenseGroupRoutes } from './routes/tenseGroupRoutes.js';
-import { createLessonRoutes, createGroupLessonRoutes } from './routes/lessonRoutes.js';
-import { errorHandler } from './middleware/errorHandler.js';
+import Fastify from 'fastify';
+import cors from '@fastify/cors';
+import { tenseGroupRoutes } from './routes/tenseGroupRoutes.js';
+import { lessonRoutes, groupLessonRoutes } from './routes/lessonRoutes.js';
+import { AppError } from './errors/AppError.js';
 
-export function createApp({ tenseGroupController, lessonController }) {
-  const app = express();
+export async function createApp({ tenseGroupController, lessonController }) {
+  const app = Fastify({ logger: false });
 
-  // --- Middleware ---
-  app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
-  app.use(express.json());
+  // --- Plugins ---
+  await app.register(cors, {
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  });
 
   // --- Health check ---
-  app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  app.get('/api/health', async () => {
+    return { status: 'ok', timestamp: new Date().toISOString() };
   });
 
   // --- API routes ---
-  app.use('/api/groups', createTenseGroupRoutes(tenseGroupController));
-  app.use('/api/groups', createGroupLessonRoutes(lessonController));
-  app.use('/api/lessons', createLessonRoutes(lessonController));
+  app.register(tenseGroupRoutes(tenseGroupController), { prefix: '/api/groups' });
+  app.register(groupLessonRoutes(lessonController), { prefix: '/api/groups' });
+  app.register(lessonRoutes(lessonController), { prefix: '/api/lessons' });
 
   // --- 404 handler ---
-  app.use((req, res) => {
-    res.status(404).json({ error: `Cannot ${req.method} ${req.path}` });
+  app.setNotFoundHandler((request, reply) => {
+    reply.status(404).send({ error: `Cannot ${request.method} ${request.url}` });
   });
 
-  // --- Error handler (must be registered last) ---
-  app.use(errorHandler);
+  // --- Error handler ---
+  app.setErrorHandler((err, request, reply) => {
+    if (err instanceof AppError) {
+      return reply.status(err.statusCode).send({ error: err.message });
+    }
+
+    console.error('Unexpected error:', err);
+    reply.status(500).send({ error: 'Internal server error' });
+  });
 
   return app;
 }

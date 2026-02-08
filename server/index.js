@@ -6,7 +6,7 @@ import { dirname, join } from 'path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: join(__dirname, '..', '.env') });
 
-import { getPool, closePool } from './config/database.js';
+import { getSql, closeSql } from './config/database.js';
 import { TenseGroupRepository } from './repositories/tenseGroupRepository.js';
 import { TenseGroupController } from './controllers/tenseGroupController.js';
 import { LessonRepository } from './repositories/lessonRepository.js';
@@ -16,25 +16,25 @@ import { createApp } from './app.js';
 const port = parseInt(process.env.PORT, 10) || 3001;
 
 // --- Composition Root: wire all dependencies ---
-const pool = getPool();
+const sql = getSql();
 
-const tenseGroupRepo = new TenseGroupRepository(pool);
+const tenseGroupRepo = new TenseGroupRepository(sql);
 const tenseGroupController = new TenseGroupController(tenseGroupRepo);
 
-const lessonRepo = new LessonRepository(pool);
+const lessonRepo = new LessonRepository(sql);
 const lessonController = new LessonController(lessonRepo);
 
-const app = createApp({ tenseGroupController, lessonController });
+const app = await createApp({ tenseGroupController, lessonController });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+await app.listen({ port, host: '0.0.0.0' });
+console.log(`Server running at http://localhost:${port}`);
+console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 
 // --- Graceful shutdown ---
 async function shutdown() {
   console.log('\nShutting down gracefully...');
-  await closePool();
+  await app.close();
+  await closeSql();
   process.exit(0);
 }
 

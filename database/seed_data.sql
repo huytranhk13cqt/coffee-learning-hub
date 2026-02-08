@@ -1,12 +1,9 @@
-SET NAMES utf8mb4;
-
 -- ============================================================================
--- SEED DATA: Grammar Learning Application
+-- SEED DATA: Knowledge Learning Application
 -- Sample data for testing and development
--- Compatible with: schema.sql v2.0.0
+-- Compatible with: schema.sql v3.0.0 (PostgreSQL 17)
 -- ============================================================================
 
-USE grammar_learning;
 
 -- ============================================================================
 -- TENSE GROUPS
@@ -149,7 +146,6 @@ INSERT INTO formula (lesson_id, type, subject_note, structure, structure_vi, exa
 
 -- ============================================================================
 -- USAGES - Simple Present (lesson_id = 1)
--- Bảng đã đổi tên: `usage` → lesson_usage (tránh MySQL reserved word)
 -- ============================================================================
 
 INSERT INTO lesson_usage (lesson_id, title, title_vi, description, description_vi, icon, is_common, order_index) VALUES
@@ -436,27 +432,27 @@ INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, conten
 -- ============================================================================
 
 -- Check data integrity
-SELECT 'Tense Groups' AS entity, COUNT(*) AS count FROM tense_group
+SELECT 'Tense Groups' AS entity, COUNT(*)::int AS count FROM tense_group
 UNION ALL
-SELECT 'Lessons', COUNT(*) FROM lesson
+SELECT 'Lessons', COUNT(*)::int FROM lesson
 UNION ALL
-SELECT 'Formulas', COUNT(*) FROM formula
+SELECT 'Formulas', COUNT(*)::int FROM formula
 UNION ALL
-SELECT 'Usages', COUNT(*) FROM lesson_usage
+SELECT 'Usages', COUNT(*)::int FROM lesson_usage
 UNION ALL
-SELECT 'Examples', COUNT(*) FROM example
+SELECT 'Examples', COUNT(*)::int FROM example
 UNION ALL
-SELECT 'Signal Words', COUNT(*) FROM signal_word
+SELECT 'Signal Words', COUNT(*)::int FROM signal_word
 UNION ALL
-SELECT 'Tips', COUNT(*) FROM tip
+SELECT 'Tips', COUNT(*)::int FROM tip
 UNION ALL
-SELECT 'Comparisons', COUNT(*) FROM lesson_comparison
+SELECT 'Comparisons', COUNT(*)::int FROM lesson_comparison
 UNION ALL
-SELECT 'Exercises', COUNT(*) FROM exercise
+SELECT 'Exercises', COUNT(*)::int FROM exercise
 UNION ALL
-SELECT 'Exercise Options', COUNT(*) FROM exercise_option
+SELECT 'Exercise Options', COUNT(*)::int FROM exercise_option
 UNION ALL
-SELECT 'Matching Pairs', COUNT(*) FROM matching_pair;
+SELECT 'Matching Pairs', COUNT(*)::int FROM matching_pair;
 
 -- Verify lesson summary view works
 SELECT * FROM v_lesson_summary LIMIT 5;

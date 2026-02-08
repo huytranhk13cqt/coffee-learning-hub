@@ -3,12 +3,8 @@ export class TenseGroupController {
     this.tenseGroupRepo = tenseGroupRepo;
   }
 
-  getAll = async (req, res, next) => {
-    try {
-      const groups = await this.tenseGroupRepo.findAllWithLessonCount();
-      res.json({ data: groups });
-    } catch (err) {
-      next(err);
-    }
+  getAll = async () => {
+    const groups = await this.tenseGroupRepo.findAllWithLessonCount();
+    return { data: groups };
   };
 }

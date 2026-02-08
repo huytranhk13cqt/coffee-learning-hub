@@ -1,10 +1,10 @@
 export class TenseGroupRepository {
-  constructor(pool) {
-    this.pool = pool;
+  constructor(sql) {
+    this.sql = sql;
   }
 
   async findAllWithLessonCount() {
-    const [rows] = await this.pool.query(`
+    return this.sql`
       SELECT
         g.id,
         g.name,
@@ -14,12 +14,11 @@ export class TenseGroupRepository {
         g.icon,
         g.color,
         g.order_index,
-        COUNT(l.id) AS lesson_count
+        COUNT(l.id)::int AS lesson_count
       FROM tense_group g
       LEFT JOIN lesson l ON l.group_id = g.id AND l.is_published = TRUE
       GROUP BY g.id
       ORDER BY g.order_index
-    `);
-    return rows;
+    `;
   }
 }

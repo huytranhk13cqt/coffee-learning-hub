@@ -1,9 +1,5 @@
-import { Router } from 'express';
-
-export function createTenseGroupRoutes(controller) {
-  const router = Router();
-
-  router.get('/', controller.getAll);
-
-  return router;
+export function tenseGroupRoutes(controller) {
+  return async function (fastify) {
+    fastify.get('/', controller.getAll);
+  };
 }

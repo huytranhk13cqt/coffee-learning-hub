@@ -1,30 +1,26 @@
-import mysql from 'mysql2/promise';
+import postgres from 'postgres';
 
-let pool = null;
+let sql = null;
 
-export function getPool() {
-  if (!pool) {
-    pool = mysql.createPool({
+export function getSql() {
+  if (!sql) {
+    sql = postgres({
       host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT, 10) || 3306,
-      user: process.env.DB_USER || 'grammar_user',
+      port: parseInt(process.env.DB_PORT, 10) || 5432,
+      user: process.env.DB_USER || 'relax_user',
       password: process.env.DB_PASSWORD || '',
-      database: process.env.DB_NAME || 'grammar_learning',
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-      connectTimeout: 10000,
-      charset: 'utf8mb4',
-      timezone: '+00:00',
-      decimalNumbers: true,
+      database: process.env.DB_NAME || 'knowledge_learning',
+      max: 10,
+      idle_timeout: 20,
+      connect_timeout: 10,
     });
   }
-  return pool;
+  return sql;
 }
 
-export async function closePool() {
-  if (pool) {
-    await pool.end();
-    pool = null;
+export async function closeSql() {
+  if (sql) {
+    await sql.end();
+    sql = null;
   }
 }
