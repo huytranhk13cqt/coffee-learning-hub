@@ -30,8 +30,8 @@ lerna-debug.log*
 *.sln
 *.sw?
 
-# Docker MySQL data
-mysql_data/
+# Docker PostgreSQL data
+postgres_data/
 
 # Claude Code
 .claude/
