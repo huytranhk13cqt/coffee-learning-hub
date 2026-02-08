@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 -- ============================================================================
 -- SEED DATA: Grammar Learning Application
 -- Sample data for testing and development

@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 -- ============================================================================
 -- DATABASE SCHEMA: Grammar Learning Application
 -- Version: 2.0.0 (Optimized — merged from v1.0 schema + fixes + analysis)
