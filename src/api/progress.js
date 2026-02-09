@@ -19,3 +19,8 @@ export async function resetProgress(lessonId, { signal } = {}) {
   const { data } = await api.post(`/progress/${lessonId}/reset`, {}, { signal });
   return data;
 }
+
+export async function fetchDashboard({ signal } = {}) {
+  const { data } = await api.get('/progress/session/dashboard', { signal });
+  return data;
+}

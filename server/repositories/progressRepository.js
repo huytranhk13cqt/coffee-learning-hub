@@ -97,6 +97,49 @@ export class ProgressRepository {
     `;
   }
 
+  // D3: Dashboard overview — all lessons with progress overlay
+  async getDashboardOverview(sessionId) {
+    return this.sql`
+      SELECT
+        g.id            AS group_id,
+        g.name          AS group_name,
+        g.name_vi       AS group_name_vi,
+        g.color         AS group_color,
+        g.icon          AS group_icon,
+        l.id            AS lesson_id,
+        l.name          AS lesson_name,
+        l.name_vi       AS lesson_name_vi,
+        l.slug,
+        l.difficulty,
+        COALESCE(up.status, 'not_started')   AS status,
+        COALESCE(up.theory_completed, FALSE) AS theory_completed,
+        COALESCE(up.best_score, 0)           AS best_score,
+        COALESCE(up.exercises_attempted, 0)  AS exercises_attempted,
+        COALESCE(up.exercises_total, 0)      AS exercises_total,
+        up.completed_at
+      FROM lesson l
+      JOIN tense_group g ON l.group_id = g.id
+      LEFT JOIN user_progress up ON up.lesson_id = l.id AND up.session_id = ${sessionId}
+      WHERE l.is_published = TRUE
+      ORDER BY g.order_index, l.order_index
+    `;
+  }
+
+  // D4: Aggregate session statistics for dashboard header
+  async getSessionStats(sessionId) {
+    const rows = await this.sql`
+      SELECT
+        COUNT(*)::int                                                       AS lessons_started,
+        COALESCE(SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END), 0)::int AS lessons_completed,
+        (SELECT COUNT(*)::int FROM lesson WHERE is_published = TRUE)     AS total_lessons,
+        COALESCE(ROUND(AVG(best_score), 1), 0)                          AS avg_score,
+        COALESCE(SUM(total_time_spent), 0)::int                         AS total_time_seconds
+      FROM user_progress
+      WHERE session_id = ${sessionId}
+    `;
+    return rows[0];
+  }
+
   // D5: Reset progress (transaction)
   async resetProgress(sessionId, lessonId) {
     await this.sql.begin(async (tx) => {

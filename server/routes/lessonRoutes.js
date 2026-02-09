@@ -1,5 +1,6 @@
 export function lessonRoutes(controller) {
   return async function (fastify) {
+    fastify.get('/search', controller.search);
     fastify.get('/:slug', controller.getBySlug);
   };
 }

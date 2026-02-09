@@ -5,6 +5,29 @@ export class LessonRepository {
     this.sql = sql;
   }
 
+  // F1: Search lessons by keyword (ILIKE — adequate for ~12 lessons)
+  async search(keyword) {
+    const pattern = `%${keyword}%`;
+    return this.sql`
+      SELECT
+        l.id, l.name, l.name_vi, l.slug,
+        l.short_desc, l.short_desc_vi,
+        l.difficulty,
+        g.name_vi   AS group_name_vi,
+        g.color      AS group_color
+      FROM lesson l
+      JOIN tense_group g ON l.group_id = g.id
+      WHERE l.is_published = TRUE
+        AND (
+          l.name ILIKE ${pattern}
+          OR l.name_vi ILIKE ${pattern}
+          OR l.short_desc ILIKE ${pattern}
+          OR l.short_desc_vi ILIKE ${pattern}
+        )
+      ORDER BY g.order_index, l.order_index
+    `;
+  }
+
   // B1: Lesson info by slug
   async findBySlug(slug) {
     const rows = await this.sql`

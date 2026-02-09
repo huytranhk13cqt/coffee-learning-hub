@@ -7,8 +7,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import SchoolIcon from '@mui/icons-material/School';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import theme from '../theme/theme.js';
+import SearchBar from './search/SearchBar.jsx';
 
 export default function Layout() {
   const navigation = useNavigation();
@@ -25,10 +29,27 @@ export default function Layout() {
               variant="h6"
               component={RouterLink}
               to="/"
-              sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}
+              sx={{
+                textDecoration: 'none',
+                color: 'inherit',
+                mr: 2,
+                display: { xs: 'none', sm: 'block' },
+              }}
             >
               Grammar Learning
             </Typography>
+            <Box sx={{ flexGrow: 1 }} />
+            <SearchBar />
+            <Tooltip title="Tổng quan">
+              <IconButton
+                color="inherit"
+                component={RouterLink}
+                to="/dashboard"
+                sx={{ ml: 1 }}
+              >
+                <BarChartIcon />
+              </IconButton>
+            </Tooltip>
           </Toolbar>
           {isLoading && (
             <LinearProgress

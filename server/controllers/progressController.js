@@ -13,6 +13,16 @@ export class ProgressController {
     this.progressRepo = progressRepo;
   }
 
+  // GET /api/progress/session/dashboard
+  getDashboard = async (request) => {
+    const sessionId = extractSessionId(request);
+    const [stats, lessons] = await Promise.all([
+      this.progressRepo.getSessionStats(sessionId),
+      this.progressRepo.getDashboardOverview(sessionId),
+    ]);
+    return { data: { stats, lessons } };
+  };
+
   // GET /api/progress/session/overview
   getSessionOverview = async (request) => {
     const sessionId = extractSessionId(request);
