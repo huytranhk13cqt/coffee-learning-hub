@@ -1,4 +1,4 @@
-import { NotFoundError } from '../errors/AppError.js';
+import { NotFoundError, ValidationError } from '../errors/AppError.js';
 
 export class ExerciseRepository {
   constructor(sql) {
@@ -67,6 +67,9 @@ export class ExerciseRepository {
       WHERE e.id = ${exerciseId}
     `;
     if (!rows.length) throw new NotFoundError('Exercise');
+    if (rows[0].correct_answer == null) {
+      throw new ValidationError('Exercise has no correct answer configured');
+    }
     return rows[0];
   }
 
@@ -85,7 +88,7 @@ export class ExerciseRepository {
     const rows = await this.sql`
       SELECT e.id, e.type, e.lesson_id
       FROM exercise e
-      WHERE e.id = ${exerciseId}
+      WHERE e.id = ${exerciseId} AND e.is_active = TRUE
     `;
     if (!rows.length) throw new NotFoundError('Exercise');
     return rows[0];

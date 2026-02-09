@@ -10,6 +10,20 @@ function extractSessionId(request) {
 }
 
 /**
+ * Group array items by a key function. Returns Map<key, items[]>.
+ * Replaces Map.groupBy (Node.js 21+) for broader compatibility.
+ */
+function groupBy(arr, keyFn) {
+  const map = new Map();
+  for (const item of arr) {
+    const key = keyFn(item);
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(item);
+  }
+  return map;
+}
+
+/**
  * Fisher-Yates shuffle (in-place, returns same array).
  */
 function shuffle(arr) {
@@ -42,8 +56,8 @@ export class ExerciseController {
     ]);
 
     // Nest options under their exercises
-    const optionsByExercise = Map.groupBy(options, (o) => o.exercise_id);
-    const pairsByExercise = Map.groupBy(matchingPairs, (p) => p.exercise_id);
+    const optionsByExercise = groupBy(options, (o) => o.exercise_id);
+    const pairsByExercise = groupBy(matchingPairs, (p) => p.exercise_id);
 
     const data = exercises.map((ex) => {
       const result = { ...ex };

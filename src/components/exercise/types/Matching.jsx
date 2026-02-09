@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -8,6 +8,8 @@ import Stack from '@mui/material/Stack';
 export default function Matching({ exercise, answer, onAnswerChange, disabled }) {
   const leftItems = exercise.leftItems || [];
   const rightItems = exercise.rightItems || [];
+  const onAnswerChangeRef = useRef(onAnswerChange);
+  onAnswerChangeRef.current = onAnswerChange;
 
   // Pairs: [{ leftId, rightId }]
   const [pairs, setPairs] = useState([]);
@@ -22,9 +24,9 @@ export default function Matching({ exercise, answer, onAnswerChange, disabled })
   // Sync answer
   useEffect(() => {
     if (pairs.length === leftItems.length && pairs.length > 0) {
-      onAnswerChange(pairs);
+      onAnswerChangeRef.current(pairs);
     } else {
-      onAnswerChange(null);
+      onAnswerChangeRef.current(null);
     }
   }, [pairs, leftItems.length]);
 
@@ -45,13 +47,6 @@ export default function Matching({ exercise, answer, onAnswerChange, disabled })
   const handleRemovePair = (leftId) => {
     if (disabled) return;
     setPairs((prev) => prev.filter((p) => p.leftId !== leftId));
-  };
-
-  // Find paired right for a left item
-  const getPairedRight = (leftId) => {
-    const pair = pairs.find((p) => p.leftId === leftId);
-    if (!pair) return null;
-    return rightItems.find((r) => r.id === pair.rightId);
   };
 
   return (

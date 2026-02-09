@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -6,6 +6,8 @@ import Paper from '@mui/material/Paper';
 
 export default function ArrangeWords({ exercise, answer, onAnswerChange, disabled }) {
   const wordBank = exercise.word_bank || [];
+  const onAnswerChangeRef = useRef(onAnswerChange);
+  onAnswerChangeRef.current = onAnswerChange;
 
   // Track selected words as ordered indices
   const [selectedIndices, setSelectedIndices] = useState([]);
@@ -13,8 +15,8 @@ export default function ArrangeWords({ exercise, answer, onAnswerChange, disable
   // Sync answer string from selected words
   useEffect(() => {
     const sentence = selectedIndices.map((i) => wordBank[i]).join(' ');
-    onAnswerChange(sentence || null);
-  }, [selectedIndices]);
+    onAnswerChangeRef.current(sentence || null);
+  }, [selectedIndices, wordBank]);
 
   // Reset when exercise changes
   useEffect(() => {
