@@ -23,7 +23,7 @@ export default function ComparisonSection({ comparisons, lessonName }) {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        So sánh với thì khác
+        So sánh
       </Typography>
 
       {Object.values(grouped).map((group) => (

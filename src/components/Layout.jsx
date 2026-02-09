@@ -38,7 +38,7 @@ export default function Layout() {
                 display: { xs: 'none', sm: 'block' },
               }}
             >
-              Grammar Learning
+              Learning Hub
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <SearchBar />
