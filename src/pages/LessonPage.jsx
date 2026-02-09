@@ -14,6 +14,8 @@ import Snackbar from '@mui/material/Snackbar';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FormulaSection from '../components/lesson/FormulaSection.jsx';
 import UsageSection from '../components/lesson/UsageSection.jsx';
 import SignalWordSection from '../components/lesson/SignalWordSection.jsx';
@@ -94,7 +96,9 @@ export default function LessonPage() {
     if (!progress?.theory_completed) {
       setSnackbarOpen(true);
     }
-    navigate(`/lessons/${lesson.id}/exercises`);
+    navigate(`/lessons/${lesson.id}/exercises`, {
+      state: { lessonName: lesson.name_vi, lessonSlug: lesson.slug },
+    });
   }
 
   return (
@@ -219,6 +223,33 @@ export default function LessonPage() {
           </Box>
         )}
       </Box>
+
+      {/* Prev/Next Lesson Navigation */}
+      {lesson.navigation && (lesson.navigation.prev || lesson.navigation.next) && (
+        <Box sx={{ mt: 4 }}>
+          <Divider sx={{ mb: 3 }} />
+          <Stack direction="row" justifyContent="space-between">
+            {lesson.navigation.prev ? (
+              <Button
+                component={RouterLink}
+                to={`/lessons/${lesson.navigation.prev.slug}`}
+                startIcon={<ArrowBackIcon />}
+              >
+                {lesson.navigation.prev.name_vi}
+              </Button>
+            ) : <Box />}
+            {lesson.navigation.next ? (
+              <Button
+                component={RouterLink}
+                to={`/lessons/${lesson.navigation.next.slug}`}
+                endIcon={<ArrowForwardIcon />}
+              >
+                {lesson.navigation.next.name_vi}
+              </Button>
+            ) : <Box />}
+          </Stack>
+        </Box>
+      )}
 
       {/* Reset Confirmation Dialog */}
       <ResetProgressDialog

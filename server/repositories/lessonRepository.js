@@ -112,7 +112,7 @@ export class LessonRepository {
   async findFullBySlug(slug) {
     const lesson = await this.findBySlug(slug);
 
-    const [formulas, usages, examples, signalWords, tips, comparisons] =
+    const [formulas, usages, examples, signalWords, tips, comparisons, siblings] =
       await Promise.all([
         this.findFormulas(lesson.id),
         this.findUsages(lesson.id),
@@ -120,6 +120,7 @@ export class LessonRepository {
         this.findSignalWords(lesson.id),
         this.findTips(lesson.id),
         this.findComparisons(lesson.id),
+        this.findByGroup(lesson.group_id),
       ]);
 
     // Nest examples under their usages
@@ -128,6 +129,11 @@ export class LessonRepository {
       examples: examples.filter((ex) => ex.usage_id === usage.id),
     }));
 
+    // Compute prev/next lesson navigation from siblings
+    const currentIndex = siblings.findIndex((s) => s.id === lesson.id);
+    const prev = currentIndex > 0 ? siblings[currentIndex - 1] : null;
+    const next = currentIndex >= 0 && currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
+
     return {
       ...lesson,
       formulas,
@@ -135,6 +141,10 @@ export class LessonRepository {
       signalWords,
       tips,
       comparisons,
+      navigation: {
+        prev: prev && { slug: prev.slug, name_vi: prev.name_vi },
+        next: next && { slug: next.slug, name_vi: next.name_vi },
+      },
     };
   }
 }

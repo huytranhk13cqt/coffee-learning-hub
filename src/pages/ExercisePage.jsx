@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useLoaderData, useNavigate, Link as RouterLink } from 'react-router';
+import { useLoaderData, useNavigate, useLocation, useBlocker, Link as RouterLink } from 'react-router';
 import { fetchExercises } from '../api/exercises.js';
 import { useExerciseFlow } from '../hooks/useExerciseFlow.js';
 import ExerciseWrapper from '../components/exercise/ExerciseWrapper.jsx';
+import LeaveExerciseDialog from '../components/exercise/LeaveExerciseDialog.jsx';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -20,6 +21,8 @@ export async function loader({ params, request }) {
 export default function ExercisePage() {
   const { exercises, lessonId } = useLoaderData();
   const navigate = useNavigate();
+  const location = useLocation();
+  const lessonName = location.state?.lessonName;
 
   const {
     phase,
@@ -37,6 +40,8 @@ export default function ExercisePage() {
     submit,
     next,
   } = useExerciseFlow();
+
+  const blocker = useBlocker(phase === 'answering' || phase === 'submitting' || phase === 'feedback');
 
   useEffect(() => {
     if (exercises.length > 0) {
@@ -133,6 +138,9 @@ export default function ExercisePage() {
         <Link component={RouterLink} to="/" underline="hover" color="inherit">
           Trang chủ
         </Link>
+        {lessonName && (
+          <Typography color="text.secondary">{lessonName}</Typography>
+        )}
         <Typography color="text.primary">Bài tập</Typography>
       </Breadcrumbs>
 
@@ -150,6 +158,8 @@ export default function ExercisePage() {
         onSubmit={submit}
         onNext={next}
       />
+
+      <LeaveExerciseDialog blocker={blocker} />
     </Box>
   );
 }
