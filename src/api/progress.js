@@ -1,5 +1,10 @@
 import { api } from './client.js';
 
+export async function fetchSessionOverview({ signal } = {}) {
+  const { data } = await api.get('/progress/session/overview', { signal });
+  return data;
+}
+
 export async function fetchProgress(lessonId, { signal } = {}) {
   const { data } = await api.get(`/progress/${lessonId}`, { signal });
   return data;

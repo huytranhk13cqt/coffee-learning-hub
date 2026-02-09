@@ -94,7 +94,7 @@ export class ExerciseRepository {
     return rows[0];
   }
 
-  // C6: Results with user attempts (includes answers — only after completion)
+  // C6: Results with user attempts (includes answers — only for attempted exercises)
   async findResultsByLesson(lessonId, sessionId) {
     return this.sql`
       SELECT
@@ -102,7 +102,7 @@ export class ExerciseRepository {
         e.content, e.correct_answer, e.explanation, e.explanation_vi,
         ea.user_answer, ea.is_correct, ea.time_taken, ea.attempt_number
       FROM exercise e
-      LEFT JOIN exercise_attempt ea ON ea.exercise_id = e.id
+      INNER JOIN exercise_attempt ea ON ea.exercise_id = e.id
         AND ea.session_id = ${sessionId}
         AND ea.attempt_number = (
           SELECT MAX(ea2.attempt_number)

@@ -3,6 +3,18 @@ export class ProgressRepository {
     this.sql = sql;
   }
 
+  // D0: Get progress for all lessons in a session
+  async findAllBySession(sessionId) {
+    return this.sql`
+      SELECT
+        lesson_id, status, theory_completed,
+        exercises_attempted, exercises_correct, exercises_total,
+        current_score, best_score, total_attempts
+      FROM user_progress
+      WHERE session_id = ${sessionId}
+    `;
+  }
+
   // D1: Get progress for a lesson
   async findBySessionAndLesson(sessionId, lessonId) {
     const rows = await this.sql`
@@ -31,8 +43,9 @@ export class ProgressRepository {
 
   // --- Transaction-aware methods (receive tx sql as first param) ---
 
-  // C5a: Get next attempt number
+  // C5a: Get next attempt number (serialized per session+exercise pair)
   async getNextAttemptNumber(tx, sessionId, exerciseId) {
+    await tx`SELECT pg_advisory_xact_lock(hashtext(${sessionId} || ':' || ${exerciseId}::text))`;
     const rows = await tx`
       SELECT COALESCE(MAX(attempt_number), 0) + 1 AS next_attempt
       FROM exercise_attempt
@@ -78,8 +91,8 @@ export class ProgressRepository {
   async updateScores(tx, sessionId, lessonId) {
     await tx`
       UPDATE user_progress
-      SET current_score = ROUND((exercises_correct::DECIMAL / NULLIF(exercises_attempted, 0)) * 100, 2),
-          best_score = GREATEST(best_score, ROUND((exercises_correct::DECIMAL / NULLIF(exercises_attempted, 0)) * 100, 2))
+      SET current_score = COALESCE(ROUND((exercises_correct::DECIMAL / NULLIF(exercises_attempted, 0)) * 100, 2), 0),
+          best_score = GREATEST(best_score, COALESCE(ROUND((exercises_correct::DECIMAL / NULLIF(exercises_attempted, 0)) * 100, 2), 0))
       WHERE session_id = ${sessionId} AND lesson_id = ${lessonId}
     `;
   }

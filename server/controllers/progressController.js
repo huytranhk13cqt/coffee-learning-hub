@@ -13,6 +13,13 @@ export class ProgressController {
     this.progressRepo = progressRepo;
   }
 
+  // GET /api/progress/session/overview
+  getSessionOverview = async (request) => {
+    const sessionId = extractSessionId(request);
+    const progress = await this.progressRepo.findAllBySession(sessionId);
+    return { data: progress };
+  };
+
   // GET /api/progress/:lessonId
   getProgress = async (request) => {
     const sessionId = extractSessionId(request);

@@ -1,24 +1,33 @@
-import { useLoaderData, Link as RouterLink } from 'react-router';
+import { useState, useEffect } from 'react';
+import { useLoaderData, Link as RouterLink, useNavigate } from 'react-router';
 import { fetchLesson } from '../api/lessons.js';
-import {
-  Typography,
-  Box,
-  Chip,
-  Breadcrumbs,
-  Link,
-  Divider,
-  Stack,
-  Button,
-} from '@mui/material';
+import { fetchProgress, markTheoryComplete, resetProgress } from '../api/progress.js';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import FormulaSection from '../components/lesson/FormulaSection.jsx';
 import UsageSection from '../components/lesson/UsageSection.jsx';
 import SignalWordSection from '../components/lesson/SignalWordSection.jsx';
 import TipSection from '../components/lesson/TipSection.jsx';
 import ComparisonSection from '../components/lesson/ComparisonSection.jsx';
+import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
+import LessonProgressSummary from '../components/progress/LessonProgressSummary.jsx';
+import ResetProgressDialog from '../components/progress/ResetProgressDialog.jsx';
 
 export async function loader({ params, request }) {
-  return fetchLesson(params.slug, { signal: request.signal });
+  const lesson = await fetchLesson(params.slug, { signal: request.signal });
+  const progress = await fetchProgress(lesson.id, { signal: request.signal })
+    .catch(() => null);
+  return { lesson, progress };
 }
 
 const DIFFICULTY_COLORS = {
@@ -33,8 +42,60 @@ const DIFFICULTY_LABELS = {
   advanced: 'Nâng cao',
 };
 
+function getExerciseCTA(progress) {
+  if (!progress || progress.exercises_attempted === 0) {
+    return 'Bắt đầu làm bài tập';
+  }
+  if (progress.status === 'completed') {
+    return 'Làm lại bài tập';
+  }
+  return 'Tiếp tục làm bài tập';
+}
+
 export default function LessonPage() {
-  const lesson = useLoaderData();
+  const { lesson, progress: loaderProgress } = useLoaderData();
+  const navigate = useNavigate();
+
+  // Local state for optimistic updates (theory complete, reset)
+  // Sync with loader data when navigating between lessons
+  const [progress, setProgress] = useState(loaderProgress);
+  useEffect(() => { setProgress(loaderProgress); }, [loaderProgress]);
+  const [theoryMarking, setTheoryMarking] = useState(false);
+  const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  const [resetting, setResetting] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  async function handleMarkTheoryComplete() {
+    setTheoryMarking(true);
+    try {
+      await markTheoryComplete(lesson.id, { timeSpent: 0 });
+      setProgress((prev) => prev
+        ? { ...prev, theory_completed: true }
+        : { theory_completed: true, status: 'not_started', exercises_attempted: 0, exercises_total: 0, current_score: 0, best_score: 0 },
+      );
+    } finally {
+      setTheoryMarking(false);
+    }
+  }
+
+  async function handleReset() {
+    setResetting(true);
+    try {
+      await resetProgress(lesson.id);
+      setProgress(null);
+      setResetDialogOpen(false);
+    } finally {
+      setResetting(false);
+    }
+  }
+
+  function handleExerciseCTA() {
+    // Soft reminder if theory not read
+    if (!progress?.theory_completed) {
+      setSnackbarOpen(true);
+    }
+    navigate(`/lessons/${lesson.id}/exercises`);
+  }
 
   return (
     <Box>
@@ -85,6 +146,7 @@ export default function LessonPage() {
             size="small"
             sx={{ bgcolor: lesson.group_color, color: '#fff' }}
           />
+          <LessonStatusChip status={progress?.status} />
         </Stack>
       </Box>
 
@@ -100,8 +162,36 @@ export default function LessonPage() {
         />
       </Stack>
 
+      {/* Mark Theory Complete */}
+      <Box sx={{ mt: 4, textAlign: 'center' }}>
+        {progress?.theory_completed ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+            <CheckCircleIcon color="success" />
+            <Typography variant="body1" color="success.main" fontWeight={500}>
+              Đã hoàn thành lý thuyết
+            </Typography>
+          </Box>
+        ) : (
+          <Button
+            variant="outlined"
+            startIcon={<MenuBookIcon />}
+            onClick={handleMarkTheoryComplete}
+            loading={theoryMarking}
+          >
+            Đánh dấu đã đọc lý thuyết
+          </Button>
+        )}
+      </Box>
+
+      {/* Progress Summary */}
+      {progress && (progress.exercises_attempted > 0 || progress.theory_completed) && (
+        <Box sx={{ mt: 3 }}>
+          <LessonProgressSummary progress={progress} />
+        </Box>
+      )}
+
       {/* Exercise CTA */}
-      <Box sx={{ mt: 5, textAlign: 'center' }}>
+      <Box sx={{ mt: 4, textAlign: 'center' }}>
         <Divider sx={{ mb: 4 }} />
         <Typography variant="h6" gutterBottom>
           Sẵn sàng luyện tập?
@@ -109,13 +199,42 @@ export default function LessonPage() {
         <Button
           variant="contained"
           size="large"
-          component={RouterLink}
-          to={`/lessons/${lesson.id}/exercises`}
+          onClick={handleExerciseCTA}
           sx={{ px: 4 }}
         >
-          Bắt đầu làm bài tập
+          {getExerciseCTA(progress)}
         </Button>
+
+        {/* Reset progress */}
+        {progress && (progress.exercises_attempted > 0 || progress.theory_completed) && (
+          <Box sx={{ mt: 2 }}>
+            <Button
+              size="small"
+              color="inherit"
+              sx={{ color: 'text.secondary' }}
+              onClick={() => setResetDialogOpen(true)}
+            >
+              Đặt lại tiến trình
+            </Button>
+          </Box>
+        )}
       </Box>
+
+      {/* Reset Confirmation Dialog */}
+      <ResetProgressDialog
+        open={resetDialogOpen}
+        onClose={() => setResetDialogOpen(false)}
+        onConfirm={handleReset}
+        loading={resetting}
+      />
+
+      {/* Soft Theory Reminder */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={() => setSnackbarOpen(false)}
+        message="Bạn chưa đọc lý thuyết. Đọc lý thuyết giúp làm bài tốt hơn!"
+      />
     </Box>
   );
 }

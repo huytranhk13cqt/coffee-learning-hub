@@ -1,5 +1,6 @@
 import { useLoaderData, Link as RouterLink } from 'react-router';
 import { fetchResults } from '../api/exercises.js';
+import { fetchProgress } from '../api/progress.js';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -11,10 +12,14 @@ import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 
 export async function loader({ params, request }) {
-  const results = await fetchResults(params.lessonId, { signal: request.signal });
-  return { results, lessonId: params.lessonId };
+  const [results, progress] = await Promise.all([
+    fetchResults(params.lessonId, { signal: request.signal }),
+    fetchProgress(params.lessonId, { signal: request.signal }).catch(() => null),
+  ]);
+  return { results, lessonId: params.lessonId, progress };
 }
 
 const typeLabels = {
@@ -28,7 +33,7 @@ const typeLabels = {
 };
 
 export default function ResultsPage() {
-  const { results, lessonId } = useLoaderData();
+  const { results, lessonId, progress } = useLoaderData();
 
   const attempted = results.filter((r) => r.user_answer != null);
   const correct = attempted.filter((r) => r.is_correct);
@@ -61,6 +66,16 @@ export default function ResultsPage() {
         <Typography variant="h5" color={score >= 70 ? 'success.main' : 'error.main'}>
           {correct.length}/{results.length} ({score}%)
         </Typography>
+        {progress?.best_score > 0 && Math.round(progress.best_score) !== score && (
+          <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+            Điểm cao nhất: {Math.round(progress.best_score)}%
+          </Typography>
+        )}
+        {progress?.status === 'completed' && (
+          <Box sx={{ mt: 1 }}>
+            <LessonStatusChip status="completed" />
+          </Box>
+        )}
       </Box>
 
       {/* Exercise details */}
@@ -150,7 +165,14 @@ export default function ResultsPage() {
       </Stack>
 
       {/* Actions */}
-      <Box sx={{ mt: 4, textAlign: 'center' }}>
+      <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 4 }}>
+        <Button
+          variant="outlined"
+          component={RouterLink}
+          to={`/lessons/${lessonId}/exercises`}
+        >
+          Làm lại
+        </Button>
         <Button
           variant="contained"
           component={RouterLink}
@@ -158,7 +180,7 @@ export default function ResultsPage() {
         >
           Về trang chủ
         </Button>
-      </Box>
+      </Stack>
     </Box>
   );
 }

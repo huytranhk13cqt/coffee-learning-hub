@@ -39,8 +39,27 @@ export default function ExercisePage() {
   } = useExerciseFlow();
 
   useEffect(() => {
-    loadExercises(exercises);
+    if (exercises.length > 0) {
+      loadExercises(exercises);
+    }
   }, [exercises, loadExercises]);
+
+  // Empty state — lesson has no exercises yet
+  if (exercises.length === 0) {
+    return (
+      <Box sx={{ textAlign: 'center', py: 6 }}>
+        <Typography variant="h5" gutterBottom>
+          Chưa có bài tập
+        </Typography>
+        <Typography color="text.secondary" sx={{ mb: 3 }}>
+          Bài học này chưa có bài tập. Vui lòng quay lại sau.
+        </Typography>
+        <Button variant="contained" component={RouterLink} to="/">
+          Về trang chủ
+        </Button>
+      </Box>
+    );
+  }
 
   // Finished state
   if (phase === 'finished') {
