@@ -38,7 +38,7 @@ export default function ExercisePage() {
     currentIndex,
     totalExercises,
     currentAnswer,
-    showHint: hintVisible,
+    isHintVisible: hintVisible,
     feedback,
     results,
     error,

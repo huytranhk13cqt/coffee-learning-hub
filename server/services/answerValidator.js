@@ -80,9 +80,6 @@ function validateMatching(userAnswer, data) {
     correctMap.set(pair.id, pair.id); // left and right belong to same pair row
   }
 
-  // Build a lookup: pair.id → { left, right } by pair row
-  const pairById = new Map(data.pairs.map((p) => [p.id, p]));
-
   // userAnswer pairs: user sends [{ leftId: pairRowId, rightId: pairRowId }]
   // where leftId = the pair whose left they chose, rightId = the pair whose right they chose
   // Correct if every pair's leftId === rightId (matched the same row)

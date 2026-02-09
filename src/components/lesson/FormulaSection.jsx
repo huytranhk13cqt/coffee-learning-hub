@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { Box, Tab, Tabs, Typography, Paper, Chip } from '@mui/material';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Chip from '@mui/material/Chip';
 
 const TYPE_LABELS = {
   affirmative: { label: 'Khẳng định (+)', color: 'success' },
@@ -13,7 +18,6 @@ export default function FormulaSection({ formulas }) {
   if (!formulas.length) return null;
 
   const current = formulas[tab];
-  const typeInfo = TYPE_LABELS[current.type] || {};
 
   return (
     <Box>

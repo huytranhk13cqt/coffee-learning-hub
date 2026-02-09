@@ -10,6 +10,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "lint:server": "cd server && npx eslint .",
+    "lint:all": "npm run lint && npm run lint:server",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview"

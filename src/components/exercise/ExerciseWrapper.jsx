@@ -75,6 +75,7 @@ export default function ExerciseWrapper({
 
       {/* Exercise type component */}
       <ExerciseRenderer
+        key={exercise.id}
         exercise={exercise}
         answer={answer}
         onAnswerChange={onAnswerChange}

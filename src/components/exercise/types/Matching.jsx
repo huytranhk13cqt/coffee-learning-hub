@@ -7,24 +7,21 @@ import Stack from '@mui/material/Stack';
 
 export default function Matching({
   exercise,
-  answer,
+  answer: _answer,
   onAnswerChange,
   disabled,
 }) {
   const leftItems = exercise.leftItems || [];
   const rightItems = exercise.rightItems || [];
   const onAnswerChangeRef = useRef(onAnswerChange);
-  onAnswerChangeRef.current = onAnswerChange;
+
+  useEffect(() => {
+    onAnswerChangeRef.current = onAnswerChange;
+  });
 
   // Pairs: [{ leftId, rightId }]
   const [pairs, setPairs] = useState([]);
   const [selectedLeft, setSelectedLeft] = useState(null);
-
-  // Reset when exercise changes
-  useEffect(() => {
-    setPairs([]);
-    setSelectedLeft(null);
-  }, [exercise.id]);
 
   // Sync answer
   useEffect(() => {

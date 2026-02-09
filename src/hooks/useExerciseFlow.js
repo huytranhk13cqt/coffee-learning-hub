@@ -148,7 +148,7 @@ export function useExerciseFlow() {
     currentIndex: state.currentIndex,
     totalExercises: state.exercises.length,
     currentAnswer: state.currentAnswer,
-    showHint: state.showHint,
+    isHintVisible: state.showHint,
     feedback: state.feedback,
     results: state.results,
     error: state.error,

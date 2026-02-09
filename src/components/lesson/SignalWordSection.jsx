@@ -1,4 +1,7 @@
-import { Box, Typography, Chip, Tooltip } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 
 const CATEGORY_COLORS = {
   time: 'primary',
