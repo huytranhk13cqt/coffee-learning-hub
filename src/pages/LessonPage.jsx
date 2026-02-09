@@ -8,6 +8,7 @@ import {
   Link,
   Divider,
   Stack,
+  Button,
 } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FormulaSection from '../components/lesson/FormulaSection.jsx';
@@ -98,6 +99,23 @@ export default function LessonPage() {
           lessonName={lesson.name}
         />
       </Stack>
+
+      {/* Exercise CTA */}
+      <Box sx={{ mt: 5, textAlign: 'center' }}>
+        <Divider sx={{ mb: 4 }} />
+        <Typography variant="h6" gutterBottom>
+          Sẵn sàng luyện tập?
+        </Typography>
+        <Button
+          variant="contained"
+          size="large"
+          component={RouterLink}
+          to={`/lessons/${lesson.id}/exercises`}
+          sx={{ px: 4 }}
+        >
+          Bắt đầu làm bài tập
+        </Button>
+      </Box>
     </Box>
   );
 }

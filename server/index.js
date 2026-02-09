@@ -11,6 +11,10 @@ import { TenseGroupRepository } from './repositories/tenseGroupRepository.js';
 import { TenseGroupController } from './controllers/tenseGroupController.js';
 import { LessonRepository } from './repositories/lessonRepository.js';
 import { LessonController } from './controllers/lessonController.js';
+import { ExerciseRepository } from './repositories/exerciseRepository.js';
+import { ProgressRepository } from './repositories/progressRepository.js';
+import { ExerciseController } from './controllers/exerciseController.js';
+import { ProgressController } from './controllers/progressController.js';
 import { createApp } from './app.js';
 
 const port = parseInt(process.env.PORT, 10) || 3001;
@@ -24,7 +28,12 @@ const tenseGroupController = new TenseGroupController(tenseGroupRepo);
 const lessonRepo = new LessonRepository(sql);
 const lessonController = new LessonController(lessonRepo);
 
-const app = await createApp({ tenseGroupController, lessonController });
+const exerciseRepo = new ExerciseRepository(sql);
+const progressRepo = new ProgressRepository(sql);
+const exerciseController = new ExerciseController(exerciseRepo, progressRepo, sql);
+const progressController = new ProgressController(progressRepo);
+
+const app = await createApp({ tenseGroupController, lessonController, exerciseController, progressController });
 
 await app.listen({ port, host: '0.0.0.0' });
 console.log(`Server running at http://localhost:${port}`);

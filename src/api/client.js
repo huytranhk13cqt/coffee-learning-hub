@@ -1,3 +1,5 @@
+import { getSessionId } from '../hooks/useSessionId.js';
+
 const API_BASE = '/api';
 
 export class ApiError extends Error {
@@ -16,6 +18,7 @@ async function request(endpoint, { headers, ...options } = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
+      'X-Session-Id': getSessionId(),
       ...headers,
     },
   });

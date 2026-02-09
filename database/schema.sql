@@ -540,9 +540,8 @@ COMMENT ON COLUMN user_progress.last_position IS 'Last section viewed (resume fe
 
 CREATE INDEX idx_progress_session ON user_progress(session_id);
 
-CREATE TRIGGER trg_user_progress_updated_at
-  BEFORE UPDATE ON user_progress
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+-- NOTE: No update_updated_at() trigger here — user_progress uses last_access, not updated_at.
+-- last_access is managed explicitly by application queries.
 
 
 -- ============================================================================

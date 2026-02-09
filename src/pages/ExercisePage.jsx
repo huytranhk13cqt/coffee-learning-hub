@@ -1,0 +1,136 @@
+import { useEffect } from 'react';
+import { useLoaderData, useNavigate, Link as RouterLink } from 'react-router';
+import { fetchExercises } from '../api/exercises.js';
+import { useExerciseFlow } from '../hooks/useExerciseFlow.js';
+import ExerciseWrapper from '../components/exercise/ExerciseWrapper.jsx';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+
+export async function loader({ params, request }) {
+  const exercises = await fetchExercises(params.lessonId, { signal: request.signal });
+  return { exercises, lessonId: params.lessonId };
+}
+
+export default function ExercisePage() {
+  const { exercises, lessonId } = useLoaderData();
+  const navigate = useNavigate();
+
+  const {
+    phase,
+    currentExercise,
+    currentIndex,
+    totalExercises,
+    currentAnswer,
+    showHint: hintVisible,
+    feedback,
+    results,
+    error,
+    loadExercises,
+    setAnswer,
+    showHint,
+    submit,
+    next,
+  } = useExerciseFlow();
+
+  useEffect(() => {
+    loadExercises(exercises);
+  }, [exercises, loadExercises]);
+
+  // Finished state
+  if (phase === 'finished') {
+    const correctCount = results.filter((r) => r.isCorrect).length;
+    const score = totalExercises > 0
+      ? Math.round((correctCount / totalExercises) * 100)
+      : 0;
+
+    return (
+      <Box sx={{ textAlign: 'center', py: 4 }}>
+        <CheckCircleOutlineIcon sx={{ fontSize: 64, color: 'success.main', mb: 2 }} />
+        <Typography variant="h4" gutterBottom>
+          Hoàn thành!
+        </Typography>
+        <Typography variant="h6" color="text.secondary" gutterBottom>
+          Bạn đã trả lời đúng {correctCount}/{totalExercises} câu ({score}%)
+        </Typography>
+
+        <Paper variant="outlined" sx={{ p: 2, my: 3, maxWidth: 400, mx: 'auto' }}>
+          <Stack spacing={1}>
+            {results.map((r, i) => (
+              <Box
+                key={r.exerciseId}
+                sx={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <Typography variant="body2">Câu {i + 1}</Typography>
+                <Typography
+                  variant="body2"
+                  color={r.isCorrect ? 'success.main' : 'error.main'}
+                  fontWeight={600}
+                >
+                  {r.isCorrect ? 'Đúng' : 'Sai'}
+                </Typography>
+              </Box>
+            ))}
+          </Stack>
+        </Paper>
+
+        <Stack direction="row" spacing={2} justifyContent="center">
+          <Button
+            variant="outlined"
+            component={RouterLink}
+            to={`/lessons/${lessonId}/results`}
+          >
+            Xem chi tiết
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => navigate(-1)}
+          >
+            Quay lại bài học
+          </Button>
+        </Stack>
+      </Box>
+    );
+  }
+
+  // Loading / idle
+  if (phase === 'idle' || !currentExercise) {
+    return (
+      <Typography color="text.secondary">
+        Đang tải bài tập...
+      </Typography>
+    );
+  }
+
+  // Exercise in progress
+  return (
+    <Box>
+      <Breadcrumbs sx={{ mb: 3 }}>
+        <Link component={RouterLink} to="/" underline="hover" color="inherit">
+          Trang chủ
+        </Link>
+        <Typography color="text.primary">Bài tập</Typography>
+      </Breadcrumbs>
+
+      <ExerciseWrapper
+        exercise={currentExercise}
+        currentIndex={currentIndex}
+        totalExercises={totalExercises}
+        answer={currentAnswer}
+        onAnswerChange={setAnswer}
+        showHint={hintVisible}
+        onShowHint={showHint}
+        feedback={feedback}
+        error={error}
+        phase={phase}
+        onSubmit={submit}
+        onNext={next}
+      />
+    </Box>
+  );
+}
