@@ -43,19 +43,46 @@ function groupBy(arr, keyFn) {
 }
 
 const STAT_CARDS = [
-  { key: 'started', icon: SchoolIcon, label: 'Bài đã học', color: 'primary.main' },
-  { key: 'completed', icon: CheckCircleIcon, label: 'Hoàn thành', color: 'success.main' },
-  { key: 'avgScore', icon: TrendingUpIcon, label: 'Điểm trung bình', color: 'warning.main' },
-  { key: 'time', icon: AccessTimeIcon, label: 'Thời gian học', color: 'info.main' },
+  {
+    key: 'started',
+    icon: SchoolIcon,
+    label: 'Bài đã học',
+    color: 'primary.main',
+  },
+  {
+    key: 'completed',
+    icon: CheckCircleIcon,
+    label: 'Hoàn thành',
+    color: 'success.main',
+  },
+  {
+    key: 'avgScore',
+    icon: TrendingUpIcon,
+    label: 'Điểm trung bình',
+    color: 'warning.main',
+  },
+  {
+    key: 'time',
+    icon: AccessTimeIcon,
+    label: 'Thời gian học',
+    color: 'info.main',
+  },
 ];
 
 function getStatValue(key, stats) {
   switch (key) {
-    case 'started': return `${stats.lessons_started}/${stats.total_lessons}`;
-    case 'completed': return `${stats.lessons_completed}/${stats.total_lessons}`;
-    case 'avgScore': return stats.lessons_started > 0 ? `${Math.round(stats.avg_score)}%` : '—';
-    case 'time': return formatTime(stats.total_time_seconds);
-    default: return '—';
+    case 'started':
+      return `${stats.lessons_started}/${stats.total_lessons}`;
+    case 'completed':
+      return `${stats.lessons_completed}/${stats.total_lessons}`;
+    case 'avgScore':
+      return stats.lessons_started > 0
+        ? `${Math.round(stats.avg_score)}%`
+        : '—';
+    case 'time':
+      return formatTime(stats.total_time_seconds);
+    default:
+      return '—';
   }
 }
 
@@ -116,11 +143,7 @@ export default function DashboardPage() {
           <Typography color="text.secondary" sx={{ mb: 2 }}>
             Bắt đầu học bài đầu tiên để theo dõi tiến trình của bạn!
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="/"
-          >
+          <Button variant="contained" component={RouterLink} to="/">
             Bắt đầu học
           </Button>
         </Paper>
@@ -135,9 +158,7 @@ export default function DashboardPage() {
             sx={{ borderTop: 4, borderColor: group.color }}
           >
             <Box sx={{ px: 2.5, pt: 2, pb: 1 }}>
-              <Typography variant="h6">
-                {group.name}
-              </Typography>
+              <Typography variant="h6">{group.name}</Typography>
               <Typography variant="body2" color="text.secondary">
                 {group.name_vi}
               </Typography>
@@ -145,9 +166,13 @@ export default function DashboardPage() {
 
             <List dense disablePadding>
               {grouped[group.id].map((lesson) => {
-                const exercisePercent = lesson.exercises_total > 0
-                  ? Math.round((lesson.exercises_attempted / lesson.exercises_total) * 100)
-                  : 0;
+                const exercisePercent =
+                  lesson.exercises_total > 0
+                    ? Math.round(
+                        (lesson.exercises_attempted / lesson.exercises_total) *
+                          100,
+                      )
+                    : 0;
 
                 return (
                   <ListItemButton
@@ -157,7 +182,10 @@ export default function DashboardPage() {
                     sx={{ px: 2.5 }}
                   >
                     <ListItemIcon sx={{ minWidth: 36 }}>
-                      <MenuBookIcon fontSize="small" sx={{ color: group.color }} />
+                      <MenuBookIcon
+                        fontSize="small"
+                        sx={{ color: group.color }}
+                      />
                     </ListItemIcon>
                     <ListItemText
                       primary={lesson.lesson_name_vi}
@@ -167,9 +195,22 @@ export default function DashboardPage() {
                           : 'Chưa có bài tập'
                       }
                     />
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 1, flexShrink: 0 }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        ml: 1,
+                        flexShrink: 0,
+                      }}
+                    >
                       {lesson.exercises_total > 0 && (
-                        <Box sx={{ width: 60, display: { xs: 'none', sm: 'block' } }}>
+                        <Box
+                          sx={{
+                            width: 60,
+                            display: { xs: 'none', sm: 'block' },
+                          }}
+                        >
                           <LinearProgress
                             variant="determinate"
                             value={exercisePercent}

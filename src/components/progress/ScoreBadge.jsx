@@ -7,7 +7,11 @@ function getScoreColor(score) {
   return 'error.main';
 }
 
-export default function ScoreBadge({ score, label = 'Điểm', variant = 'body2' }) {
+export default function ScoreBadge({
+  score,
+  label = 'Điểm',
+  variant = 'body2',
+}) {
   if (score == null || score <= 0) return null;
 
   return (
@@ -15,7 +19,11 @@ export default function ScoreBadge({ score, label = 'Điểm', variant = 'body2'
       <Typography variant={variant} color="text.secondary">
         {label}:
       </Typography>
-      <Typography variant={variant} fontWeight={600} color={getScoreColor(score)}>
+      <Typography
+        variant={variant}
+        fontWeight={600}
+        color={getScoreColor(score)}
+      >
         {Math.round(score)}%
       </Typography>
     </Box>

@@ -53,21 +53,30 @@ export default function SearchBar() {
       });
   }, []);
 
-  const handleInputChange = useCallback((_event, value, reason) => {
-    setInputValue(value);
-    if (reason !== 'input') return;
+  const handleInputChange = useCallback(
+    (_event, value, reason) => {
+      setInputValue(value);
+      if (reason !== 'input') return;
 
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => fetchResults(value.trim()), DEBOUNCE_MS);
-  }, [fetchResults]);
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(
+        () => fetchResults(value.trim()),
+        DEBOUNCE_MS,
+      );
+    },
+    [fetchResults],
+  );
 
-  const handleSelect = useCallback((_event, value) => {
-    if (value && typeof value === 'object' && value.slug) {
-      navigate(`/lessons/${value.slug}`);
-      setInputValue('');
-      setOptions([]);
-    }
-  }, [navigate]);
+  const handleSelect = useCallback(
+    (_event, value) => {
+      if (value && typeof value === 'object' && value.slug) {
+        navigate(`/lessons/${value.slug}`);
+        setInputValue('');
+        setOptions([]);
+      }
+    },
+    [navigate],
+  );
 
   return (
     <Autocomplete
@@ -78,7 +87,9 @@ export default function SearchBar() {
       onInputChange={handleInputChange}
       onChange={handleSelect}
       filterOptions={(x) => x}
-      getOptionLabel={(opt) => (typeof opt === 'string' ? opt : opt.name_vi || '')}
+      getOptionLabel={(opt) =>
+        typeof opt === 'string' ? opt : opt.name_vi || ''
+      }
       noOptionsText={
         inputValue.length >= MIN_QUERY_LENGTH
           ? 'Không tìm thấy bài học'
@@ -100,7 +111,8 @@ export default function SearchBar() {
               {option.name_vi}
             </Typography>
             <Typography variant="caption" color="text.secondary" noWrap>
-              {option.group_name_vi} · {DIFFICULTY_LABELS[option.difficulty] || option.difficulty}
+              {option.group_name_vi} ·{' '}
+              {DIFFICULTY_LABELS[option.difficulty] || option.difficulty}
             </Typography>
           </Box>
         </Box>
@@ -117,7 +129,9 @@ export default function SearchBar() {
               color: 'inherit',
               '& fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
               '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.5)' },
-              '&.Mui-focused fieldset': { borderColor: 'rgba(255,255,255,0.7)' },
+              '&.Mui-focused fieldset': {
+                borderColor: 'rgba(255,255,255,0.7)',
+              },
             },
             '& .MuiInputBase-input::placeholder': {
               color: 'rgba(255,255,255,0.7)',
@@ -129,7 +143,9 @@ export default function SearchBar() {
               ...params.InputProps,
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ color: 'rgba(255,255,255,0.7)', fontSize: 20 }} />
+                  <SearchIcon
+                    sx={{ color: 'rgba(255,255,255,0.7)', fontSize: 20 }}
+                  />
                 </InputAdornment>
               ),
               endAdornment: (

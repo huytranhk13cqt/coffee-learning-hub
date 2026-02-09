@@ -3,7 +3,12 @@ import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 
-export default function SentenceTransform({ exercise, answer, onAnswerChange, disabled }) {
+export default function SentenceTransform({
+  exercise,
+  answer,
+  onAnswerChange,
+  disabled,
+}) {
   return (
     <Box>
       <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>

@@ -1,7 +1,12 @@
 import Typography from '@mui/material/Typography';
 import exerciseRegistry from './registry.js';
 
-export default function ExerciseRenderer({ exercise, answer, onAnswerChange, disabled }) {
+export default function ExerciseRenderer({
+  exercise,
+  answer,
+  onAnswerChange,
+  disabled,
+}) {
   const Component = exerciseRegistry[exercise.type];
 
   if (!Component) {

@@ -74,7 +74,11 @@ export default function HomePage() {
                 <Typography variant="h5" gutterBottom>
                   {group.name}
                 </Typography>
-                <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  gutterBottom
+                >
                   {group.name_vi}
                 </Typography>
 
@@ -89,13 +93,24 @@ export default function HomePage() {
                         sx={{ borderRadius: 1 }}
                       >
                         <ListItemIcon sx={{ minWidth: 36 }}>
-                          <MenuBookIcon fontSize="small" sx={{ color: group.color }} />
+                          <MenuBookIcon
+                            fontSize="small"
+                            sx={{ color: group.color }}
+                          />
                         </ListItemIcon>
                         <ListItemText
                           primary={lesson.name}
                           secondary={`${lesson.name_vi} · ${DIFFICULTY_LABELS[lesson.difficulty] || lesson.difficulty}`}
                         />
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 1, flexShrink: 0 }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            ml: 1,
+                            flexShrink: 0,
+                          }}
+                        >
                           <ScoreBadge score={progress?.best_score} label="" />
                           <LessonStatusChip status={progress?.status} />
                         </Box>

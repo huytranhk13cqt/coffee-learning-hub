@@ -11,12 +11,20 @@ export async function fetchProgress(lessonId, { signal } = {}) {
 }
 
 export async function markTheoryComplete(lessonId, body, { signal } = {}) {
-  const { data } = await api.post(`/progress/${lessonId}/theory-complete`, body, { signal });
+  const { data } = await api.post(
+    `/progress/${lessonId}/theory-complete`,
+    body,
+    { signal },
+  );
   return data;
 }
 
 export async function resetProgress(lessonId, { signal } = {}) {
-  const { data } = await api.post(`/progress/${lessonId}/reset`, {}, { signal });
+  const { data } = await api.post(
+    `/progress/${lessonId}/reset`,
+    {},
+    { signal },
+  );
   return data;
 }
 

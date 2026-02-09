@@ -21,7 +21,8 @@ function validateMultipleChoice(userAnswer, data) {
 
 function validateFillBlank(userAnswer, data) {
   // data = { correct_answer, explanation, explanation_vi } from exercise
-  const isCorrect = normalizeText(userAnswer) === normalizeText(data.correct_answer);
+  const isCorrect =
+    normalizeText(userAnswer) === normalizeText(data.correct_answer);
   return {
     isCorrect,
     explanation: data.explanation,
@@ -30,7 +31,8 @@ function validateFillBlank(userAnswer, data) {
 }
 
 function validateErrorCorrection(userAnswer, data) {
-  const isCorrect = normalizeText(userAnswer) === normalizeText(data.correct_answer);
+  const isCorrect =
+    normalizeText(userAnswer) === normalizeText(data.correct_answer);
   return {
     isCorrect,
     explanation: data.explanation,
@@ -39,7 +41,8 @@ function validateErrorCorrection(userAnswer, data) {
 }
 
 function validateSentenceTransform(userAnswer, data) {
-  const isCorrect = normalizeText(userAnswer) === normalizeText(data.correct_answer);
+  const isCorrect =
+    normalizeText(userAnswer) === normalizeText(data.correct_answer);
   return {
     isCorrect,
     explanation: data.explanation,
@@ -49,7 +52,8 @@ function validateSentenceTransform(userAnswer, data) {
 
 function validateTrueFalse(userAnswer, data) {
   // correct_answer is 'true' or 'false' (string)
-  const isCorrect = normalizeText(userAnswer) === normalizeText(data.correct_answer);
+  const isCorrect =
+    normalizeText(userAnswer) === normalizeText(data.correct_answer);
   return {
     isCorrect,
     explanation: data.explanation,
@@ -59,7 +63,8 @@ function validateTrueFalse(userAnswer, data) {
 
 function validateArrangeWords(userAnswer, data) {
   // userAnswer is the arranged sentence (string)
-  const isCorrect = normalizeText(userAnswer) === normalizeText(data.correct_answer);
+  const isCorrect =
+    normalizeText(userAnswer) === normalizeText(data.correct_answer);
   return {
     isCorrect,
     explanation: data.explanation,
@@ -114,9 +119,12 @@ const shapeValidators = {
   sentence_transform: (a) => typeof a === 'string' && a.trim().length > 0,
   true_false: (a) => typeof a === 'string' && /^(true|false)$/i.test(a),
   arrange_words: (a) => typeof a === 'string' && a.trim().length > 0,
-  matching: (a) => Array.isArray(a) && a.length > 0 && a.every(
-    (p) => typeof p.leftId === 'number' && typeof p.rightId === 'number',
-  ),
+  matching: (a) =>
+    Array.isArray(a) &&
+    a.length > 0 &&
+    a.every(
+      (p) => typeof p.leftId === 'number' && typeof p.rightId === 'number',
+    ),
 };
 
 /**

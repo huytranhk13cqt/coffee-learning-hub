@@ -36,8 +36,7 @@ async function request(endpoint, { headers, ...options } = {}) {
 }
 
 export const api = {
-  get: (endpoint, opts) =>
-    request(endpoint, { method: 'GET', ...opts }),
+  get: (endpoint, opts) => request(endpoint, { method: 'GET', ...opts }),
 
   post: (endpoint, body, opts) =>
     request(endpoint, { method: 'POST', body: JSON.stringify(body), ...opts }),
@@ -45,6 +44,5 @@ export const api = {
   put: (endpoint, body, opts) =>
     request(endpoint, { method: 'PUT', body: JSON.stringify(body), ...opts }),
 
-  delete: (endpoint, opts) =>
-    request(endpoint, { method: 'DELETE', ...opts }),
+  delete: (endpoint, opts) => request(endpoint, { method: 'DELETE', ...opts }),
 };

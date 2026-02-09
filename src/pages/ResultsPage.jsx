@@ -17,7 +17,9 @@ import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 export async function loader({ params, request }) {
   const [results, progress] = await Promise.all([
     fetchResults(params.lessonId, { signal: request.signal }),
-    fetchProgress(params.lessonId, { signal: request.signal }).catch(() => null),
+    fetchProgress(params.lessonId, { signal: request.signal }).catch(
+      () => null,
+    ),
   ]);
   return { results, lessonId: params.lessonId, progress };
 }
@@ -37,9 +39,10 @@ export default function ResultsPage() {
 
   const attempted = results.filter((r) => r.user_answer != null);
   const correct = attempted.filter((r) => r.is_correct);
-  const score = attempted.length > 0
-    ? Math.round((correct.length / results.length) * 100)
-    : 0;
+  const score =
+    attempted.length > 0
+      ? Math.round((correct.length / results.length) * 100)
+      : 0;
 
   return (
     <Box>
@@ -63,14 +66,18 @@ export default function ResultsPage() {
         <Typography variant="h4" gutterBottom>
           Kết quả chi tiết
         </Typography>
-        <Typography variant="h5" color={score >= 70 ? 'success.main' : 'error.main'}>
+        <Typography
+          variant="h5"
+          color={score >= 70 ? 'success.main' : 'error.main'}
+        >
           {correct.length}/{results.length} ({score}%)
         </Typography>
-        {progress?.best_score > 0 && Math.round(progress.best_score) !== score && (
-          <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
-            Điểm cao nhất: {Math.round(progress.best_score)}%
-          </Typography>
-        )}
+        {progress?.best_score > 0 &&
+          Math.round(progress.best_score) !== score && (
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+              Điểm cao nhất: {Math.round(progress.best_score)}%
+            </Typography>
+          )}
         {progress?.status === 'completed' && (
           <Box sx={{ mt: 1 }}>
             <LessonStatusChip status="completed" />
@@ -84,19 +91,33 @@ export default function ResultsPage() {
           const hasAttempt = ex.user_answer != null;
           return (
             <Paper key={ex.exercise_id} variant="outlined" sx={{ p: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, mb: 1 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 1.5,
+                  mb: 1,
+                }}
+              >
                 {hasAttempt ? (
-                  ex.is_correct
-                    ? <CheckCircleIcon color="success" />
-                    : <CancelIcon color="error" />
+                  ex.is_correct ? (
+                    <CheckCircleIcon color="success" />
+                  ) : (
+                    <CancelIcon color="error" />
+                  )
                 ) : (
                   <CancelIcon sx={{ color: 'text.disabled' }} />
                 )}
                 <Box sx={{ flex: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                    <Typography variant="subtitle2">
-                      Câu {index + 1}
-                    </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      mb: 0.5,
+                    }}
+                  >
+                    <Typography variant="subtitle2">Câu {index + 1}</Typography>
                     <Chip
                       label={typeLabels[ex.type] || ex.type}
                       size="small"
@@ -109,7 +130,11 @@ export default function ResultsPage() {
                   </Typography>
 
                   {ex.content && (
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontStyle: 'italic' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 1, fontStyle: 'italic' }}
+                    >
                       {ex.content}
                     </Typography>
                   )}
@@ -132,7 +157,11 @@ export default function ResultsPage() {
                   )}
 
                   {!hasAttempt && (
-                    <Typography variant="body2" color="text.disabled" sx={{ mb: 1 }}>
+                    <Typography
+                      variant="body2"
+                      color="text.disabled"
+                      sx={{ mb: 1 }}
+                    >
                       Chưa trả lời
                     </Typography>
                   )}
@@ -149,9 +178,15 @@ export default function ResultsPage() {
                   {/* Explanation */}
                   {ex.explanation_vi && (
                     <Paper sx={{ p: 1.5, bgcolor: 'grey.50', mt: 1 }}>
-                      <Typography variant="body2">{ex.explanation_vi}</Typography>
+                      <Typography variant="body2">
+                        {ex.explanation_vi}
+                      </Typography>
                       {ex.explanation && (
-                        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ mt: 0.5 }}
+                        >
                           {ex.explanation}
                         </Typography>
                       )}
@@ -173,11 +208,7 @@ export default function ResultsPage() {
         >
           Làm lại
         </Button>
-        <Button
-          variant="contained"
-          component={RouterLink}
-          to="/"
-        >
+        <Button variant="contained" component={RouterLink} to="/">
           Về trang chủ
         </Button>
       </Stack>

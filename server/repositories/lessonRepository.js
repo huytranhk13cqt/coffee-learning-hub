@@ -135,16 +135,23 @@ export class LessonRepository {
   async findFullBySlug(slug) {
     const lesson = await this.findBySlug(slug);
 
-    const [formulas, usages, examples, signalWords, tips, comparisons, siblings] =
-      await Promise.all([
-        this.findFormulas(lesson.id),
-        this.findUsages(lesson.id),
-        this.findExamples(lesson.id),
-        this.findSignalWords(lesson.id),
-        this.findTips(lesson.id),
-        this.findComparisons(lesson.id),
-        this.findByGroup(lesson.group_id),
-      ]);
+    const [
+      formulas,
+      usages,
+      examples,
+      signalWords,
+      tips,
+      comparisons,
+      siblings,
+    ] = await Promise.all([
+      this.findFormulas(lesson.id),
+      this.findUsages(lesson.id),
+      this.findExamples(lesson.id),
+      this.findSignalWords(lesson.id),
+      this.findTips(lesson.id),
+      this.findComparisons(lesson.id),
+      this.findByGroup(lesson.group_id),
+    ]);
 
     // Nest examples under their usages
     const usagesWithExamples = usages.map((usage) => ({
@@ -155,7 +162,10 @@ export class LessonRepository {
     // Compute prev/next lesson navigation from siblings
     const currentIndex = siblings.findIndex((s) => s.id === lesson.id);
     const prev = currentIndex > 0 ? siblings[currentIndex - 1] : null;
-    const next = currentIndex >= 0 && currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
+    const next =
+      currentIndex >= 0 && currentIndex < siblings.length - 1
+        ? siblings[currentIndex + 1]
+        : null;
 
     return {
       ...lesson,

@@ -2,7 +2,12 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
-export default function FillBlank({ exercise, answer, onAnswerChange, disabled }) {
+export default function FillBlank({
+  exercise,
+  answer,
+  onAnswerChange,
+  disabled,
+}) {
   // Split content on ___ to render inline input
   const parts = (exercise.content || '').split('___');
 
@@ -29,7 +34,9 @@ export default function FillBlank({ exercise, answer, onAnswerChange, disabled }
   }
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
+    <Box
+      sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}
+    >
       <Typography component="span">{parts[0]}</Typography>
       <TextField
         size="small"

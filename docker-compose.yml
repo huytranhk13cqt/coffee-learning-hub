@@ -4,7 +4,7 @@ services:
     container_name: relax-postgres
     restart: unless-stopped
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - '${DB_PORT:-5432}:5432'
     environment:
       POSTGRES_DB: ${DB_NAME:-knowledge_learning}
       POSTGRES_USER: ${DB_USER:-relax_user}
@@ -14,7 +14,11 @@ services:
       - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       - ./database/seed_data.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-relax_user} -d ${DB_NAME:-knowledge_learning}"]
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${DB_USER:-relax_user} -d ${DB_NAME:-knowledge_learning}',
+        ]
       interval: 10s
       timeout: 5s
       retries: 5

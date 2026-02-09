@@ -1,5 +1,8 @@
 import { ValidationError } from '../errors/AppError.js';
-import { validateAnswerShape, validateAnswer } from '../services/answerValidator.js';
+import {
+  validateAnswerShape,
+  validateAnswer,
+} from '../services/answerValidator.js';
 
 function extractSessionId(request) {
   const sessionId = request.headers['x-session-id'];
@@ -113,21 +116,36 @@ export class ExerciseController {
     // 3. Fetch correct answer from DB + validate
     let validationData;
     if (type === 'multiple_choice') {
-      validationData = await this.exerciseRepo.findOptionForValidation(exerciseId, answer);
+      validationData = await this.exerciseRepo.findOptionForValidation(
+        exerciseId,
+        answer,
+      );
     } else if (type === 'matching') {
-      const pairs = await this.exerciseRepo.findMatchingPairsForValidation(exerciseId);
-      const exerciseData = await this.exerciseRepo.findAnswerForValidation(exerciseId);
-      validationData = { pairs, explanation: exerciseData.explanation, explanation_vi: exerciseData.explanation_vi };
+      const pairs =
+        await this.exerciseRepo.findMatchingPairsForValidation(exerciseId);
+      const exerciseData =
+        await this.exerciseRepo.findAnswerForValidation(exerciseId);
+      validationData = {
+        pairs,
+        explanation: exerciseData.explanation,
+        explanation_vi: exerciseData.explanation_vi,
+      };
     } else {
-      validationData = await this.exerciseRepo.findAnswerForValidation(exerciseId);
+      validationData =
+        await this.exerciseRepo.findAnswerForValidation(exerciseId);
     }
 
     const result = validateAnswer(type, answer, validationData);
-    const userAnswerStr = typeof answer === 'string' ? answer : JSON.stringify(answer);
+    const userAnswerStr =
+      typeof answer === 'string' ? answer : JSON.stringify(answer);
 
     // 4. Record attempt + update progress in transaction
     await this.sql.begin(async (tx) => {
-      const attemptNumber = await this.progressRepo.getNextAttemptNumber(tx, sessionId, exerciseId);
+      const attemptNumber = await this.progressRepo.getNextAttemptNumber(
+        tx,
+        sessionId,
+        exerciseId,
+      );
       await this.progressRepo.insertAttempt(tx, {
         sessionId,
         exerciseId,
@@ -162,7 +180,10 @@ export class ExerciseController {
       throw new ValidationError('Invalid lesson ID');
     }
 
-    const results = await this.exerciseRepo.findResultsByLesson(lessonId, sessionId);
+    const results = await this.exerciseRepo.findResultsByLesson(
+      lessonId,
+      sessionId,
+    );
     return { data: results };
   };
 }

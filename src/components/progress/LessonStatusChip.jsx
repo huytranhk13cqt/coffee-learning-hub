@@ -3,8 +3,16 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
 const STATUS_CONFIG = {
-  completed: { label: 'Hoàn thành', color: 'success', icon: <CheckCircleIcon /> },
-  in_progress: { label: 'Đang học', color: 'warning', icon: <PlayCircleOutlineIcon /> },
+  completed: {
+    label: 'Hoàn thành',
+    color: 'success',
+    icon: <CheckCircleIcon />,
+  },
+  in_progress: {
+    label: 'Đang học',
+    color: 'warning',
+    icon: <PlayCircleOutlineIcon />,
+  },
 };
 
 export default function LessonStatusChip({ status, size = 'small' }) {

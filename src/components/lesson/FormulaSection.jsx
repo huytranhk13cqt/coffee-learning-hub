@@ -1,12 +1,5 @@
 import { useState } from 'react';
-import {
-  Box,
-  Tab,
-  Tabs,
-  Typography,
-  Paper,
-  Chip,
-} from '@mui/material';
+import { Box, Tab, Tabs, Typography, Paper, Chip } from '@mui/material';
 
 const TYPE_LABELS = {
   affirmative: { label: 'Khẳng định (+)', color: 'success' },
@@ -28,16 +21,9 @@ export default function FormulaSection({ formulas }) {
         Công thức
       </Typography>
 
-      <Tabs
-        value={tab}
-        onChange={(_, v) => setTab(v)}
-        sx={{ mb: 2 }}
-      >
+      <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 2 }}>
         {formulas.map((f) => (
-          <Tab
-            key={f.type}
-            label={TYPE_LABELS[f.type]?.label || f.type}
-          />
+          <Tab key={f.type} label={TYPE_LABELS[f.type]?.label || f.type} />
         ))}
       </Tabs>
 

@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useLoaderData, Link as RouterLink, useNavigate } from 'react-router';
 import { fetchLesson } from '../api/lessons.js';
-import { fetchProgress, markTheoryComplete, resetProgress } from '../api/progress.js';
+import {
+  fetchProgress,
+  markTheoryComplete,
+  resetProgress,
+} from '../api/progress.js';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -27,8 +31,9 @@ import ResetProgressDialog from '../components/progress/ResetProgressDialog.jsx'
 
 export async function loader({ params, request }) {
   const lesson = await fetchLesson(params.slug, { signal: request.signal });
-  const progress = await fetchProgress(lesson.id, { signal: request.signal })
-    .catch(() => null);
+  const progress = await fetchProgress(lesson.id, {
+    signal: request.signal,
+  }).catch(() => null);
   return { lesson, progress };
 }
 
@@ -61,7 +66,9 @@ export default function LessonPage() {
   // Local state for optimistic updates (theory complete, reset)
   // Sync with loader data when navigating between lessons
   const [progress, setProgress] = useState(loaderProgress);
-  useEffect(() => { setProgress(loaderProgress); }, [loaderProgress]);
+  useEffect(() => {
+    setProgress(loaderProgress);
+  }, [loaderProgress]);
   const [theoryMarking, setTheoryMarking] = useState(false);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [resetting, setResetting] = useState(false);
@@ -71,9 +78,17 @@ export default function LessonPage() {
     setTheoryMarking(true);
     try {
       await markTheoryComplete(lesson.id, { timeSpent: 0 });
-      setProgress((prev) => prev
-        ? { ...prev, theory_completed: true }
-        : { theory_completed: true, status: 'not_started', exercises_attempted: 0, exercises_total: 0, current_score: 0, best_score: 0 },
+      setProgress((prev) =>
+        prev
+          ? { ...prev, theory_completed: true }
+          : {
+              theory_completed: true,
+              status: 'not_started',
+              exercises_attempted: 0,
+              exercises_total: 0,
+              current_score: 0,
+              best_score: 0,
+            },
       );
     } finally {
       setTheoryMarking(false);
@@ -108,12 +123,8 @@ export default function LessonPage() {
         <Link component={RouterLink} to="/" underline="hover" color="inherit">
           Trang chủ
         </Link>
-        <Typography color="text.secondary">
-          {lesson.group_name_vi}
-        </Typography>
-        <Typography color="text.primary">
-          {lesson.name_vi}
-        </Typography>
+        <Typography color="text.secondary">{lesson.group_name_vi}</Typography>
+        <Typography color="text.primary">{lesson.name_vi}</Typography>
       </Breadcrumbs>
 
       {/* Lesson Header */}
@@ -169,7 +180,14 @@ export default function LessonPage() {
       {/* Mark Theory Complete */}
       <Box sx={{ mt: 4, textAlign: 'center' }}>
         {progress?.theory_completed ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 1,
+            }}
+          >
             <CheckCircleIcon color="success" />
             <Typography variant="body1" color="success.main" fontWeight={500}>
               Đã hoàn thành lý thuyết
@@ -188,11 +206,12 @@ export default function LessonPage() {
       </Box>
 
       {/* Progress Summary */}
-      {progress && (progress.exercises_attempted > 0 || progress.theory_completed) && (
-        <Box sx={{ mt: 3 }}>
-          <LessonProgressSummary progress={progress} />
-        </Box>
-      )}
+      {progress &&
+        (progress.exercises_attempted > 0 || progress.theory_completed) && (
+          <Box sx={{ mt: 3 }}>
+            <LessonProgressSummary progress={progress} />
+          </Box>
+        )}
 
       {/* Exercise CTA */}
       <Box sx={{ mt: 4, textAlign: 'center' }}>
@@ -210,46 +229,52 @@ export default function LessonPage() {
         </Button>
 
         {/* Reset progress */}
-        {progress && (progress.exercises_attempted > 0 || progress.theory_completed) && (
-          <Box sx={{ mt: 2 }}>
-            <Button
-              size="small"
-              color="inherit"
-              sx={{ color: 'text.secondary' }}
-              onClick={() => setResetDialogOpen(true)}
-            >
-              Đặt lại tiến trình
-            </Button>
-          </Box>
-        )}
+        {progress &&
+          (progress.exercises_attempted > 0 || progress.theory_completed) && (
+            <Box sx={{ mt: 2 }}>
+              <Button
+                size="small"
+                color="inherit"
+                sx={{ color: 'text.secondary' }}
+                onClick={() => setResetDialogOpen(true)}
+              >
+                Đặt lại tiến trình
+              </Button>
+            </Box>
+          )}
       </Box>
 
       {/* Prev/Next Lesson Navigation */}
-      {lesson.navigation && (lesson.navigation.prev || lesson.navigation.next) && (
-        <Box sx={{ mt: 4 }}>
-          <Divider sx={{ mb: 3 }} />
-          <Stack direction="row" justifyContent="space-between">
-            {lesson.navigation.prev ? (
-              <Button
-                component={RouterLink}
-                to={`/lessons/${lesson.navigation.prev.slug}`}
-                startIcon={<ArrowBackIcon />}
-              >
-                {lesson.navigation.prev.name_vi}
-              </Button>
-            ) : <Box />}
-            {lesson.navigation.next ? (
-              <Button
-                component={RouterLink}
-                to={`/lessons/${lesson.navigation.next.slug}`}
-                endIcon={<ArrowForwardIcon />}
-              >
-                {lesson.navigation.next.name_vi}
-              </Button>
-            ) : <Box />}
-          </Stack>
-        </Box>
-      )}
+      {lesson.navigation &&
+        (lesson.navigation.prev || lesson.navigation.next) && (
+          <Box sx={{ mt: 4 }}>
+            <Divider sx={{ mb: 3 }} />
+            <Stack direction="row" justifyContent="space-between">
+              {lesson.navigation.prev ? (
+                <Button
+                  component={RouterLink}
+                  to={`/lessons/${lesson.navigation.prev.slug}`}
+                  startIcon={<ArrowBackIcon />}
+                >
+                  {lesson.navigation.prev.name_vi}
+                </Button>
+              ) : (
+                <Box />
+              )}
+              {lesson.navigation.next ? (
+                <Button
+                  component={RouterLink}
+                  to={`/lessons/${lesson.navigation.next.slug}`}
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  {lesson.navigation.next.name_vi}
+                </Button>
+              ) : (
+                <Box />
+              )}
+            </Stack>
+          </Box>
+        )}
 
       {/* Reset Confirmation Dialog */}
       <ResetProgressDialog

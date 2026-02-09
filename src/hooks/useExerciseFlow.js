@@ -14,10 +14,10 @@ const initialState = {
   currentIndex: 0,
   currentAnswer: null,
   showHint: false,
-  feedback: null,     // { isCorrect, explanation, explanationVi }
-  results: [],        // [{ exerciseId, isCorrect, timeTaken }]
+  feedback: null, // { isCorrect, explanation, explanationVi }
+  results: [], // [{ exerciseId, isCorrect, timeTaken }]
   error: null,
-  startTime: null,    // timestamp when current exercise started
+  startTime: null, // timestamp when current exercise started
 };
 
 function reducer(state, action) {
@@ -123,9 +123,17 @@ export function useExerciseFlow() {
       });
       dispatch({ type: 'SUBMIT_SUCCESS', payload: result });
     } catch (err) {
-      dispatch({ type: 'SUBMIT_ERROR', payload: err.message || 'Submit failed' });
+      dispatch({
+        type: 'SUBMIT_ERROR',
+        payload: err.message || 'Submit failed',
+      });
     }
-  }, [state.exercises, state.currentIndex, state.currentAnswer, state.startTime]);
+  }, [
+    state.exercises,
+    state.currentIndex,
+    state.currentAnswer,
+    state.startTime,
+  ]);
 
   const next = useCallback(() => {
     dispatch({ type: 'NEXT' });

@@ -11,6 +11,9 @@ export async function fetchLessonsByGroup(groupId, { signal } = {}) {
 }
 
 export async function searchLessons(query, { signal } = {}) {
-  const { data } = await api.get(`/lessons/search?q=${encodeURIComponent(query)}`, { signal });
+  const { data } = await api.get(
+    `/lessons/search?q=${encodeURIComponent(query)}`,
+    { signal },
+  );
   return data;
 }

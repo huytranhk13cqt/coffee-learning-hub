@@ -38,7 +38,10 @@ export class ProgressController {
       throw new ValidationError('Invalid lesson ID');
     }
 
-    const progress = await this.progressRepo.findBySessionAndLesson(sessionId, lessonId);
+    const progress = await this.progressRepo.findBySessionAndLesson(
+      sessionId,
+      lessonId,
+    );
     return { data: progress };
   };
 
@@ -51,7 +54,11 @@ export class ProgressController {
     }
 
     const { timeSpent } = request.body || {};
-    await this.progressRepo.markTheoryComplete(sessionId, lessonId, timeSpent || 0);
+    await this.progressRepo.markTheoryComplete(
+      sessionId,
+      lessonId,
+      timeSpent || 0,
+    );
     return { data: { success: true } };
   };
 

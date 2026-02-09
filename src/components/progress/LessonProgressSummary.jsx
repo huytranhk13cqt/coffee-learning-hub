@@ -10,9 +10,12 @@ import ScoreBadge from './ScoreBadge.jsx';
 export default function LessonProgressSummary({ progress }) {
   if (!progress) return null;
 
-  const exercisePercent = progress.exercises_total > 0
-    ? Math.round((progress.exercises_attempted / progress.exercises_total) * 100)
-    : 0;
+  const exercisePercent =
+    progress.exercises_total > 0
+      ? Math.round(
+          (progress.exercises_attempted / progress.exercises_total) * 100,
+        )
+      : 0;
 
   return (
     <Paper variant="outlined" sx={{ p: 2.5 }}>
@@ -23,20 +26,27 @@ export default function LessonProgressSummary({ progress }) {
       <Stack spacing={1.5}>
         {/* Theory status */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          {progress.theory_completed
-            ? <CheckCircleIcon color="success" fontSize="small" />
-            : <RadioButtonUncheckedIcon color="disabled" fontSize="small" />}
+          {progress.theory_completed ? (
+            <CheckCircleIcon color="success" fontSize="small" />
+          ) : (
+            <RadioButtonUncheckedIcon color="disabled" fontSize="small" />
+          )}
           <Typography variant="body2">
-            {progress.theory_completed ? 'Đã đọc lý thuyết' : 'Chưa đọc lý thuyết'}
+            {progress.theory_completed
+              ? 'Đã đọc lý thuyết'
+              : 'Chưa đọc lý thuyết'}
           </Typography>
         </Box>
 
         {/* Exercise progress */}
         {progress.exercises_total > 0 && (
           <Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}
+            >
               <Typography variant="body2" color="text.secondary">
-                Bài tập: {progress.exercises_attempted}/{progress.exercises_total}
+                Bài tập: {progress.exercises_attempted}/
+                {progress.exercises_total}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 {exercisePercent}%

@@ -30,10 +30,19 @@ const lessonController = new LessonController(lessonRepo);
 
 const exerciseRepo = new ExerciseRepository(sql);
 const progressRepo = new ProgressRepository(sql);
-const exerciseController = new ExerciseController(exerciseRepo, progressRepo, sql);
+const exerciseController = new ExerciseController(
+  exerciseRepo,
+  progressRepo,
+  sql,
+);
 const progressController = new ProgressController(progressRepo);
 
-const app = await createApp({ tenseGroupController, lessonController, exerciseController, progressController });
+const app = await createApp({
+  tenseGroupController,
+  lessonController,
+  exerciseController,
+  progressController,
+});
 
 await app.listen({ port, host: '0.0.0.0' });
 console.log(`Server running at http://localhost:${port}`);

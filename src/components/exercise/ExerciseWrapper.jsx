@@ -55,7 +55,11 @@ export default function ExerciseWrapper({
           color={difficultyColors[exercise.difficulty] || 'default'}
         />
         {exercise.points && (
-          <Chip label={`${exercise.points} điểm`} size="small" variant="outlined" />
+          <Chip
+            label={`${exercise.points} điểm`}
+            size="small"
+            variant="outlined"
+          />
         )}
       </Stack>
 
@@ -79,11 +83,7 @@ export default function ExerciseWrapper({
 
       {/* Hint */}
       {exercise.hint && !showHint && !isFeedback && (
-        <Button
-          size="small"
-          sx={{ mt: 1 }}
-          onClick={onShowHint}
-        >
+        <Button size="small" sx={{ mt: 1 }} onClick={onShowHint}>
           Xem gợi ý
         </Button>
       )}
@@ -116,7 +116,9 @@ export default function ExerciseWrapper({
           </Button>
         ) : (
           <Button variant="contained" onClick={onNext}>
-            {currentIndex < totalExercises - 1 ? 'Câu tiếp theo' : 'Xem kết quả'}
+            {currentIndex < totalExercises - 1
+              ? 'Câu tiếp theo'
+              : 'Xem kết quả'}
           </Button>
         )}
       </Box>

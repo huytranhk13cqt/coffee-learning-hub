@@ -55,7 +55,10 @@ export class ProgressRepository {
   }
 
   // C5b: Insert attempt record
-  async insertAttempt(tx, { sessionId, exerciseId, userAnswer, isCorrect, timeTaken, attemptNumber }) {
+  async insertAttempt(
+    tx,
+    { sessionId, exerciseId, userAnswer, isCorrect, timeTaken, attemptNumber },
+  ) {
     await tx`
       INSERT INTO exercise_attempt
         (session_id, exercise_id, user_answer, is_correct, time_taken, attempt_number)

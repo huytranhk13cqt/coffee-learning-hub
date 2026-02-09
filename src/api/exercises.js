@@ -6,7 +6,9 @@ export async function fetchExercises(lessonId, { signal } = {}) {
 }
 
 export async function submitAnswer(exerciseId, body, { signal } = {}) {
-  const { data } = await api.post(`/exercises/${exerciseId}/submit`, body, { signal });
+  const { data } = await api.post(`/exercises/${exerciseId}/submit`, body, {
+    signal,
+  });
   return data;
 }
 

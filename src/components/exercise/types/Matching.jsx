@@ -5,7 +5,12 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 
-export default function Matching({ exercise, answer, onAnswerChange, disabled }) {
+export default function Matching({
+  exercise,
+  answer,
+  onAnswerChange,
+  disabled,
+}) {
   const leftItems = exercise.leftItems || [];
   const rightItems = exercise.rightItems || [];
   const onAnswerChangeRef = useRef(onAnswerChange);
@@ -100,7 +105,10 @@ export default function Matching({ exercise, answer, onAnswerChange, disabled })
                 variant={isPaired ? 'outlined' : 'filled'}
                 onClick={() => handleLeftClick(item.id)}
                 disabled={disabled || isPaired}
-                sx={{ opacity: isPaired ? 0.4 : 1, justifyContent: 'flex-start' }}
+                sx={{
+                  opacity: isPaired ? 0.4 : 1,
+                  justifyContent: 'flex-start',
+                }}
               />
             );
           })}
@@ -117,11 +125,16 @@ export default function Matching({ exercise, answer, onAnswerChange, disabled })
               <Chip
                 key={item.id}
                 label={item.content}
-                color={selectedLeft !== null && !isPaired ? 'secondary' : 'default'}
+                color={
+                  selectedLeft !== null && !isPaired ? 'secondary' : 'default'
+                }
                 variant={isPaired ? 'outlined' : 'filled'}
                 onClick={() => handleRightClick(item.id)}
                 disabled={disabled || isPaired || selectedLeft === null}
-                sx={{ opacity: isPaired ? 0.4 : 1, justifyContent: 'flex-start' }}
+                sx={{
+                  opacity: isPaired ? 0.4 : 1,
+                  justifyContent: 'flex-start',
+                }}
               />
             );
           })}

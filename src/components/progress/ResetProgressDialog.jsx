@@ -5,7 +5,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
-export default function ResetProgressDialog({ open, onClose, onConfirm, loading }) {
+export default function ResetProgressDialog({
+  open,
+  onClose,
+  onConfirm,
+  loading,
+}) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Xác nhận đặt lại</DialogTitle>

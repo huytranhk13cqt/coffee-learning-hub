@@ -17,9 +17,7 @@ export default function LeaveExerciseDialog({ blocker }) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={blocker.reset}>
-          Tiếp tục làm bài
-        </Button>
+        <Button onClick={blocker.reset}>Tiếp tục làm bài</Button>
         <Button onClick={blocker.proceed} color="error" variant="contained">
           Thoát
         </Button>

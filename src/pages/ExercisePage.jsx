@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
-import { useLoaderData, useNavigate, useLocation, useBlocker, Link as RouterLink } from 'react-router';
+import {
+  useLoaderData,
+  useNavigate,
+  useLocation,
+  useBlocker,
+  Link as RouterLink,
+} from 'react-router';
 import { fetchExercises } from '../api/exercises.js';
 import { useExerciseFlow } from '../hooks/useExerciseFlow.js';
 import ExerciseWrapper from '../components/exercise/ExerciseWrapper.jsx';
@@ -14,7 +20,9 @@ import Stack from '@mui/material/Stack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 export async function loader({ params, request }) {
-  const exercises = await fetchExercises(params.lessonId, { signal: request.signal });
+  const exercises = await fetchExercises(params.lessonId, {
+    signal: request.signal,
+  });
   return { exercises, lessonId: params.lessonId };
 }
 
@@ -41,7 +49,9 @@ export default function ExercisePage() {
     next,
   } = useExerciseFlow();
 
-  const blocker = useBlocker(phase === 'answering' || phase === 'submitting' || phase === 'feedback');
+  const blocker = useBlocker(
+    phase === 'answering' || phase === 'submitting' || phase === 'feedback',
+  );
 
   useEffect(() => {
     if (exercises.length > 0) {
@@ -69,13 +79,16 @@ export default function ExercisePage() {
   // Finished state
   if (phase === 'finished') {
     const correctCount = results.filter((r) => r.isCorrect).length;
-    const score = totalExercises > 0
-      ? Math.round((correctCount / totalExercises) * 100)
-      : 0;
+    const score =
+      totalExercises > 0
+        ? Math.round((correctCount / totalExercises) * 100)
+        : 0;
 
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
-        <CheckCircleOutlineIcon sx={{ fontSize: 64, color: 'success.main', mb: 2 }} />
+        <CheckCircleOutlineIcon
+          sx={{ fontSize: 64, color: 'success.main', mb: 2 }}
+        />
         <Typography variant="h4" gutterBottom>
           Hoàn thành!
         </Typography>
@@ -83,7 +96,10 @@ export default function ExercisePage() {
           Bạn đã trả lời đúng {correctCount}/{totalExercises} câu ({score}%)
         </Typography>
 
-        <Paper variant="outlined" sx={{ p: 2, my: 3, maxWidth: 400, mx: 'auto' }}>
+        <Paper
+          variant="outlined"
+          sx={{ p: 2, my: 3, maxWidth: 400, mx: 'auto' }}
+        >
           <Stack spacing={1}>
             {results.map((r, i) => (
               <Box
@@ -111,10 +127,7 @@ export default function ExercisePage() {
           >
             Xem chi tiết
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => navigate(-1)}
-          >
+          <Button variant="contained" onClick={() => navigate(-1)}>
             Quay lại bài học
           </Button>
         </Stack>
@@ -124,11 +137,7 @@ export default function ExercisePage() {
 
   // Loading / idle
   if (phase === 'idle' || !currentExercise) {
-    return (
-      <Typography color="text.secondary">
-        Đang tải bài tập...
-      </Typography>
-    );
+    return <Typography color="text.secondary">Đang tải bài tập...</Typography>;
   }
 
   // Exercise in progress

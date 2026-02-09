@@ -16,7 +16,8 @@ export default function ComparisonSection({ comparisons, lessonName }) {
   // Group by compared_with_name
   const grouped = comparisons.reduce((acc, c) => {
     const key = c.compared_with_name;
-    if (!acc[key]) acc[key] = { name: key, nameVi: c.compared_with_name_vi, rows: [] };
+    if (!acc[key])
+      acc[key] = { name: key, nameVi: c.compared_with_name_vi, rows: [] };
     acc[key].rows.push(c);
     return acc;
   }, {});
@@ -55,7 +56,15 @@ export default function ComparisonSection({ comparisons, lessonName }) {
                         {row.this_lesson_point_vi || row.this_lesson_point}
                       </Typography>
                       {row.this_example && (
-                        <Typography variant="caption" color="text.secondary" sx={{ fontStyle: 'italic', display: 'block', mt: 0.5 }}>
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{
+                            fontStyle: 'italic',
+                            display: 'block',
+                            mt: 0.5,
+                          }}
+                        >
                           {row.this_example}
                         </Typography>
                       )}
@@ -65,7 +74,15 @@ export default function ComparisonSection({ comparisons, lessonName }) {
                         {row.other_lesson_point_vi || row.other_lesson_point}
                       </Typography>
                       {row.other_example && (
-                        <Typography variant="caption" color="text.secondary" sx={{ fontStyle: 'italic', display: 'block', mt: 0.5 }}>
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{
+                            fontStyle: 'italic',
+                            display: 'block',
+                            mt: 0.5,
+                          }}
+                        >
                           {row.other_example}
                         </Typography>
                       )}

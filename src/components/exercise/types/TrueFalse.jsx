@@ -4,7 +4,12 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 
-export default function TrueFalse({ exercise, answer, onAnswerChange, disabled }) {
+export default function TrueFalse({
+  exercise,
+  answer,
+  onAnswerChange,
+  disabled,
+}) {
   return (
     <Box>
       <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
@@ -20,7 +25,9 @@ export default function TrueFalse({ exercise, answer, onAnswerChange, disabled }
       <ToggleButtonGroup
         exclusive
         value={answer || ''}
-        onChange={(_, val) => { if (val !== null) onAnswerChange(val); }}
+        onChange={(_, val) => {
+          if (val !== null) onAnswerChange(val);
+        }}
         disabled={disabled}
         color="primary"
       >

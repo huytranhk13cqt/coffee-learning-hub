@@ -5,7 +5,12 @@ import Radio from '@mui/material/Radio';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-export default function MultipleChoice({ exercise, answer, onAnswerChange, disabled }) {
+export default function MultipleChoice({
+  exercise,
+  answer,
+  onAnswerChange,
+  disabled,
+}) {
   const options = exercise.options || [];
 
   return (

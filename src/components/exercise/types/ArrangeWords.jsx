@@ -4,7 +4,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 
-export default function ArrangeWords({ exercise, answer, onAnswerChange, disabled }) {
+export default function ArrangeWords({
+  exercise,
+  answer,
+  onAnswerChange,
+  disabled,
+}) {
   const wordBank = exercise.word_bank || [];
   const onAnswerChangeRef = useRef(onAnswerChange);
   onAnswerChangeRef.current = onAnswerChange;
@@ -42,7 +47,14 @@ export default function ArrangeWords({ exercise, answer, onAnswerChange, disable
       {/* Answer area */}
       <Paper
         variant="outlined"
-        sx={{ p: 2, mb: 2, minHeight: 56, display: 'flex', flexWrap: 'wrap', gap: 1 }}
+        sx={{
+          p: 2,
+          mb: 2,
+          minHeight: 56,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 1,
+        }}
       >
         {selectedIndices.length === 0 ? (
           <Typography color="text.secondary" sx={{ fontStyle: 'italic' }}>
