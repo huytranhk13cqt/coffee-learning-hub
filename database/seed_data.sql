@@ -6,10 +6,10 @@
 
 
 -- ============================================================================
--- TENSE GROUPS
+-- CATEGORIES
 -- ============================================================================
 
-INSERT INTO tense_group (name, name_vi, description, description_vi, icon, color, order_index) VALUES
+INSERT INTO category (name, name_vi, description, description_vi, icon, color, order_index) VALUES
 ('Present', 'Thì Hiện Tại', 'Tenses describing current time, habits, and general truths', 'Các thì diễn tả thời điểm hiện tại, thói quen và sự thật chung', 'AccessTime', '#10b981', 1),
 ('Past', 'Thì Quá Khứ', 'Tenses describing completed actions and past events', 'Các thì diễn tả hành động đã hoàn thành và sự kiện trong quá khứ', 'History', '#f59e0b', 2),
 ('Future', 'Thì Tương Lai', 'Tenses describing future events, plans, and predictions', 'Các thì diễn tả sự kiện tương lai, kế hoạch và dự đoán', 'Update', '#6366f1', 3);
@@ -432,7 +432,7 @@ INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, conten
 -- ============================================================================
 
 -- Check data integrity
-SELECT 'Tense Groups' AS entity, COUNT(*)::int AS count FROM tense_group
+SELECT 'Categories' AS entity, COUNT(*)::int AS count FROM category
 UNION ALL
 SELECT 'Lessons', COUNT(*)::int FROM lesson
 UNION ALL

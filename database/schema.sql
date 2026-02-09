@@ -61,14 +61,15 @@ COMMENT ON TABLE schema_version IS 'Track schema migrations';
 
 INSERT INTO schema_version (version, description) VALUES
 (1, 'Initial MySQL schema (v2.0)'),
-(2, 'PostgreSQL migration (v3.0 — SERIAL, ENUM types, JSONB, triggers)');
+(2, 'PostgreSQL migration (v3.0 — SERIAL, ENUM types, JSONB, triggers)'),
+(3, 'Rename tense_group to category (generalize for multi-topic Learning Hub)');
 
 
 -- ============================================================================
--- TABLE 1: tense_group
+-- TABLE 1: category
 -- ============================================================================
 
-CREATE TABLE tense_group (
+CREATE TABLE category (
     id              SERIAL          NOT NULL,
     name            VARCHAR(50)     NOT NULL,
     name_vi         VARCHAR(50)     NOT NULL,
@@ -81,17 +82,17 @@ CREATE TABLE tense_group (
     updated_at      TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
 
     PRIMARY KEY (id),
-    CONSTRAINT uq_tense_group_name  UNIQUE (name),
-    CONSTRAINT chk_tense_group_color CHECK (color ~ '^#[0-9A-Fa-f]{6}$'),
-    CONSTRAINT chk_tense_group_order CHECK (order_index >= 0 AND order_index <= 10)
+    CONSTRAINT uq_category_name  UNIQUE (name),
+    CONSTRAINT chk_category_color CHECK (color ~ '^#[0-9A-Fa-f]{6}$'),
+    CONSTRAINT chk_category_order CHECK (order_index >= 0 AND order_index <= 10)
 );
 
-COMMENT ON COLUMN tense_group.icon IS 'MUI icon name';
+COMMENT ON COLUMN category.icon IS 'MUI icon name';
 
-CREATE INDEX idx_tense_group_order ON tense_group(order_index);
+CREATE INDEX idx_category_order ON category(order_index);
 
-CREATE TRIGGER trg_tense_group_updated_at
-  BEFORE UPDATE ON tense_group
+CREATE TRIGGER trg_category_updated_at
+  BEFORE UPDATE ON category
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 
@@ -121,8 +122,8 @@ CREATE TABLE lesson (
     CONSTRAINT uq_lesson_slug UNIQUE (slug),
     CONSTRAINT chk_lesson_order CHECK (order_index >= 0),
     CONSTRAINT chk_lesson_time  CHECK (estimated_time IS NULL OR estimated_time >= 0),
-    CONSTRAINT fk_lesson_group
-        FOREIGN KEY (group_id) REFERENCES tense_group(id)
+    CONSTRAINT fk_lesson_category
+        FOREIGN KEY (group_id) REFERENCES category(id)
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
@@ -365,8 +366,8 @@ CREATE TABLE lesson_comparison (
         ON UPDATE CASCADE
 );
 
-COMMENT ON COLUMN lesson_comparison.lesson_id_1 IS 'First tense (smaller ID)';
-COMMENT ON COLUMN lesson_comparison.lesson_id_2 IS 'Second tense (larger ID)';
+COMMENT ON COLUMN lesson_comparison.lesson_id_1 IS 'First lesson (smaller ID)';
+COMMENT ON COLUMN lesson_comparison.lesson_id_2 IS 'Second lesson (larger ID)';
 COMMENT ON COLUMN lesson_comparison.aspect IS 'Aspect being compared';
 
 CREATE INDEX idx_comparison_lesson_1 ON lesson_comparison(lesson_id_1);
@@ -628,7 +629,7 @@ SELECT
     (SELECT COUNT(*)::int FROM tip t WHERE t.lesson_id = l.id) AS tip_count,
     (SELECT COUNT(*)::int FROM exercise e WHERE e.lesson_id = l.id AND e.is_active = TRUE) AS exercise_count
 FROM lesson l
-JOIN tense_group g ON l.group_id = g.id
+JOIN category g ON l.group_id = g.id
 ORDER BY g.order_index, l.order_index;
 
 
@@ -684,7 +685,7 @@ JOIN lesson l1 ON lc.lesson_id_1 = l1.id;
 -- View 3: v_database_stats (debug/admin)
 CREATE VIEW v_database_stats AS
 SELECT
-    (SELECT COUNT(*)::int FROM tense_group) AS total_groups,
+    (SELECT COUNT(*)::int FROM category) AS total_groups,
     (SELECT COUNT(*)::int FROM lesson) AS total_lessons,
     (SELECT COUNT(*)::int FROM lesson WHERE is_published = TRUE) AS published_lessons,
     (SELECT COUNT(*)::int FROM formula) AS total_formulas,
@@ -717,8 +718,8 @@ BEGIN
     SELECT COUNT(*) INTO v_usage_count    FROM lesson_usage WHERE lesson_id = p_lesson_id;
     SELECT COUNT(*) INTO v_exercise_count FROM exercise WHERE lesson_id = p_lesson_id AND is_active = TRUE;
 
-    -- Minimum: 1 formula, 1 usage, 3 exercises
-    RETURN v_formula_count >= 1 AND v_usage_count >= 1 AND v_exercise_count >= 3;
+    -- Minimum: 1 usage, 3 exercises (formula is optional for non-grammar topics)
+    RETURN v_usage_count >= 1 AND v_exercise_count >= 3;
 END;
 $$;
 
@@ -770,7 +771,7 @@ CREATE TRIGGER tr_progress_check_completion
 -- Total: 27 indexes (15 PK + 6 UNIQUE + 6 regular)
 --
 -- Regular indexes (6):
---   idx_tense_group_order           → ORDER BY group display
+--   idx_category_order              → ORDER BY group display
 --   idx_lesson_group                → Filter lessons by group
 --   idx_lesson_published            → Filter published + order
 --   idx_lesson_usage_lesson_order   → Filter + order usages
