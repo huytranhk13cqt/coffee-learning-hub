@@ -8,12 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import { searchLessons } from '../../api/lessons.js';
-
-const DIFFICULTY_LABELS = {
-  beginner: 'Cơ bản',
-  intermediate: 'Trung bình',
-  advanced: 'Nâng cao',
-};
+import { DIFFICULTY_LABELS } from '../../constants/difficulty.js';
 
 const DEBOUNCE_MS = 300;
 const MIN_QUERY_LENGTH = 2;

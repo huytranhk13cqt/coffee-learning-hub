@@ -28,6 +28,10 @@ import ComparisonSection from '../components/lesson/ComparisonSection.jsx';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import LessonProgressSummary from '../components/progress/LessonProgressSummary.jsx';
 import ResetProgressDialog from '../components/progress/ResetProgressDialog.jsx';
+import {
+  DIFFICULTY_LABELS,
+  DIFFICULTY_COLORS,
+} from '../constants/difficulty.js';
 
 export async function loader({ params, request }) {
   const lesson = await fetchLesson(params.slug, { signal: request.signal });
@@ -36,18 +40,6 @@ export async function loader({ params, request }) {
   }).catch(() => null);
   return { lesson, progress };
 }
-
-const DIFFICULTY_COLORS = {
-  beginner: 'success',
-  intermediate: 'warning',
-  advanced: 'error',
-};
-
-const DIFFICULTY_LABELS = {
-  beginner: 'Cơ bản',
-  intermediate: 'Trung bình',
-  advanced: 'Nâng cao',
-};
 
 function getExerciseCTA(progress) {
   if (!progress || progress.exercises_attempted === 0) {

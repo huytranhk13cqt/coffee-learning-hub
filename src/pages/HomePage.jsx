@@ -15,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';
+import { DIFFICULTY_LABELS } from '../constants/difficulty.js';
 
 export async function loader({ request }) {
   const groups = await fetchGroups({ signal: request.signal });
@@ -42,19 +43,13 @@ export async function loader({ request }) {
   };
 }
 
-const DIFFICULTY_LABELS = {
-  beginner: 'Cơ bản',
-  intermediate: 'Trung bình',
-  advanced: 'Nâng cao',
-};
-
 export default function HomePage() {
   const { groups, progressByLesson } = useLoaderData();
 
   return (
     <>
       <Typography variant="h4" component="h1" gutterBottom>
-        English Grammar
+        Learning Hub
       </Typography>
       <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 4 }}>
         Chọn bài học để bắt đầu
