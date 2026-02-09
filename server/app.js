@@ -1,6 +1,6 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
-import { tenseGroupRoutes } from './routes/tenseGroupRoutes.js';
+import { categoryRoutes } from './routes/categoryRoutes.js';
 import { lessonRoutes, groupLessonRoutes } from './routes/lessonRoutes.js';
 import {
   lessonExerciseRoutes,
@@ -10,7 +10,7 @@ import { progressRoutes } from './routes/progressRoutes.js';
 import { AppError } from './errors/AppError.js';
 
 export async function createApp({
-  tenseGroupController,
+  categoryController,
   lessonController,
   exerciseController,
   progressController,
@@ -28,7 +28,7 @@ export async function createApp({
   });
 
   // --- API routes ---
-  app.register(tenseGroupRoutes(tenseGroupController), {
+  app.register(categoryRoutes(categoryController), {
     prefix: '/api/groups',
   });
   app.register(groupLessonRoutes(lessonController), { prefix: '/api/groups' });

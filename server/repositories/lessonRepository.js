@@ -16,7 +16,7 @@ export class LessonRepository {
         g.name_vi   AS group_name_vi,
         g.color      AS group_color
       FROM lesson l
-      JOIN tense_group g ON l.group_id = g.id
+      JOIN category g ON l.group_id = g.id
       WHERE l.is_published = TRUE
         AND (
           l.name ILIKE ${pattern}
@@ -38,7 +38,7 @@ export class LessonRepository {
         g.color      AS group_color,
         g.icon       AS group_icon
       FROM lesson l
-      JOIN tense_group g ON l.group_id = g.id
+      JOIN category g ON l.group_id = g.id
       WHERE l.slug = ${slug} AND l.is_published = TRUE
     `;
     if (!rows.length) throw new NotFoundError('Lesson');

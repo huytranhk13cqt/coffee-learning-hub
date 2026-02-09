@@ -7,8 +7,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: join(__dirname, '..', '.env') });
 
 import { getSql, closeSql } from './config/database.js';
-import { TenseGroupRepository } from './repositories/tenseGroupRepository.js';
-import { TenseGroupController } from './controllers/tenseGroupController.js';
+import { CategoryRepository } from './repositories/categoryRepository.js';
+import { CategoryController } from './controllers/categoryController.js';
 import { LessonRepository } from './repositories/lessonRepository.js';
 import { LessonController } from './controllers/lessonController.js';
 import { ExerciseRepository } from './repositories/exerciseRepository.js';
@@ -22,8 +22,8 @@ const port = parseInt(process.env.PORT, 10) || 3001;
 // --- Composition Root: wire all dependencies ---
 const sql = getSql();
 
-const tenseGroupRepo = new TenseGroupRepository(sql);
-const tenseGroupController = new TenseGroupController(tenseGroupRepo);
+const categoryRepo = new CategoryRepository(sql);
+const categoryController = new CategoryController(categoryRepo);
 
 const lessonRepo = new LessonRepository(sql);
 const lessonController = new LessonController(lessonRepo);
@@ -38,7 +38,7 @@ const exerciseController = new ExerciseController(
 const progressController = new ProgressController(progressRepo);
 
 const app = await createApp({
-  tenseGroupController,
+  categoryController,
   lessonController,
   exerciseController,
   progressController,

@@ -121,7 +121,7 @@ export class ProgressRepository {
         COALESCE(up.exercises_total, 0)      AS exercises_total,
         up.completed_at
       FROM lesson l
-      JOIN tense_group g ON l.group_id = g.id
+      JOIN category g ON l.group_id = g.id
       LEFT JOIN user_progress up ON up.lesson_id = l.id AND up.session_id = ${sessionId}
       WHERE l.is_published = TRUE
       ORDER BY g.order_index, l.order_index
