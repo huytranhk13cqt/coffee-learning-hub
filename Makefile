@@ -27,7 +27,8 @@ build: ## Build client for production
 	npm run build
 
 test: ## Run all tests (client + server)
-	@echo "No tests configured yet (step 7/8)"
+	npx vitest run
+	cd server && npx vitest run
 
 db-up: ## Start PostgreSQL container
 	docker compose up -d
@@ -39,10 +40,12 @@ db-reset: ## Reset database (destroy data + recreate from schema/seeds)
 	docker compose down -v
 	docker compose up -d
 
-check: ## Run all checks (lint + format + build)
+check: ## Run all checks (lint + format + test + build)
 	npm run lint
 	cd server && npx eslint .
 	npx prettier --check .
+	npx vitest run
+	cd server && npx vitest run
 	npm run build
 	@echo "\n\033[32m✓ All checks passed\033[0m"
 
