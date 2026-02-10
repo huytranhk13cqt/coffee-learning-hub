@@ -1,5 +1,7 @@
 import Fastify from 'fastify';
+import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
+import rateLimit from '@fastify/rate-limit';
 import { categoryRoutes } from './routes/categoryRoutes.js';
 import { lessonRoutes, groupLessonRoutes } from './routes/lessonRoutes.js';
 import {
@@ -18,8 +20,15 @@ export async function createApp({
   const app = Fastify({ logger: true });
 
   // --- Plugins ---
+  await app.register(helmet, {
+    contentSecurityPolicy: false,
+  });
   await app.register(cors, {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  });
+  await app.register(rateLimit, {
+    max: 100,
+    timeWindow: '1 minute',
   });
 
   // --- Health check ---
@@ -51,6 +60,11 @@ export async function createApp({
   // --- Error handler ---
   app.setErrorHandler((err, request, reply) => {
     if (err instanceof AppError) {
+      return reply.status(err.statusCode).send({ error: err.message });
+    }
+
+    // Fastify plugin errors (rate-limit 429, schema validation 400, etc.)
+    if (err.statusCode && err.statusCode < 500) {
       return reply.status(err.statusCode).send({ error: err.message });
     }
 
