@@ -45,12 +45,12 @@ const app = await createApp({
 });
 
 await app.listen({ port, host: '0.0.0.0' });
-console.log(`Server running at http://localhost:${port}`);
-console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+app.log.info(`Server running at http://localhost:${port}`);
+app.log.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
 
 // --- Graceful shutdown ---
 async function shutdown() {
-  console.log('\nShutting down gracefully...');
+  app.log.info('Shutting down gracefully...');
   await app.close();
   await closeSql();
   process.exit(0);

@@ -15,7 +15,7 @@ export async function createApp({
   exerciseController,
   progressController,
 }) {
-  const app = Fastify({ logger: false });
+  const app = Fastify({ logger: true });
 
   // --- Plugins ---
   await app.register(cors, {
@@ -54,7 +54,7 @@ export async function createApp({
       return reply.status(err.statusCode).send({ error: err.message });
     }
 
-    console.error('Unexpected error:', err);
+    request.log.error(err, 'Unexpected error');
     reply.status(500).send({ error: 'Internal server error' });
   });
 
