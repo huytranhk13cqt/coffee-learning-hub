@@ -62,7 +62,8 @@ COMMENT ON TABLE schema_version IS 'Track schema migrations';
 INSERT INTO schema_version (version, description) VALUES
 (1, 'Initial MySQL schema (v2.0)'),
 (2, 'PostgreSQL migration (v3.0 — SERIAL, ENUM types, JSONB, triggers)'),
-(3, 'Rename tense_group to category (generalize for multi-topic Learning Hub)');
+(3, 'Rename tense_group to category (generalize for multi-topic Learning Hub)'),
+(4, 'Add missing indexes and unique constraint for exercise_attempt');
 
 
 -- ============================================================================
@@ -540,6 +541,7 @@ COMMENT ON COLUMN user_progress.total_time_spent IS 'Total seconds';
 COMMENT ON COLUMN user_progress.last_position IS 'Last section viewed (resume feature)';
 
 CREATE INDEX idx_progress_session ON user_progress(session_id);
+CREATE INDEX idx_progress_lesson_session ON user_progress(lesson_id, session_id);
 
 -- NOTE: No update_updated_at() trigger here — user_progress uses last_access, not updated_at.
 -- last_access is managed explicitly by application queries.
@@ -565,13 +567,16 @@ CREATE TABLE exercise_attempt (
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     CONSTRAINT chk_attempt_number CHECK (attempt_number > 0),
-    CONSTRAINT chk_attempt_time   CHECK (time_taken IS NULL OR time_taken >= 0)
+    CONSTRAINT chk_attempt_time   CHECK (time_taken IS NULL OR time_taken >= 0),
+    CONSTRAINT uq_attempt_session_exercise_number
+        UNIQUE (session_id, exercise_id, attempt_number)
 );
 
 COMMENT ON COLUMN exercise_attempt.user_answer IS 'User submitted answer';
 COMMENT ON COLUMN exercise_attempt.time_taken IS 'Seconds to answer';
 
 CREATE INDEX idx_attempt_session_exercise ON exercise_attempt(session_id, exercise_id);
+CREATE INDEX idx_attempt_exercise_number ON exercise_attempt(exercise_id, session_id, attempt_number DESC);
 
 
 -- ============================================================================
