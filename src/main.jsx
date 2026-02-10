@@ -5,23 +5,22 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import router from './router.jsx';
 
-function AppLoading() {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <CircularProgress />
-    </Box>
-  );
-}
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} fallbackElement={<AppLoading />} />
+    <RouterProvider
+      router={router}
+      fallbackElement={
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      }
+    />
   </StrictMode>,
 );

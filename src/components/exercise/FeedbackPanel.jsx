@@ -8,7 +8,11 @@ export default function FeedbackPanel({ feedback }) {
   const { isCorrect, explanation, explanationVi } = feedback;
 
   return (
-    <Alert severity={isCorrect ? 'success' : 'error'} sx={{ mt: 2 }}>
+    <Alert
+      severity={isCorrect ? 'success' : 'error'}
+      sx={{ mt: 2 }}
+      role="status"
+    >
       <AlertTitle>{isCorrect ? 'Chính xác!' : 'Chưa đúng'}</AlertTitle>
       {explanationVi && (
         <Typography variant="body2" sx={{ mb: 0.5 }}>

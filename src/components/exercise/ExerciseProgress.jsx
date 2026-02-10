@@ -18,6 +18,7 @@ export default function ExerciseProgress({ current, total }) {
       <LinearProgress
         variant="determinate"
         value={progress}
+        aria-label={`Tiến trình: bài ${current + 1} trên ${total}`}
         sx={{ height: 8, borderRadius: 4 }}
       />
     </Box>

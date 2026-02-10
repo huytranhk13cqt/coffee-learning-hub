@@ -7,18 +7,10 @@ import Stack from '@mui/material/Stack';
 import ExerciseProgress from './ExerciseProgress.jsx';
 import ExerciseRenderer from './ExerciseRenderer.jsx';
 import FeedbackPanel from './FeedbackPanel.jsx';
-
-const difficultyColors = {
-  easy: 'success',
-  medium: 'warning',
-  hard: 'error',
-};
-
-const difficultyLabels = {
-  easy: 'Dễ',
-  medium: 'Trung bình',
-  hard: 'Khó',
-};
+import {
+  EXERCISE_DIFFICULTY_LABELS,
+  EXERCISE_DIFFICULTY_COLORS,
+} from '../../constants/difficulty.js';
 
 export default function ExerciseWrapper({
   exercise,
@@ -50,9 +42,12 @@ export default function ExerciseWrapper({
           variant="outlined"
         />
         <Chip
-          label={difficultyLabels[exercise.difficulty] || exercise.difficulty}
+          label={
+            EXERCISE_DIFFICULTY_LABELS[exercise.difficulty] ||
+            exercise.difficulty
+          }
           size="small"
-          color={difficultyColors[exercise.difficulty] || 'default'}
+          color={EXERCISE_DIFFICULTY_COLORS[exercise.difficulty] || 'default'}
         />
         {exercise.points && (
           <Chip

@@ -116,6 +116,7 @@ export default function SearchBar() {
         <TextField
           {...params}
           placeholder="Tìm bài học..."
+          aria-label="Tìm kiếm bài học"
           size="small"
           sx={{
             width: { xs: 160, sm: 240, md: 280 },
