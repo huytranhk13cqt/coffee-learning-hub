@@ -16,8 +16,9 @@ export async function createApp({
   lessonController,
   exerciseController,
   progressController,
+  logger = true,
 }) {
-  const app = Fastify({ logger: true });
+  const app = Fastify({ logger });
 
   // --- Plugins ---
   await app.register(helmet, {
