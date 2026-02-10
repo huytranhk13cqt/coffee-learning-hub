@@ -19,6 +19,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
+import Fade from '@mui/material/Fade';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';
 
 export async function loader({ request }) {
@@ -109,125 +110,128 @@ export default function DashboardPage() {
   const isEmpty = stats.lessons_started === 0;
 
   return (
-    <>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Tổng quan học tập
-      </Typography>
+    <Fade in timeout={300}>
+      <div>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Tổng quan học tập
+        </Typography>
 
-      {/* Stat Cards */}
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        {STAT_CARDS.map(({ key, icon: Icon, label, color }) => (
-          <Grid key={key} size={{ xs: 6, sm: 3 }}>
-            <Card variant="outlined">
-              <CardContent sx={{ textAlign: 'center', py: 2 }}>
-                <Icon sx={{ fontSize: 32, color, mb: 0.5 }} />
-                <Typography variant="h5" fontWeight={700}>
-                  {getStatValue(key, stats)}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {label}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+        {/* Stat Cards */}
+        <Grid container spacing={2} sx={{ mb: 4 }}>
+          {STAT_CARDS.map(({ key, icon: Icon, label, color }) => (
+            <Grid key={key} size={{ xs: 6, sm: 3 }}>
+              <Card variant="outlined">
+                <CardContent sx={{ textAlign: 'center', py: 2 }}>
+                  <Icon sx={{ fontSize: 32, color, mb: 0.5 }} />
+                  <Typography variant="h5" fontWeight={700}>
+                    {getStatValue(key, stats)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {label}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-      {/* Empty state */}
-      {isEmpty && (
-        <Paper variant="outlined" sx={{ p: 4, textAlign: 'center', mb: 4 }}>
-          <SchoolIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 1 }} />
-          <Typography variant="h6" gutterBottom>
-            Chưa có tiến trình nào
-          </Typography>
-          <Typography color="text.secondary" sx={{ mb: 2 }}>
-            Bắt đầu học bài đầu tiên để theo dõi tiến trình của bạn!
-          </Typography>
-          <Button variant="contained" component={RouterLink} to="/">
-            Bắt đầu học
-          </Button>
-        </Paper>
-      )}
-
-      {/* Per-group lesson progress */}
-      <Stack spacing={3}>
-        {groups.map((group) => (
-          <Paper
-            key={group.id}
-            variant="outlined"
-            sx={{ borderTop: 4, borderColor: group.color }}
-          >
-            <Box sx={{ px: 2.5, pt: 2, pb: 1 }}>
-              <Typography variant="h6">{group.name}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                {group.name_vi}
-              </Typography>
-            </Box>
-
-            <List dense disablePadding>
-              {grouped[group.id].map((lesson) => {
-                const exercisePercent =
-                  lesson.exercises_total > 0
-                    ? Math.round(
-                        (lesson.exercises_attempted / lesson.exercises_total) *
-                          100,
-                      )
-                    : 0;
-
-                return (
-                  <ListItemButton
-                    key={lesson.lesson_id}
-                    component={RouterLink}
-                    to={`/lessons/${lesson.slug}`}
-                    sx={{ px: 2.5 }}
-                  >
-                    <ListItemIcon sx={{ minWidth: 36 }}>
-                      <MenuBookIcon
-                        fontSize="small"
-                        sx={{ color: group.color }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={lesson.lesson_name_vi}
-                      secondary={
-                        lesson.exercises_total > 0
-                          ? `${lesson.exercises_attempted}/${lesson.exercises_total} bài tập`
-                          : 'Chưa có bài tập'
-                      }
-                    />
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        ml: 1,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {lesson.exercises_total > 0 && (
-                        <Box
-                          sx={{
-                            width: 60,
-                            display: { xs: 'none', sm: 'block' },
-                          }}
-                        >
-                          <LinearProgress
-                            variant="determinate"
-                            value={exercisePercent}
-                            sx={{ height: 6, borderRadius: 3 }}
-                          />
-                        </Box>
-                      )}
-                      <ScoreBadge score={lesson.best_score} label="" />
-                      <LessonStatusChip status={lesson.status} />
-                    </Box>
-                  </ListItemButton>
-                );
-              })}
-            </List>
+        {/* Empty state */}
+        {isEmpty && (
+          <Paper variant="outlined" sx={{ p: 4, textAlign: 'center', mb: 4 }}>
+            <SchoolIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 1 }} />
+            <Typography variant="h6" gutterBottom>
+              Chưa có tiến trình nào
+            </Typography>
+            <Typography color="text.secondary" sx={{ mb: 2 }}>
+              Bắt đầu học bài đầu tiên để theo dõi tiến trình của bạn!
+            </Typography>
+            <Button variant="contained" component={RouterLink} to="/">
+              Bắt đầu học
+            </Button>
           </Paper>
-        ))}
-      </Stack>
-    </>
+        )}
+
+        {/* Per-group lesson progress */}
+        <Stack spacing={3}>
+          {groups.map((group) => (
+            <Paper
+              key={group.id}
+              variant="outlined"
+              sx={{ borderTop: 4, borderColor: group.color }}
+            >
+              <Box sx={{ px: 2.5, pt: 2, pb: 1 }}>
+                <Typography variant="h6">{group.name}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {group.name_vi}
+                </Typography>
+              </Box>
+
+              <List dense disablePadding>
+                {grouped[group.id].map((lesson) => {
+                  const exercisePercent =
+                    lesson.exercises_total > 0
+                      ? Math.round(
+                          (lesson.exercises_attempted /
+                            lesson.exercises_total) *
+                            100,
+                        )
+                      : 0;
+
+                  return (
+                    <ListItemButton
+                      key={lesson.lesson_id}
+                      component={RouterLink}
+                      to={`/lessons/${lesson.slug}`}
+                      sx={{ px: 2.5 }}
+                    >
+                      <ListItemIcon sx={{ minWidth: 36 }}>
+                        <MenuBookIcon
+                          fontSize="small"
+                          sx={{ color: group.color }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={lesson.lesson_name_vi}
+                        secondary={
+                          lesson.exercises_total > 0
+                            ? `${lesson.exercises_attempted}/${lesson.exercises_total} bài tập`
+                            : 'Chưa có bài tập'
+                        }
+                      />
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
+                          ml: 1,
+                          flexShrink: 0,
+                        }}
+                      >
+                        {lesson.exercises_total > 0 && (
+                          <Box
+                            sx={{
+                              width: 60,
+                              display: { xs: 'none', sm: 'block' },
+                            }}
+                          >
+                            <LinearProgress
+                              variant="determinate"
+                              value={exercisePercent}
+                              sx={{ height: 6, borderRadius: 3 }}
+                            />
+                          </Box>
+                        )}
+                        <ScoreBadge score={lesson.best_score} label="" />
+                        <LessonStatusChip status={lesson.status} />
+                      </Box>
+                    </ListItemButton>
+                  );
+                })}
+              </List>
+            </Paper>
+          ))}
+        </Stack>
+      </div>
+    </Fade>
   );
 }

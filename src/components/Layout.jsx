@@ -1,4 +1,10 @@
-import { Outlet, useNavigation, Link as RouterLink } from 'react-router';
+import { useEffect } from 'react';
+import {
+  Outlet,
+  useNavigation,
+  useLocation,
+  Link as RouterLink,
+} from 'react-router';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
@@ -13,10 +19,16 @@ import SchoolIcon from '@mui/icons-material/School';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import theme from '../theme/theme.js';
 import SearchBar from './search/SearchBar.jsx';
+import PageSkeleton from './skeletons/PageSkeleton.jsx';
 
 export default function Layout() {
   const navigation = useNavigation();
+  const location = useLocation();
   const isLoading = navigation.state === 'loading';
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -61,7 +73,7 @@ export default function Layout() {
           )}
         </AppBar>
         <Container maxWidth="lg" sx={{ py: 4, flex: 1 }}>
-          <Outlet />
+          {isLoading ? <PageSkeleton /> : <Outlet />}
         </Container>
       </Box>
     </ThemeProvider>

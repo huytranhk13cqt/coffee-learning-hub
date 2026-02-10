@@ -6,6 +6,23 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: ['es2020', 'safari13'],
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('@mui/') || id.includes('@emotion/')) {
+              return 'vendor-mui';
+            }
+            if (id.includes('react-router')) {
+              return 'vendor-router';
+            }
+            if (id.includes('react-dom') || id.includes('/react/')) {
+              return 'vendor-react';
+            }
+          }
+        },
+      },
+    },
   },
   server: {
     host: true,

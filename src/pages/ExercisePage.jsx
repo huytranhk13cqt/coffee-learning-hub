@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
+import Fade from '@mui/material/Fade';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 export async function loader({ params, request }) {
@@ -62,17 +63,19 @@ export default function ExercisePage() {
   // Empty state — lesson has no exercises yet
   if (exercises.length === 0) {
     return (
-      <Box sx={{ textAlign: 'center', py: 6 }}>
-        <Typography variant="h5" gutterBottom>
-          Chưa có bài tập
-        </Typography>
-        <Typography color="text.secondary" sx={{ mb: 3 }}>
-          Bài học này chưa có bài tập. Vui lòng quay lại sau.
-        </Typography>
-        <Button variant="contained" component={RouterLink} to="/">
-          Về trang chủ
-        </Button>
-      </Box>
+      <Fade in timeout={300}>
+        <Box sx={{ textAlign: 'center', py: 6 }}>
+          <Typography variant="h5" gutterBottom>
+            Chưa có bài tập
+          </Typography>
+          <Typography color="text.secondary" sx={{ mb: 3 }}>
+            Bài học này chưa có bài tập. Vui lòng quay lại sau.
+          </Typography>
+          <Button variant="contained" component={RouterLink} to="/">
+            Về trang chủ
+          </Button>
+        </Box>
+      </Fade>
     );
   }
 
@@ -85,53 +88,55 @@ export default function ExercisePage() {
         : 0;
 
     return (
-      <Box sx={{ textAlign: 'center', py: 4 }}>
-        <CheckCircleOutlineIcon
-          sx={{ fontSize: 64, color: 'success.main', mb: 2 }}
-        />
-        <Typography variant="h4" gutterBottom>
-          Hoàn thành!
-        </Typography>
-        <Typography variant="h6" color="text.secondary" gutterBottom>
-          Bạn đã trả lời đúng {correctCount}/{totalExercises} câu ({score}%)
-        </Typography>
+      <Fade in timeout={300}>
+        <Box sx={{ textAlign: 'center', py: 4 }}>
+          <CheckCircleOutlineIcon
+            sx={{ fontSize: 64, color: 'success.main', mb: 2 }}
+          />
+          <Typography variant="h4" gutterBottom>
+            Hoàn thành!
+          </Typography>
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            Bạn đã trả lời đúng {correctCount}/{totalExercises} câu ({score}%)
+          </Typography>
 
-        <Paper
-          variant="outlined"
-          sx={{ p: 2, my: 3, maxWidth: 400, mx: 'auto' }}
-        >
-          <Stack spacing={1}>
-            {results.map((r, i) => (
-              <Box
-                key={r.exerciseId}
-                sx={{ display: 'flex', justifyContent: 'space-between' }}
-              >
-                <Typography variant="body2">Câu {i + 1}</Typography>
-                <Typography
-                  variant="body2"
-                  color={r.isCorrect ? 'success.main' : 'error.main'}
-                  fontWeight={600}
-                >
-                  {r.isCorrect ? 'Đúng' : 'Sai'}
-                </Typography>
-              </Box>
-            ))}
-          </Stack>
-        </Paper>
-
-        <Stack direction="row" spacing={2} justifyContent="center">
-          <Button
+          <Paper
             variant="outlined"
-            component={RouterLink}
-            to={`/lessons/${lessonId}/results`}
+            sx={{ p: 2, my: 3, maxWidth: 400, mx: 'auto' }}
           >
-            Xem chi tiết
-          </Button>
-          <Button variant="contained" onClick={() => navigate(-1)}>
-            Quay lại bài học
-          </Button>
-        </Stack>
-      </Box>
+            <Stack spacing={1}>
+              {results.map((r, i) => (
+                <Box
+                  key={r.exerciseId}
+                  sx={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <Typography variant="body2">Câu {i + 1}</Typography>
+                  <Typography
+                    variant="body2"
+                    color={r.isCorrect ? 'success.main' : 'error.main'}
+                    fontWeight={600}
+                  >
+                    {r.isCorrect ? 'Đúng' : 'Sai'}
+                  </Typography>
+                </Box>
+              ))}
+            </Stack>
+          </Paper>
+
+          <Stack direction="row" spacing={2} justifyContent="center">
+            <Button
+              variant="outlined"
+              component={RouterLink}
+              to={`/lessons/${lessonId}/results`}
+            >
+              Xem chi tiết
+            </Button>
+            <Button variant="contained" onClick={() => navigate(-1)}>
+              Quay lại bài học
+            </Button>
+          </Stack>
+        </Box>
+      </Fade>
     );
   }
 
@@ -142,33 +147,35 @@ export default function ExercisePage() {
 
   // Exercise in progress
   return (
-    <Box>
-      <Breadcrumbs sx={{ mb: 3 }}>
-        <Link component={RouterLink} to="/" underline="hover" color="inherit">
-          Trang chủ
-        </Link>
-        {lessonName && (
-          <Typography color="text.secondary">{lessonName}</Typography>
-        )}
-        <Typography color="text.primary">Bài tập</Typography>
-      </Breadcrumbs>
+    <Fade in timeout={300}>
+      <Box>
+        <Breadcrumbs sx={{ mb: 3 }}>
+          <Link component={RouterLink} to="/" underline="hover" color="inherit">
+            Trang chủ
+          </Link>
+          {lessonName && (
+            <Typography color="text.secondary">{lessonName}</Typography>
+          )}
+          <Typography color="text.primary">Bài tập</Typography>
+        </Breadcrumbs>
 
-      <ExerciseWrapper
-        exercise={currentExercise}
-        currentIndex={currentIndex}
-        totalExercises={totalExercises}
-        answer={currentAnswer}
-        onAnswerChange={setAnswer}
-        showHint={hintVisible}
-        onShowHint={showHint}
-        feedback={feedback}
-        error={error}
-        phase={phase}
-        onSubmit={submit}
-        onNext={next}
-      />
+        <ExerciseWrapper
+          exercise={currentExercise}
+          currentIndex={currentIndex}
+          totalExercises={totalExercises}
+          answer={currentAnswer}
+          onAnswerChange={setAnswer}
+          showHint={hintVisible}
+          onShowHint={showHint}
+          feedback={feedback}
+          error={error}
+          phase={phase}
+          onSubmit={submit}
+          onNext={next}
+        />
 
-      <LeaveExerciseDialog blocker={blocker} />
-    </Box>
+        <LeaveExerciseDialog blocker={blocker} />
+      </Box>
+    </Fade>
   );
 }

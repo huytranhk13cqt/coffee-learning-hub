@@ -28,6 +28,7 @@ import ComparisonSection from '../components/lesson/ComparisonSection.jsx';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import LessonProgressSummary from '../components/progress/LessonProgressSummary.jsx';
 import ResetProgressDialog from '../components/progress/ResetProgressDialog.jsx';
+import Fade from '@mui/material/Fade';
 import {
   DIFFICULTY_LABELS,
   DIFFICULTY_COLORS,
@@ -109,180 +110,182 @@ export default function LessonPage() {
   }
 
   return (
-    <Box>
-      {/* Breadcrumb */}
-      <Breadcrumbs sx={{ mb: 2 }}>
-        <Link component={RouterLink} to="/" underline="hover" color="inherit">
-          Trang chủ
-        </Link>
-        <Typography color="text.secondary">{lesson.group_name_vi}</Typography>
-        <Typography color="text.primary">{lesson.name_vi}</Typography>
-      </Breadcrumbs>
+    <Fade in timeout={300}>
+      <Box>
+        {/* Breadcrumb */}
+        <Breadcrumbs sx={{ mb: 2 }}>
+          <Link component={RouterLink} to="/" underline="hover" color="inherit">
+            Trang chủ
+          </Link>
+          <Typography color="text.secondary">{lesson.group_name_vi}</Typography>
+          <Typography color="text.primary">{lesson.name_vi}</Typography>
+        </Breadcrumbs>
 
-      {/* Lesson Header */}
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          {lesson.name}
-        </Typography>
-        <Typography variant="h6" color="text.secondary" gutterBottom>
-          {lesson.name_vi}
-        </Typography>
-
-        {lesson.description_vi && (
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            {lesson.description_vi}
+        {/* Lesson Header */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            {lesson.name}
           </Typography>
-        )}
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            {lesson.name_vi}
+          </Typography>
 
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          <Chip
-            label={DIFFICULTY_LABELS[lesson.difficulty] || lesson.difficulty}
-            color={DIFFICULTY_COLORS[lesson.difficulty] || 'default'}
-            size="small"
-          />
-          {lesson.estimated_time && (
-            <Chip
-              icon={<AccessTimeIcon />}
-              label={`${lesson.estimated_time} phút`}
-              size="small"
-              variant="outlined"
-            />
-          )}
-          <Chip
-            label={lesson.group_name_vi}
-            size="small"
-            sx={{ bgcolor: lesson.group_color, color: '#fff' }}
-          />
-          <LessonStatusChip status={progress?.status} />
-        </Stack>
-      </Box>
-
-      {/* Theory Sections */}
-      <Stack spacing={4} divider={<Divider />}>
-        <FormulaSection formulas={lesson.formulas} />
-        <UsageSection usages={lesson.usages} />
-        <SignalWordSection signalWords={lesson.signalWords} />
-        <TipSection tips={lesson.tips} />
-        <ComparisonSection
-          comparisons={lesson.comparisons}
-          lessonName={lesson.name}
-        />
-      </Stack>
-
-      {/* Mark Theory Complete */}
-      <Box sx={{ mt: 4, textAlign: 'center' }}>
-        {progress?.theory_completed ? (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 1,
-            }}
-          >
-            <CheckCircleIcon color="success" />
-            <Typography variant="body1" color="success.main" fontWeight={500}>
-              Đã hoàn thành lý thuyết
+          {lesson.description_vi && (
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              {lesson.description_vi}
             </Typography>
-          </Box>
-        ) : (
-          <Button
-            variant="outlined"
-            startIcon={<MenuBookIcon />}
-            onClick={handleMarkTheoryComplete}
-            loading={theoryMarking}
-          >
-            Đánh dấu đã đọc lý thuyết
-          </Button>
-        )}
-      </Box>
+          )}
 
-      {/* Progress Summary */}
-      {progress &&
-        (progress.exercises_attempted > 0 || progress.theory_completed) && (
-          <Box sx={{ mt: 3 }}>
-            <LessonProgressSummary progress={progress} />
-          </Box>
-        )}
+          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+            <Chip
+              label={DIFFICULTY_LABELS[lesson.difficulty] || lesson.difficulty}
+              color={DIFFICULTY_COLORS[lesson.difficulty] || 'default'}
+              size="small"
+            />
+            {lesson.estimated_time && (
+              <Chip
+                icon={<AccessTimeIcon />}
+                label={`${lesson.estimated_time} phút`}
+                size="small"
+                variant="outlined"
+              />
+            )}
+            <Chip
+              label={lesson.group_name_vi}
+              size="small"
+              sx={{ bgcolor: lesson.group_color, color: '#fff' }}
+            />
+            <LessonStatusChip status={progress?.status} />
+          </Stack>
+        </Box>
 
-      {/* Exercise CTA */}
-      <Box sx={{ mt: 4, textAlign: 'center' }}>
-        <Divider sx={{ mb: 4 }} />
-        <Typography variant="h6" gutterBottom>
-          Sẵn sàng luyện tập?
-        </Typography>
-        <Button
-          variant="contained"
-          size="large"
-          onClick={handleExerciseCTA}
-          sx={{ px: 4 }}
-        >
-          {getExerciseCTA(progress)}
-        </Button>
+        {/* Theory Sections */}
+        <Stack spacing={4} divider={<Divider />}>
+          <FormulaSection formulas={lesson.formulas} />
+          <UsageSection usages={lesson.usages} />
+          <SignalWordSection signalWords={lesson.signalWords} />
+          <TipSection tips={lesson.tips} />
+          <ComparisonSection
+            comparisons={lesson.comparisons}
+            lessonName={lesson.name}
+          />
+        </Stack>
 
-        {/* Reset progress */}
+        {/* Mark Theory Complete */}
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          {progress?.theory_completed ? (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1,
+              }}
+            >
+              <CheckCircleIcon color="success" />
+              <Typography variant="body1" color="success.main" fontWeight={500}>
+                Đã hoàn thành lý thuyết
+              </Typography>
+            </Box>
+          ) : (
+            <Button
+              variant="outlined"
+              startIcon={<MenuBookIcon />}
+              onClick={handleMarkTheoryComplete}
+              loading={theoryMarking}
+            >
+              Đánh dấu đã đọc lý thuyết
+            </Button>
+          )}
+        </Box>
+
+        {/* Progress Summary */}
         {progress &&
           (progress.exercises_attempted > 0 || progress.theory_completed) && (
-            <Box sx={{ mt: 2 }}>
-              <Button
-                size="small"
-                color="inherit"
-                sx={{ color: 'text.secondary' }}
-                onClick={() => setResetDialogOpen(true)}
-              >
-                Đặt lại tiến trình
-              </Button>
+            <Box sx={{ mt: 3 }}>
+              <LessonProgressSummary progress={progress} />
             </Box>
           )}
+
+        {/* Exercise CTA */}
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Divider sx={{ mb: 4 }} />
+          <Typography variant="h6" gutterBottom>
+            Sẵn sàng luyện tập?
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleExerciseCTA}
+            sx={{ px: 4 }}
+          >
+            {getExerciseCTA(progress)}
+          </Button>
+
+          {/* Reset progress */}
+          {progress &&
+            (progress.exercises_attempted > 0 || progress.theory_completed) && (
+              <Box sx={{ mt: 2 }}>
+                <Button
+                  size="small"
+                  color="inherit"
+                  sx={{ color: 'text.secondary' }}
+                  onClick={() => setResetDialogOpen(true)}
+                >
+                  Đặt lại tiến trình
+                </Button>
+              </Box>
+            )}
+        </Box>
+
+        {/* Prev/Next Lesson Navigation */}
+        {lesson.navigation &&
+          (lesson.navigation.prev || lesson.navigation.next) && (
+            <Box sx={{ mt: 4 }}>
+              <Divider sx={{ mb: 3 }} />
+              <Stack direction="row" justifyContent="space-between">
+                {lesson.navigation.prev ? (
+                  <Button
+                    component={RouterLink}
+                    to={`/lessons/${lesson.navigation.prev.slug}`}
+                    startIcon={<ArrowBackIcon />}
+                  >
+                    {lesson.navigation.prev.name_vi}
+                  </Button>
+                ) : (
+                  <Box />
+                )}
+                {lesson.navigation.next ? (
+                  <Button
+                    component={RouterLink}
+                    to={`/lessons/${lesson.navigation.next.slug}`}
+                    endIcon={<ArrowForwardIcon />}
+                  >
+                    {lesson.navigation.next.name_vi}
+                  </Button>
+                ) : (
+                  <Box />
+                )}
+              </Stack>
+            </Box>
+          )}
+
+        {/* Reset Confirmation Dialog */}
+        <ResetProgressDialog
+          open={resetDialogOpen}
+          onClose={() => setResetDialogOpen(false)}
+          onConfirm={handleReset}
+          loading={resetting}
+        />
+
+        {/* Soft Theory Reminder */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={4000}
+          onClose={() => setSnackbarOpen(false)}
+          message="Bạn chưa đọc lý thuyết. Đọc lý thuyết giúp làm bài tốt hơn!"
+        />
       </Box>
-
-      {/* Prev/Next Lesson Navigation */}
-      {lesson.navigation &&
-        (lesson.navigation.prev || lesson.navigation.next) && (
-          <Box sx={{ mt: 4 }}>
-            <Divider sx={{ mb: 3 }} />
-            <Stack direction="row" justifyContent="space-between">
-              {lesson.navigation.prev ? (
-                <Button
-                  component={RouterLink}
-                  to={`/lessons/${lesson.navigation.prev.slug}`}
-                  startIcon={<ArrowBackIcon />}
-                >
-                  {lesson.navigation.prev.name_vi}
-                </Button>
-              ) : (
-                <Box />
-              )}
-              {lesson.navigation.next ? (
-                <Button
-                  component={RouterLink}
-                  to={`/lessons/${lesson.navigation.next.slug}`}
-                  endIcon={<ArrowForwardIcon />}
-                >
-                  {lesson.navigation.next.name_vi}
-                </Button>
-              ) : (
-                <Box />
-              )}
-            </Stack>
-          </Box>
-        )}
-
-      {/* Reset Confirmation Dialog */}
-      <ResetProgressDialog
-        open={resetDialogOpen}
-        onClose={() => setResetDialogOpen(false)}
-        onConfirm={handleReset}
-        loading={resetting}
-      />
-
-      {/* Soft Theory Reminder */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={4000}
-        onClose={() => setSnackbarOpen(false)}
-        message="Bạn chưa đọc lý thuyết. Đọc lý thuyết giúp làm bài tốt hơn!"
-      />
-    </Box>
+    </Fade>
   );
 }
