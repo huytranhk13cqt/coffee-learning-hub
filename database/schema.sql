@@ -63,7 +63,8 @@ INSERT INTO schema_version (version, description) VALUES
 (1, 'Initial MySQL schema (v2.0)'),
 (2, 'PostgreSQL migration (v3.0 — SERIAL, ENUM types, JSONB, triggers)'),
 (3, 'Rename tense_group to category (generalize for multi-topic Learning Hub)'),
-(4, 'Add missing indexes and unique constraint for exercise_attempt');
+(4, 'Add missing indexes and unique constraint for exercise_attempt'),
+(5, 'Remove exercises_total cached column, compute dynamically');
 
 
 -- ============================================================================
@@ -503,7 +504,6 @@ CREATE TABLE user_progress (
     -- Exercise progress
     exercises_attempted SMALLINT            NOT NULL DEFAULT 0,
     exercises_correct   SMALLINT            NOT NULL DEFAULT 0,
-    exercises_total     SMALLINT            NOT NULL DEFAULT 0,
 
     -- Scores
     current_score       DECIMAL(5,2)        NOT NULL DEFAULT 0,
@@ -528,13 +528,11 @@ CREATE TABLE user_progress (
     CONSTRAINT chk_progress_score      CHECK (current_score >= 0 AND current_score <= 100),
     CONSTRAINT chk_progress_best_score CHECK (best_score >= 0 AND best_score <= 100),
     CONSTRAINT chk_progress_exercises  CHECK (exercises_correct <= exercises_attempted),
-    CONSTRAINT chk_progress_attempted  CHECK (exercises_attempted <= exercises_total),
     CONSTRAINT chk_progress_time       CHECK (theory_time_spent >= 0 AND total_time_spent >= 0)
 );
 
 COMMENT ON COLUMN user_progress.session_id IS 'Browser session UUID (crypto.randomUUID)';
 COMMENT ON COLUMN user_progress.theory_time_spent IS 'Seconds spent on theory';
-COMMENT ON COLUMN user_progress.exercises_total IS 'Auto-set by trigger tr_progress_set_total';
 COMMENT ON COLUMN user_progress.current_score IS 'Latest attempt score %';
 COMMENT ON COLUMN user_progress.best_score IS 'Best score %';
 COMMENT ON COLUMN user_progress.total_time_spent IS 'Total seconds';
@@ -730,32 +728,22 @@ $$;
 
 
 -- ============================================================================
--- TRIGGERS (2 — comparison order triggers removed, replaced by CHECK)
+-- TRIGGERS (1 — exercises_total trigger removed, count computed dynamically)
 -- ============================================================================
 
--- Trigger 1: Auto-set exercises_total on new progress record
-CREATE OR REPLACE FUNCTION fn_progress_set_total()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.exercises_total := (
-        SELECT COUNT(*)::int FROM exercise
-        WHERE lesson_id = NEW.lesson_id AND is_active = TRUE
-    );
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER tr_progress_set_total
-  BEFORE INSERT ON user_progress
-  FOR EACH ROW EXECUTE FUNCTION fn_progress_set_total();
-
-
--- Trigger 2: Auto-complete when all exercises done + theory read
+-- Trigger: Auto-complete when all exercises done + theory read
+-- (exercises_total computed dynamically — no cached column)
 CREATE OR REPLACE FUNCTION fn_progress_check_completion()
 RETURNS TRIGGER AS $$
+DECLARE
+    v_total INTEGER;
 BEGIN
-    IF NEW.exercises_attempted >= NEW.exercises_total
-       AND NEW.exercises_total > 0
+    SELECT COUNT(*)::int INTO v_total
+    FROM exercise
+    WHERE lesson_id = NEW.lesson_id AND is_active = TRUE;
+
+    IF NEW.exercises_attempted >= v_total
+       AND v_total > 0
        AND NEW.theory_completed = TRUE
        AND NEW.status != 'completed' THEN
         NEW.status := 'completed';

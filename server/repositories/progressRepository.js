@@ -8,9 +8,10 @@ export class ProgressRepository {
     return this.sql`
       SELECT
         lesson_id, status, theory_completed,
-        exercises_attempted, exercises_correct, exercises_total,
+        exercises_attempted, exercises_correct,
+        (SELECT COUNT(*)::int FROM exercise WHERE lesson_id = up.lesson_id AND is_active = TRUE) AS exercises_total,
         current_score, best_score, total_attempts
-      FROM user_progress
+      FROM user_progress up
       WHERE session_id = ${sessionId}
     `;
   }
@@ -20,10 +21,11 @@ export class ProgressRepository {
     const rows = await this.sql`
       SELECT
         status, theory_completed, theory_time_spent,
-        exercises_attempted, exercises_correct, exercises_total,
+        exercises_attempted, exercises_correct,
+        (SELECT COUNT(*)::int FROM exercise WHERE lesson_id = up.lesson_id AND is_active = TRUE) AS exercises_total,
         current_score, best_score, total_time_spent,
         last_position, completed_at
-      FROM user_progress
+      FROM user_progress up
       WHERE session_id = ${sessionId} AND lesson_id = ${lessonId}
     `;
     return rows[0] || null;
@@ -118,7 +120,7 @@ export class ProgressRepository {
         COALESCE(up.theory_completed, FALSE) AS theory_completed,
         COALESCE(up.best_score, 0)           AS best_score,
         COALESCE(up.exercises_attempted, 0)  AS exercises_attempted,
-        COALESCE(up.exercises_total, 0)      AS exercises_total,
+        (SELECT COUNT(*)::int FROM exercise ex WHERE ex.lesson_id = l.id AND ex.is_active = TRUE) AS exercises_total,
         up.completed_at
       FROM lesson l
       JOIN category g ON l.group_id = g.id

@@ -97,19 +97,26 @@ export class ExerciseRepository {
   // C6: Results with user attempts (includes answers — only for attempted exercises)
   async findResultsByLesson(lessonId, sessionId) {
     return this.sql`
+      WITH latest_attempts AS (
+        SELECT
+          exercise_id, user_answer, is_correct, time_taken, attempt_number,
+          ROW_NUMBER() OVER (
+            PARTITION BY exercise_id
+            ORDER BY attempt_number DESC
+          ) AS rn
+        FROM exercise_attempt
+        WHERE session_id = ${sessionId}
+          AND exercise_id IN (
+            SELECT id FROM exercise
+            WHERE lesson_id = ${lessonId} AND is_active = TRUE
+          )
+      )
       SELECT
         e.id AS exercise_id, e.type, e.question, e.question_vi,
         e.content, e.correct_answer, e.explanation, e.explanation_vi,
-        ea.user_answer, ea.is_correct, ea.time_taken, ea.attempt_number
+        la.user_answer, la.is_correct, la.time_taken, la.attempt_number
       FROM exercise e
-      INNER JOIN exercise_attempt ea ON ea.exercise_id = e.id
-        AND ea.session_id = ${sessionId}
-        AND ea.attempt_number = (
-          SELECT MAX(ea2.attempt_number)
-          FROM exercise_attempt ea2
-          WHERE ea2.session_id = ea.session_id
-            AND ea2.exercise_id = ea.exercise_id
-        )
+      INNER JOIN latest_attempts la ON la.exercise_id = e.id AND la.rn = 1
       WHERE e.lesson_id = ${lessonId} AND e.is_active = TRUE
       ORDER BY e.order_index
     `;
