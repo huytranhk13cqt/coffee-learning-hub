@@ -1,6 +1,6 @@
 -- ============================================================================
 -- SEED DATA: Knowledge Learning Application
--- All 12 English Grammar Tenses — fully seeded
+-- Content: 12 English Grammar Tenses + 3 Learning Methods lessons
 -- Compatible with: schema.sql v5 (PostgreSQL 17)
 -- ============================================================================
 
@@ -356,7 +356,7 @@ INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, impo
 
 -- Comparison (ID 6)
 INSERT INTO lesson_comparison (lesson_id_1, lesson_id_2, aspect, aspect_vi, lesson_1_point, lesson_1_point_vi, lesson_2_point, lesson_2_point_vi, example_1, example_1_vi, example_2, example_2_vi, tip, tip_vi, order_index) VALUES
-(4, 3, 'Duration vs Result', 'Thời lượng vs Kết quả', 'Emphasizes the duration and ongoing process', 'Nhấn mạnh thời lượng và quá trình đang diễn ra', 'Emphasizes the completed result or number', 'Nhấn mạnh kết quả hoàn thành hoặc số lượng', 'I have been reading this book. (still reading, focus on process)', 'Tôi đang đọc cuốn sách này. (vẫn đọc, tập trung quá trình)', 'I have read this book. (finished, focus on completion)', 'Tôi đã đọc xong cuốn sách này. (đã xong, tập trung hoàn thành)', 'Duration/process? → PPC. Result/number? → PP.', 'Thời lượng/quá trình? → HTHTTD. Kết quả/số lượng? → HTHT.', 1);
+(3, 4, 'Duration vs Result', 'Thời lượng vs Kết quả', 'Emphasizes the completed result or number', 'Nhấn mạnh kết quả hoàn thành hoặc số lượng', 'Emphasizes the duration and ongoing process', 'Nhấn mạnh thời lượng và quá trình đang diễn ra', 'I have read this book. (finished, focus on completion)', 'Tôi đã đọc xong cuốn sách này. (đã xong, tập trung hoàn thành)', 'I have been reading this book. (still reading, focus on process)', 'Tôi đang đọc cuốn sách này. (vẫn đọc, tập trung quá trình)', 'Duration/process? → PPC. Result/number? → PP.', 'Thời lượng/quá trình? → HTHTTD. Kết quả/số lượng? → HTHT.', 1);
 
 -- Exercise 22: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
@@ -534,7 +534,7 @@ INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, impo
 
 -- Comparison (ID 8)
 INSERT INTO lesson_comparison (lesson_id_1, lesson_id_2, aspect, aspect_vi, lesson_1_point, lesson_1_point_vi, lesson_2_point, lesson_2_point_vi, example_1, example_1_vi, example_2, example_2_vi, tip, tip_vi, order_index) VALUES
-(6, 5, 'In Progress vs Completed', 'Đang diễn ra vs Hoàn thành', 'Action was in progress (background)', 'Hành động đang diễn ra (nền)', 'Action was completed (event)', 'Hành động đã hoàn thành (sự kiện)', 'I was reading when she called.', 'Tôi đang đọc khi cô ấy gọi.', 'She called me at 9 PM.', 'Cô ấy gọi tôi lúc 9 giờ tối.', 'Background action = Past Continuous. Event/interruption = Simple Past.', 'Hành động nền = QKTD. Sự kiện/gián đoạn = QKĐ.', 1);
+(5, 6, 'In Progress vs Completed', 'Đang diễn ra vs Hoàn thành', 'Action was completed (event)', 'Hành động đã hoàn thành (sự kiện)', 'Action was in progress (background)', 'Hành động đang diễn ra (nền)', 'She called me at 9 PM.', 'Cô ấy gọi tôi lúc 9 giờ tối.', 'I was reading when she called.', 'Tôi đang đọc khi cô ấy gọi.', 'Background action = Past Continuous. Event/interruption = Simple Past.', 'Hành động nền = QKTD. Sự kiện/gián đoạn = QKĐ.', 1);
 
 -- Exercise 36: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
@@ -623,7 +623,7 @@ INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, impo
 
 -- Comparison (ID 9)
 INSERT INTO lesson_comparison (lesson_id_1, lesson_id_2, aspect, aspect_vi, lesson_1_point, lesson_1_point_vi, lesson_2_point, lesson_2_point_vi, example_1, example_1_vi, example_2, example_2_vi, tip, tip_vi, order_index) VALUES
-(7, 5, 'Earlier vs Later past action', 'Hành động quá khứ sớm hơn vs muộn hơn', 'Action completed BEFORE another past action', 'Hành động hoàn thành TRƯỚC hành động quá khứ khác', 'Action at a specific time in the past', 'Hành động tại thời điểm cụ thể trong quá khứ', 'I had eaten before she arrived.', 'Tôi đã ăn trước khi cô ấy đến.', 'She arrived at 8 PM.', 'Cô ấy đến lúc 8 giờ tối.', 'Two past events? Earlier one = Past Perfect. Later one = Simple Past.', 'Hai sự kiện quá khứ? Sớm hơn = QKHT. Muộn hơn = QKĐ.', 1);
+(5, 7, 'Earlier vs Later past action', 'Hành động quá khứ sớm hơn vs muộn hơn', 'Action at a specific time in the past', 'Hành động tại thời điểm cụ thể trong quá khứ', 'Action completed BEFORE another past action', 'Hành động hoàn thành TRƯỚC hành động quá khứ khác', 'She arrived at 8 PM.', 'Cô ấy đến lúc 8 giờ tối.', 'I had eaten before she arrived.', 'Tôi đã ăn trước khi cô ấy đến.', 'Two past events? Earlier one = Past Perfect. Later one = Simple Past.', 'Hai sự kiện quá khứ? Sớm hơn = QKHT. Muộn hơn = QKĐ.', 1);
 
 -- Exercise 43: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
@@ -712,7 +712,7 @@ INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, impo
 
 -- Comparison (ID 10)
 INSERT INTO lesson_comparison (lesson_id_1, lesson_id_2, aspect, aspect_vi, lesson_1_point, lesson_1_point_vi, lesson_2_point, lesson_2_point_vi, example_1, example_1_vi, example_2, example_2_vi, tip, tip_vi, order_index) VALUES
-(8, 7, 'Duration vs Completion', 'Thời lượng vs Hoàn thành', 'Emphasizes duration/process before past event', 'Nhấn mạnh thời lượng/quá trình trước sự kiện quá khứ', 'Emphasizes completion before past event', 'Nhấn mạnh hoàn thành trước sự kiện quá khứ', 'I had been reading for 2 hours when she called. (duration)', 'Tôi đã đọc 2 tiếng khi cô ấy gọi. (thời lượng)', 'I had read 50 pages before dinner. (completed amount)', 'Tôi đã đọc 50 trang trước bữa tối. (số lượng xong)', 'Focus on how long? → PPC. Focus on what was done? → PP.', 'Tập trung bao lâu? → QKHTTD. Tập trung làm gì? → QKHT.', 1);
+(7, 8, 'Duration vs Completion', 'Thời lượng vs Hoàn thành', 'Emphasizes completion before past event', 'Nhấn mạnh hoàn thành trước sự kiện quá khứ', 'Emphasizes duration/process before past event', 'Nhấn mạnh thời lượng/quá trình trước sự kiện quá khứ', 'I had read 50 pages before dinner. (completed amount)', 'Tôi đã đọc 50 trang trước bữa tối. (số lượng xong)', 'I had been reading for 2 hours when she called. (duration)', 'Tôi đã đọc 2 tiếng khi cô ấy gọi. (thời lượng)', 'Focus on how long? → PPC. Focus on what was done? → PP.', 'Tập trung bao lâu? → QKHTTD. Tập trung làm gì? → QKHT.', 1);
 
 -- Exercise 50: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
@@ -890,7 +890,7 @@ INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, impo
 
 -- Comparison (ID 12)
 INSERT INTO lesson_comparison (lesson_id_1, lesson_id_2, aspect, aspect_vi, lesson_1_point, lesson_1_point_vi, lesson_2_point, lesson_2_point_vi, example_1, example_1_vi, example_2, example_2_vi, tip, tip_vi, order_index) VALUES
-(10, 9, 'In Progress vs Simple', 'Đang diễn ra vs Đơn giản', 'Action will be in progress at a specific time', 'Hành động sẽ đang diễn ra tại thời điểm cụ thể', 'Simple statement about the future', 'Phát biểu đơn giản về tương lai', 'At 3 PM, I will be working. (in the middle of it)', 'Lúc 3 giờ, tôi sẽ đang làm việc. (đang giữa chừng)', 'I will work tomorrow. (general statement)', 'Tôi sẽ làm việc ngày mai. (phát biểu chung)', 'Specific time + in progress = FC. General future = SF.', 'Thời điểm cụ thể + đang diễn ra = TLTD. Tương lai chung = TLĐ.', 1);
+(9, 10, 'In Progress vs Simple', 'Đang diễn ra vs Đơn giản', 'Simple statement about the future', 'Phát biểu đơn giản về tương lai', 'Action will be in progress at a specific time', 'Hành động sẽ đang diễn ra tại thời điểm cụ thể', 'I will work tomorrow. (general statement)', 'Tôi sẽ làm việc ngày mai. (phát biểu chung)', 'At 3 PM, I will be working. (in the middle of it)', 'Lúc 3 giờ, tôi sẽ đang làm việc. (đang giữa chừng)', 'Specific time + in progress = FC. General future = SF.', 'Thời điểm cụ thể + đang diễn ra = TLTD. Tương lai chung = TLĐ.', 1);
 
 -- Exercise 64: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
@@ -1068,7 +1068,7 @@ INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, impo
 
 -- Comparison (ID 14)
 INSERT INTO lesson_comparison (lesson_id_1, lesson_id_2, aspect, aspect_vi, lesson_1_point, lesson_1_point_vi, lesson_2_point, lesson_2_point_vi, example_1, example_1_vi, example_2, example_2_vi, tip, tip_vi, order_index) VALUES
-(12, 11, 'Duration vs Completion', 'Thời lượng vs Hoàn thành', 'Emphasizes duration of continuous action up to future point', 'Nhấn mạnh thời lượng hành động liên tục đến mốc tương lai', 'Emphasizes completion/achievement by future point', 'Nhấn mạnh hoàn thành/thành tựu trước mốc tương lai', 'By June, I will have been studying for 4 years. (ongoing process)', 'Đến tháng 6, tôi sẽ học được 4 năm. (quá trình đang diễn ra)', 'By June, I will have completed my degree. (finished achievement)', 'Đến tháng 6, tôi sẽ hoàn thành bằng cấp. (thành tựu xong)', 'How long? → FPC. How much/achievement? → FP.', 'Bao lâu? → TLHTTD. Bao nhiêu/thành tựu? → TLHT.', 1);
+(11, 12, 'Duration vs Completion', 'Thời lượng vs Hoàn thành', 'Emphasizes completion/achievement by future point', 'Nhấn mạnh hoàn thành/thành tựu trước mốc tương lai', 'Emphasizes duration of continuous action up to future point', 'Nhấn mạnh thời lượng hành động liên tục đến mốc tương lai', 'By June, I will have completed my degree. (finished achievement)', 'Đến tháng 6, tôi sẽ hoàn thành bằng cấp. (thành tựu xong)', 'By June, I will have been studying for 4 years. (ongoing process)', 'Đến tháng 6, tôi sẽ học được 4 năm. (quá trình đang diễn ra)', 'How long? → FPC. How much/achievement? → FP.', 'Bao lâu? → TLHTTD. Bao nhiêu/thành tựu? → TLHT.', 1);
 
 -- Exercise 78: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
@@ -1109,6 +1109,241 @@ INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, conten
 (12, 'true_false', 'hard', 'Is this sentence correct?', 'Câu này đúng không?', 'By the end of this year, he will have been working at this company for twenty years.', 'Đến cuối năm nay, anh ấy sẽ làm việc ở công ty này được hai mươi năm.', 'true', 'Correct! "By the end of this year" (future deadline) + "for twenty years" (duration) = Future Perfect Continuous.', 'Đúng! "Đến cuối năm nay" (mốc tương lai) + "hai mươi năm" (thời lượng) = TLHTTD.', 5, 7);
 
 
+-- ############################################################################
+-- ############################################################################
+-- CATEGORY 4: LEARNING METHODS (Phương Pháp Học Tập)
+-- Non-grammar content — proves the Learning Hub is truly multi-domain
+-- No formulas, no signal_words — uses usages, tips, exercises only
+-- ############################################################################
+-- ############################################################################
+
+INSERT INTO category (name, name_vi, description, description_vi, icon, color, order_index) VALUES
+('Learning Methods', 'Phương Pháp Học Tập', 'Science-backed techniques for effective learning and memory retention', 'Các kỹ thuật học tập hiệu quả dựa trên khoa học về trí nhớ', 'Psychology', '#ec4899', 4);
+
+
+-- ############################################################################
+-- LESSON 13: SPACED REPETITION (lesson_id = 13)
+-- ############################################################################
+
+INSERT INTO lesson (group_id, name, name_vi, slug, short_desc, short_desc_vi, difficulty, estimated_time, order_index) VALUES
+(4, 'Spaced Repetition', 'Ôn Tập Giãn Cách', 'spaced-repetition', 'Space out your study sessions to maximize long-term retention', 'Giãn cách các buổi ôn tập để tối đa hóa trí nhớ dài hạn', 'beginner', 25, 1);
+
+-- Usages (IDs 39-41)
+INSERT INTO lesson_usage (lesson_id, title, title_vi, description, description_vi, icon, is_common, order_index) VALUES
+(13, 'Long-term memory retention', 'Ghi nhớ dài hạn', 'Schedule reviews at increasing intervals to move information from short-term to long-term memory.', 'Lên lịch ôn tập với khoảng cách tăng dần để chuyển thông tin từ trí nhớ ngắn hạn sang dài hạn.', 'Psychology', TRUE, 1),
+(13, 'Efficient exam preparation', 'Chuẩn bị thi hiệu quả', 'Start reviewing weeks before the exam with spaced sessions instead of last-minute cramming.', 'Bắt đầu ôn tập từ vài tuần trước kỳ thi với các buổi giãn cách thay vì học nhồi nhét phút cuối.', 'School', TRUE, 2),
+(13, 'Mastering large volumes of material', 'Chinh phục lượng kiến thức lớn', 'Use spaced repetition to systematically learn thousands of vocabulary words, formulas, or facts.', 'Sử dụng ôn tập giãn cách để học có hệ thống hàng nghìn từ vựng, công thức, hay dữ kiện.', 'MenuBook', TRUE, 3);
+
+-- Examples for usage 39 (IDs 72-73)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(39, 'Review new vocabulary after 1 day, then 3 days, then 7 days, then 30 days.', 'Ôn từ vựng mới sau 1 ngày, rồi 3 ngày, rồi 7 ngày, rồi 30 ngày.', 'Each review strengthens the memory trace, making it harder to forget.', 'Mỗi lần ôn tập củng cố vết nhớ, giúp khó quên hơn.', 'increasing intervals', 1),
+(39, 'The Ebbinghaus forgetting curve shows we forget ~70% within 24 hours without review.', 'Đường cong quên lãng Ebbinghaus cho thấy ta quên ~70% trong 24 giờ nếu không ôn tập.', 'Spaced repetition directly combats the forgetting curve by timing reviews optimally.', 'Ôn tập giãn cách chống lại đường cong quên lãng bằng cách ôn đúng thời điểm.', 'forgetting curve', 2);
+
+-- Examples for usage 40 (IDs 74-75)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(40, 'Start reviewing 3 weeks before the exam, spacing sessions every 2-3 days.', 'Bắt đầu ôn 3 tuần trước kỳ thi, giãn cách mỗi 2-3 ngày.', 'This gives your brain multiple chances to consolidate the material.', 'Điều này cho não nhiều cơ hội để củng cố kiến thức.', 'spacing sessions', 1),
+(40, 'Instead of studying 8 hours the night before, study 1 hour daily for 8 days.', 'Thay vì học 8 tiếng đêm trước thi, hãy học 1 tiếng mỗi ngày trong 8 ngày.', 'Same total time, but distributed practice produces much better retention.', 'Cùng tổng thời gian, nhưng luyện tập phân tán cho kết quả nhớ tốt hơn nhiều.', 'distributed practice', 2);
+
+-- Examples for usage 41 (IDs 76-77)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(41, 'Medical students use Anki flashcards to memorize thousands of anatomy terms over months.', 'Sinh viên y khoa dùng thẻ Anki để ghi nhớ hàng nghìn thuật ngữ giải phẫu qua nhiều tháng.', 'Spaced repetition software automatically schedules reviews at optimal intervals.', 'Phần mềm ôn tập giãn cách tự động lên lịch ôn ở khoảng cách tối ưu.', 'Anki flashcards', 1),
+(41, 'Language learners maintain 5,000+ word vocabulary with just 15 minutes of daily review.', 'Người học ngôn ngữ duy trì 5.000+ từ vựng chỉ với 15 phút ôn tập mỗi ngày.', 'Once material is well-learned, review intervals stretch to weeks or months.', 'Khi kiến thức đã thuộc kỹ, khoảng cách ôn tập kéo dài đến vài tuần hoặc tháng.', 'daily review', 2);
+
+-- Tips (IDs 38-40)
+INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, importance, icon, order_index) VALUES
+(13, 'The forgetting curve', 'Đường cong quên lãng', 'Hermann Ebbinghaus discovered that memory declines exponentially after learning. The optimal time to review is just BEFORE you forget — this strengthens the memory most effectively.', 'Hermann Ebbinghaus phát hiện rằng trí nhớ suy giảm theo hàm mũ sau khi học. Thời điểm tốt nhất để ôn là ngay TRƯỚC khi bạn quên — điều này củng cố trí nhớ hiệu quả nhất.', 'memory', 'high', 'Lightbulb', 1),
+(13, 'Optimal review intervals', 'Khoảng cách ôn tập tối ưu', 'A proven schedule: 1 day → 3 days → 7 days → 14 days → 30 days → 90 days. Each successful review doubles the interval. If you forget, reset to a shorter interval.', 'Lịch trình đã được chứng minh: 1 ngày → 3 ngày → 7 ngày → 14 ngày → 30 ngày → 90 ngày. Mỗi lần ôn thành công, khoảng cách tăng gấp đôi. Nếu quên, quay lại khoảng ngắn hơn.', 'memory', 'high', 'Schedule', 2),
+(13, 'Don''t cram — space it out', 'Đừng nhồi nhét — hãy giãn cách', 'Research shows: 1 hour across 4 days beats 4 hours in 1 day. Cramming creates short-term memory that fades within days. Spacing creates long-term memory that lasts months or years.', 'Nghiên cứu cho thấy: 1 tiếng trong 4 ngày hiệu quả hơn 4 tiếng trong 1 ngày. Nhồi nhét tạo trí nhớ ngắn hạn tan biến trong vài ngày. Giãn cách tạo trí nhớ dài hạn kéo dài hàng tháng hoặc năm.', 'common_mistake', 'high', 'Warning', 3);
+
+-- Exercise 85: Multiple Choice
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
+(13, 'multiple_choice', 'easy', 'What happens to newly learned information without review?', 'Điều gì xảy ra với thông tin mới học nếu không ôn tập?', 'According to the Ebbinghaus forgetting curve, what percentage of new information is typically forgotten within 24 hours?', 'Theo đường cong quên lãng Ebbinghaus, bao nhiêu phần trăm thông tin mới thường bị quên trong 24 giờ?', 'Ebbinghaus found that approximately 70% of newly learned information is forgotten within 24 hours without any review.', 'Ebbinghaus phát hiện rằng khoảng 70% thông tin mới học bị quên trong 24 giờ nếu không ôn tập.', 10, 1);
+INSERT INTO exercise_option (exercise_id, label, content, is_correct, explanation, order_index) VALUES
+(85, 'A', 'About 10%', FALSE, 'This is too low — memory loss is much more dramatic than this', 1),
+(85, 'B', 'About 30%', FALSE, 'This underestimates the forgetting curve', 2),
+(85, 'C', 'About 70%', TRUE, 'Correct! We forget approximately 70% within 24 hours without review', 3),
+(85, 'D', 'About 95%', FALSE, 'While memory loss is significant, we do retain some information', 4);
+
+-- Exercise 86: Fill Blank
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(13, 'fill_blank', 'easy', 'Fill in the key term.', 'Điền thuật ngữ chính.', 'The ___ curve describes how memory of new information declines over time without reinforcement.', 'Đường cong ___ mô tả cách trí nhớ về thông tin mới suy giảm theo thời gian nếu không được củng cố.', 'forgetting', 'The forgetting curve, discovered by Hermann Ebbinghaus in 1885, shows the exponential decline of memory over time.', 'Đường cong quên lãng, được Hermann Ebbinghaus phát hiện năm 1885, cho thấy sự suy giảm theo hàm mũ của trí nhớ theo thời gian.', 10, 2);
+
+-- Exercise 87: Error Correction
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, hint, hint_vi, points, order_index) VALUES
+(13, 'error_correction', 'medium', 'Find and correct the factual error in this statement.', 'Tìm và sửa lỗi sai trong phát biểu sau.', 'Studying the same material 5 times in one day is more effective than studying it once on 5 different days.', 'Học cùng một tài liệu 5 lần trong một ngày hiệu quả hơn học 1 lần trong 5 ngày khác nhau.', 'Studying the same material once on 5 different days is more effective than studying it 5 times in one day.', 'Distributed practice across multiple days is always more effective than massed practice in a single day. This is a core principle of spaced repetition.', 'Phân tán luyện tập (distributed practice) qua nhiều ngày luôn hiệu quả hơn luyện tập tập trung (massed practice) trong một ngày. Đây là nguyên tắc cốt lõi của ôn tập giãn cách.', 'Think about which approach — cramming or spacing — research supports.', 'Hãy nghĩ xem nghiên cứu ủng hộ cách nào — nhồi nhét hay giãn cách.', 15, 3);
+
+-- Exercise 88: Sentence Transform
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(13, 'sentence_transform', 'medium', 'Rewrite this cramming plan as a spaced repetition plan. Keep the total study time the same.', 'Viết lại kế hoạch nhồi nhét thành kế hoạch ôn tập giãn cách. Giữ nguyên tổng thời gian học.', 'Study for 6 hours the night before the exam.', 'Học 6 tiếng đêm trước kỳ thi.', 'Study for 1 hour daily for 6 days before the exam.', 'Same total time (6 hours) but distributed across 6 days instead of crammed into 1 night. Research shows this is 2-3x more effective.', 'Cùng tổng thời gian (6 giờ) nhưng phân bố qua 6 ngày thay vì dồn vào 1 đêm. Nghiên cứu cho thấy cách này hiệu quả hơn 2-3 lần.', 15, 4);
+
+-- Exercise 89: Arrange Words
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, word_bank, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(13, 'arrange_words', 'easy', 'Arrange these review intervals in the correct order for a spaced repetition schedule.', 'Sắp xếp các khoảng cách ôn tập theo đúng thứ tự cho lịch ôn tập giãn cách.', '["30 days", "1 day", "14 days", "3 days", "7 days"]', '1 day, 3 days, 7 days, 14 days, 30 days', 'The intervals increase gradually: 1 → 3 → 7 → 14 → 30 days. Each successful review roughly doubles the interval.', 'Khoảng cách tăng dần: 1 → 3 → 7 → 14 → 30 ngày. Mỗi lần ôn thành công, khoảng cách tăng gấp đôi.', 10, 5);
+
+-- Exercise 90: Matching
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, explanation, explanation_vi, points, order_index) VALUES
+(13, 'matching', 'easy', 'Match each study approach with its result.', 'Nối mỗi cách học với kết quả của nó.', 'Distributed practice (spacing) creates durable long-term memories, while massed practice (cramming) only creates temporary short-term memories.', 'Luyện tập phân tán (giãn cách) tạo trí nhớ dài hạn bền vững, trong khi luyện tập tập trung (nhồi nhét) chỉ tạo trí nhớ ngắn hạn tạm thời.', 10, 6);
+INSERT INTO matching_pair (exercise_id, left_content, left_content_vi, right_content, right_content_vi, order_index) VALUES
+(90, 'Cramming 8 hours in 1 day', 'Nhồi nhét 8 tiếng trong 1 ngày', 'Short-term memory only', 'Chỉ trí nhớ ngắn hạn', 1),
+(90, 'Spacing 1 hour across 8 days', 'Giãn cách 1 tiếng trong 8 ngày', 'Strong long-term memory', 'Trí nhớ dài hạn bền vững', 2),
+(90, 'Reviewing just before forgetting', 'Ôn ngay trước khi quên', 'Maximum memory strengthening', 'Củng cố trí nhớ tối đa', 3),
+(90, 'Never reviewing after learning', 'Không bao giờ ôn sau khi học', 'Forget 70% within 24 hours', 'Quên 70% trong 24 giờ', 4);
+
+-- Exercise 91: True/False
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(13, 'true_false', 'easy', 'Is this statement about spaced repetition correct?', 'Phát biểu sau về ôn tập giãn cách có đúng không?', 'Reviewing material 5 times in one day is equally effective as reviewing it once on each of 5 different days.', 'Ôn tài liệu 5 lần trong một ngày hiệu quả tương đương với ôn 1 lần trong mỗi ngày của 5 ngày khác nhau.', 'false', 'False! Research consistently shows that spaced practice across multiple days is significantly more effective than massed practice in a single session, even with the same total study time.', 'Sai! Nghiên cứu cho thấy luyện tập giãn cách qua nhiều ngày hiệu quả hơn đáng kể so với luyện tập dồn vào một buổi, ngay cả khi tổng thời gian học bằng nhau.', 5, 7);
+
+
+-- ############################################################################
+-- LESSON 14: ACTIVE RECALL (lesson_id = 14)
+-- ############################################################################
+
+INSERT INTO lesson (group_id, name, name_vi, slug, short_desc, short_desc_vi, difficulty, estimated_time, order_index) VALUES
+(4, 'Active Recall', 'Nhớ Lại Chủ Động', 'active-recall', 'Test yourself instead of re-reading to learn 2-3x faster', 'Tự kiểm tra thay vì đọc lại để học nhanh hơn 2-3 lần', 'beginner', 25, 2);
+
+-- Usages (IDs 42-44)
+INSERT INTO lesson_usage (lesson_id, title, title_vi, description, description_vi, icon, is_common, order_index) VALUES
+(14, 'Self-testing during study', 'Tự kiểm tra khi học', 'Close your books and try to recall the material from memory before checking your notes.', 'Đóng sách lại và cố gắng nhớ lại kiến thức từ trí nhớ trước khi kiểm tra ghi chú.', 'Quiz', TRUE, 1),
+(14, 'Transforming notes into questions', 'Biến ghi chú thành câu hỏi', 'Instead of passively reading notes, convert them into questions and answer from memory.', 'Thay vì đọc ghi chú thụ động, hãy chuyển chúng thành câu hỏi và trả lời từ trí nhớ.', 'HelpOutline', TRUE, 2),
+(14, 'Identifying knowledge gaps', 'Phát hiện lỗ hổng kiến thức', 'When you cannot recall something, you have found exactly what needs more study.', 'Khi bạn không thể nhớ lại điều gì đó, bạn đã tìm ra chính xác phần cần học thêm.', 'Search', TRUE, 3);
+
+-- Examples for usage 42 (IDs 78-79)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(42, 'After reading a chapter, close the book and write down everything you remember.', 'Sau khi đọc một chương, đóng sách lại và viết ra mọi thứ bạn nhớ.', 'The act of retrieving information strengthens neural pathways far more than re-reading.', 'Hành động truy xuất thông tin củng cố đường dẫn thần kinh nhiều hơn đọc lại.', 'close the book', 1),
+(42, 'Use blank flashcards: read the question side, try to answer BEFORE flipping.', 'Dùng thẻ ghi nhớ: đọc mặt câu hỏi, cố trả lời TRƯỚC khi lật thẻ.', 'The struggle to recall is what builds memory — even failed attempts help learning.', 'Sự cố gắng nhớ lại chính là thứ xây dựng trí nhớ — ngay cả khi trả lời sai vẫn giúp học.', 'try to answer', 2);
+
+-- Examples for usage 43 (IDs 80-81)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(43, 'Turn each heading in your textbook into a question: "What is X? How does X work?"', 'Biến mỗi tiêu đề trong sách thành câu hỏi: "X là gì? X hoạt động thế nào?"', 'This transforms passive reading into an active testing exercise.', 'Điều này biến việc đọc thụ động thành bài kiểm tra chủ động.', 'into a question', 1),
+(43, 'After a lecture, write 5 questions covering the main points without looking at your notes.', 'Sau buổi giảng, viết 5 câu hỏi về các ý chính mà không nhìn ghi chú.', 'Creating questions forces you to identify what is important and tests your understanding.', 'Tạo câu hỏi buộc bạn xác định điều gì quan trọng và kiểm tra sự hiểu biết.', '5 questions', 2);
+
+-- Examples for usage 44 (IDs 82-83)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(44, 'When you cannot answer your own question, you have found a gap to fill.', 'Khi không thể trả lời câu hỏi của chính mình, bạn đã tìm ra lỗ hổng cần lấp.', 'Knowledge gaps only become visible when you actively test yourself.', 'Lỗ hổng kiến thức chỉ lộ ra khi bạn chủ động tự kiểm tra.', 'found a gap', 1),
+(44, 'Mark difficult flashcards separately and review them more frequently.', 'Đánh dấu riêng các thẻ khó và ôn chúng thường xuyên hơn.', 'Focusing extra effort on weak areas is more efficient than reviewing everything equally.', 'Tập trung nỗ lực vào điểm yếu hiệu quả hơn ôn mọi thứ đồng đều.', 'difficult flashcards', 2);
+
+-- Tips (IDs 41-43)
+INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, importance, icon, order_index) VALUES
+(14, 'Struggle first, then check', 'Cố gắng nhớ trước, rồi mới kiểm tra', 'Always attempt to recall information BEFORE looking at the answer. The mental struggle of retrieval — even when you fail — strengthens memory more than passive review.', 'Luôn cố gắng nhớ lại thông tin TRƯỚC KHI nhìn đáp án. Sự cố gắng truy xuất — ngay cả khi thất bại — củng cố trí nhớ hơn ôn tập thụ động.', 'memory', 'high', 'Lightbulb', 1),
+(14, 'Active recall beats re-reading by 50%', 'Nhớ lại chủ động hiệu quả hơn đọc lại 50%', 'A 2008 study by Karpicke & Roediger showed that students who tested themselves remembered 50% more than those who just re-read the material after one week.', 'Nghiên cứu năm 2008 của Karpicke & Roediger cho thấy sinh viên tự kiểm tra nhớ được nhiều hơn 50% so với sinh viên chỉ đọc lại sau một tuần.', 'memory', 'high', 'TrendingUp', 2),
+(14, 'Combine with spaced repetition', 'Kết hợp với ôn tập giãn cách', 'Active recall + spaced repetition is the most powerful combination in learning science. Test yourself → space out reviews → test again at increasing intervals.', 'Nhớ lại chủ động + ôn tập giãn cách là bộ đôi mạnh nhất trong khoa học học tập. Tự kiểm tra → giãn cách ôn tập → kiểm tra lại với khoảng cách tăng dần.', 'shortcut', 'medium', 'AutoAwesome', 3);
+
+-- Exercise 92: Multiple Choice
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
+(14, 'multiple_choice', 'easy', 'Which study method is proven to be MOST effective for long-term retention?', 'Phương pháp học nào được chứng minh HIỆU QUẢ NHẤT cho ghi nhớ dài hạn?', 'A student has 2 hours to study for next week''s exam. Which approach leads to the best results?', 'Một học sinh có 2 giờ để ôn cho kỳ thi tuần sau. Cách nào cho kết quả tốt nhất?', 'Research consistently shows that testing yourself (active recall) produces significantly better retention than passive review methods like re-reading or highlighting.', 'Nghiên cứu cho thấy tự kiểm tra (nhớ lại chủ động) giúp ghi nhớ tốt hơn đáng kể so với các phương pháp thụ động như đọc lại hay tô màu.', 10, 1);
+INSERT INTO exercise_option (exercise_id, label, content, is_correct, explanation, order_index) VALUES
+(92, 'A', 'Re-read the textbook chapters twice', FALSE, 'Re-reading feels productive but creates an illusion of learning', 1),
+(92, 'B', 'Highlight the key sentences in different colors', FALSE, 'Highlighting is passive — it does not require retrieval from memory', 2),
+(92, 'C', 'Close the book and test yourself on the material', TRUE, 'Correct! Active recall (self-testing) is the most effective study technique', 3),
+(92, 'D', 'Copy the notes neatly into a new notebook', FALSE, 'Copying notes is passive transcription, not active learning', 4);
+
+-- Exercise 93: Fill Blank
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(14, 'fill_blank', 'easy', 'Fill in the key term.', 'Điền thuật ngữ chính.', 'Active ___ is the practice of retrieving information from memory without looking at the material.', 'Nhớ lại ___ là hành động truy xuất thông tin từ trí nhớ mà không nhìn tài liệu.', 'recall', 'Active recall (nhớ lại chủ động) forces your brain to retrieve information, which strengthens memory far more than passive re-reading.', 'Active recall (nhớ lại chủ động) buộc não truy xuất thông tin, củng cố trí nhớ hiệu quả hơn nhiều so với đọc lại thụ động.', 10, 2);
+
+-- Exercise 94: Error Correction
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, hint, hint_vi, points, order_index) VALUES
+(14, 'error_correction', 'medium', 'This study advice contains a common misconception. Correct it.', 'Lời khuyên học tập này chứa một quan niệm sai phổ biến. Hãy sửa lại.', 'The best way to study is to re-read your notes until the material feels familiar.', 'Cách học tốt nhất là đọc lại ghi chú cho đến khi kiến thức cảm thấy quen thuộc.', 'The best way to study is to test yourself on the material until you can recall it from memory.', 'The feeling of "familiarity" from re-reading is not true learning. Only when you can retrieve information from memory without looking at the material do you truly understand it.', 'Cảm giác "quen thuộc" khi đọc lại không phải là học thật sự. Chỉ khi bạn có thể truy xuất thông tin từ trí nhớ mà không nhìn tài liệu thì mới là hiểu thật.', 'Think about passive vs active study methods.', 'Hãy nghĩ về phương pháp học thụ động và chủ động.', 15, 3);
+
+-- Exercise 95: Sentence Transform
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(14, 'sentence_transform', 'medium', 'Transform this passive study habit into an active recall technique.', 'Chuyển thói quen học thụ động này thành kỹ thuật nhớ lại chủ động.', 'Read your notes three times before the exam.', 'Đọc ghi chú ba lần trước kỳ thi.', 'Test yourself on the material three times before the exam.', 'Replace "read your notes" (passive) with "test yourself" (active). Same number of repetitions but far more effective because it forces your brain to retrieve information.', 'Thay "đọc ghi chú" (thụ động) bằng "tự kiểm tra" (chủ động). Cùng số lần lặp lại nhưng hiệu quả gấp nhiều lần vì buộc não truy xuất thông tin.', 15, 4);
+
+-- Exercise 96: Arrange Words
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, word_bank, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(14, 'arrange_words', 'easy', 'Arrange the steps of an active recall study session in the correct order.', 'Sắp xếp các bước của buổi học chủ động theo đúng thứ tự.', '["Check your answers against the material", "Read the study material once", "Close the book and write what you remember", "Review and fill in the gaps you missed"]', 'Read the study material once, Close the book and write what you remember, Check your answers against the material, Review and fill in the gaps you missed', 'The correct order is: Read → Close → Recall → Check → Fill gaps. The key step is closing the book before attempting to recall.', 'Thứ tự đúng: Đọc → Đóng sách → Nhớ lại → Kiểm tra → Bổ sung. Bước quan trọng nhất là đóng sách trước khi cố nhớ lại.', 10, 5);
+
+-- Exercise 97: Matching
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, explanation, explanation_vi, points, order_index) VALUES
+(14, 'matching', 'easy', 'Match each study technique to whether it is passive or active learning.', 'Nối mỗi kỹ thuật học với loại hình học thụ động hoặc chủ động.', 'Active learning techniques require you to retrieve or produce information, while passive techniques only require you to receive information.', 'Kỹ thuật học chủ động yêu cầu bạn truy xuất hoặc tạo ra thông tin, trong khi kỹ thuật thụ động chỉ yêu cầu tiếp nhận thông tin.', 10, 6);
+INSERT INTO matching_pair (exercise_id, left_content, left_content_vi, right_content, right_content_vi, order_index) VALUES
+(97, 'Re-reading highlighted notes', 'Đọc lại ghi chú đã tô màu', 'Passive learning', 'Học thụ động', 1),
+(97, 'Testing yourself with flashcards', 'Tự kiểm tra bằng thẻ ghi nhớ', 'Active learning', 'Học chủ động', 2),
+(97, 'Watching a lecture video twice', 'Xem video bài giảng hai lần', 'Passive learning', 'Học thụ động', 3),
+(97, 'Writing a summary from memory', 'Viết tóm tắt từ trí nhớ', 'Active learning', 'Học chủ động', 4);
+
+-- Exercise 98: True/False
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(14, 'true_false', 'easy', 'Is this statement about study techniques correct?', 'Phát biểu sau về kỹ thuật học tập có đúng không?', 'Re-reading highlighted notes is one of the most effective study techniques for long-term retention.', 'Đọc lại ghi chú đã tô màu là một trong những kỹ thuật học tập hiệu quả nhất cho ghi nhớ dài hạn.', 'false', 'False! Research by Dunlosky et al. (2013) rated re-reading and highlighting as having LOW utility for learning. Active recall (self-testing) and spaced practice were rated as having HIGH utility.', 'Sai! Nghiên cứu của Dunlosky et al. (2013) đánh giá đọc lại và tô màu có hiệu quả THẤP. Nhớ lại chủ động (tự kiểm tra) và ôn tập giãn cách được đánh giá hiệu quả CAO.', 5, 7);
+
+
+-- ############################################################################
+-- LESSON 15: THE FEYNMAN TECHNIQUE (lesson_id = 15)
+-- ############################################################################
+
+INSERT INTO lesson (group_id, name, name_vi, slug, short_desc, short_desc_vi, difficulty, estimated_time, order_index) VALUES
+(4, 'The Feynman Technique', 'Kỹ Thuật Feynman', 'feynman-technique', 'Explain concepts simply to find and fill gaps in understanding', 'Giải thích đơn giản để tìm và lấp đầy lỗ hổng kiến thức', 'intermediate', 30, 3);
+
+-- Usages (IDs 45-47)
+INSERT INTO lesson_usage (lesson_id, title, title_vi, description, description_vi, icon, is_common, order_index) VALUES
+(15, 'Understanding complex concepts', 'Hiểu các khái niệm phức tạp', 'Break down difficult ideas by trying to explain them in simple, everyday language.', 'Phân tích các ý tưởng khó bằng cách giải thích chúng bằng ngôn ngữ đơn giản, đời thường.', 'Lightbulb', TRUE, 1),
+(15, 'Identifying knowledge gaps', 'Phát hiện lỗ hổng kiến thức', 'When you struggle to explain something simply, you have found where your understanding is incomplete.', 'Khi bạn gặp khó khăn trong việc giải thích đơn giản, bạn đã tìm ra chỗ hiểu chưa đầy đủ.', 'Search', TRUE, 2),
+(15, 'Teaching and explaining to others', 'Giảng dạy và giải thích cho người khác', 'Use the technique to prepare clear, jargon-free explanations for students or colleagues.', 'Sử dụng kỹ thuật để chuẩn bị các giải thích rõ ràng, không thuật ngữ cho học sinh hoặc đồng nghiệp.', 'School', TRUE, 3);
+
+-- Examples for usage 45 (IDs 84-85)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(45, 'To understand photosynthesis, try explaining it as: "Plants eat sunlight and turn it into food."', 'Để hiểu quang hợp, hãy giải thích: "Cây ăn ánh sáng mặt trời và biến thành thức ăn."', 'Simple analogies reveal whether you truly understand the core mechanism.', 'Phép so sánh đơn giản cho thấy bạn có thật sự hiểu cơ chế cốt lõi hay không.', 'simple analogy', 1),
+(45, 'If you cannot explain gravity without using the word "gravitational field," keep studying.', 'Nếu không thể giải thích trọng lực mà không dùng từ "trường hấp dẫn," hãy học thêm.', 'Reliance on jargon often masks gaps in understanding.', 'Phụ thuộc vào thuật ngữ thường che giấu lỗ hổng trong hiểu biết.', 'without jargon', 2);
+
+-- Examples for usage 46 (IDs 86-87)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(46, 'Write an explanation of how the internet works. Where you get stuck is exactly where to study more.', 'Viết giải thích về cách internet hoạt động. Chỗ bạn bị kẹt chính là chỗ cần học thêm.', 'The Feynman Technique turns confusion into a precise study target.', 'Kỹ thuật Feynman biến sự bối rối thành mục tiêu học tập chính xác.', 'where you get stuck', 1),
+(46, 'If your explanation uses the phrase "it just works," you have found a gap in your knowledge.', 'Nếu giải thích của bạn dùng cụm "nó cứ hoạt động thế thôi," bạn đã tìm ra lỗ hổng.', 'Vague hand-waving is a signal that deeper study is needed.', 'Giải thích mơ hồ là dấu hiệu cần nghiên cứu sâu hơn.', 'found a gap', 2);
+
+-- Examples for usage 47 (IDs 88-89)
+INSERT INTO example (usage_id, sentence, sentence_vi, explanation, explanation_vi, highlight_word, order_index) VALUES
+(47, 'Teaching a concept to a study partner forces you to organize your thoughts clearly.', 'Giảng một khái niệm cho bạn học buộc bạn sắp xếp suy nghĩ rõ ràng.', 'The "protege effect" — teaching others helps the teacher learn more deeply.', '"Hiệu ứng đệ tử" — dạy người khác giúp người dạy hiểu sâu hơn.', 'teaching', 1),
+(47, 'Create simple analogies: "An API is like a waiter — it takes your order to the kitchen and brings back food."', 'Tạo phép so sánh đơn giản: "API giống như người phục vụ — nhận đơn hàng và mang thức ăn về."', 'Good analogies connect new concepts to things people already understand.', 'Phép so sánh tốt kết nối khái niệm mới với những điều người ta đã hiểu.', 'analogy', 2);
+
+-- Tips (IDs 44-46)
+INSERT INTO tip (lesson_id, title, title_vi, content, content_vi, category, importance, icon, order_index) VALUES
+(15, 'The 4 steps of the Feynman Technique', '4 bước của Kỹ thuật Feynman', 'Step 1: Choose a concept. Step 2: Explain it in simple language as if teaching a child. Step 3: Identify gaps where your explanation breaks down. Step 4: Go back to the source, study the gaps, and simplify again.', 'Bước 1: Chọn một khái niệm. Bước 2: Giải thích bằng ngôn ngữ đơn giản như dạy trẻ em. Bước 3: Tìm lỗ hổng nơi giải thích bị vấp. Bước 4: Quay lại tài liệu, học phần thiếu, và đơn giản hóa lại.', 'memory', 'high', 'ListAlt', 1),
+(15, 'Jargon is a warning sign', 'Thuật ngữ chuyên ngành là dấu hiệu cảnh báo', 'If you catch yourself using technical jargon in your explanation, stop. Jargon often hides a lack of true understanding. Replace every technical term with plain language.', 'Nếu bạn dùng thuật ngữ chuyên ngành trong giải thích, hãy dừng lại. Thuật ngữ thường che giấu sự thiếu hiểu biết thật sự. Thay mỗi thuật ngữ bằng ngôn ngữ đời thường.', 'common_mistake', 'high', 'Warning', 2),
+(15, 'Named after a brilliant simplifier', 'Đặt tên theo bậc thầy đơn giản hóa', 'Richard Feynman (1918-1988) was a Nobel Prize-winning physicist famous for explaining complex quantum physics in simple terms anyone could understand. He believed: "If you can''t explain it simply, you don''t understand it well enough."', 'Richard Feynman (1918-1988) là nhà vật lý đoạt giải Nobel nổi tiếng với khả năng giải thích vật lý lượng tử phức tạp bằng ngôn ngữ ai cũng hiểu. Ông tin rằng: "Nếu bạn không thể giải thích đơn giản, bạn chưa hiểu đủ sâu."', 'general', 'medium', 'Person', 3);
+
+-- Comparison: Spaced Repetition vs Active Recall (ID 15)
+INSERT INTO lesson_comparison (lesson_id_1, lesson_id_2, aspect, aspect_vi, lesson_1_point, lesson_1_point_vi, lesson_2_point, lesson_2_point_vi, example_1, example_1_vi, example_2, example_2_vi, tip, tip_vi, order_index) VALUES
+(13, 14, 'Core mechanism', 'Cơ chế cốt lõi', 'Controls WHEN you review — optimizes timing of practice sessions', 'Kiểm soát KHI NÀO bạn ôn — tối ưu hóa thời điểm luyện tập', 'Controls HOW you review — forces active retrieval instead of passive reading', 'Kiểm soát CÁCH bạn ôn — buộc truy xuất chủ động thay vì đọc thụ động', 'Review vocabulary after 1 day, 3 days, 7 days (timing matters)', 'Ôn từ vựng sau 1 ngày, 3 ngày, 7 ngày (thời điểm quan trọng)', 'Close the book and test yourself on the vocabulary (method matters)', 'Đóng sách và tự kiểm tra từ vựng (phương pháp quan trọng)', 'Use BOTH together for maximum effect: actively recall the material at spaced intervals.', 'Kết hợp CẢ HAI để đạt hiệu quả tối đa: chủ động nhớ lại kiến thức ở các khoảng cách giãn cách.', 1);
+
+-- Exercise 99: Multiple Choice
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
+(15, 'multiple_choice', 'easy', 'What is the FIRST step of the Feynman Technique?', 'Bước ĐẦU TIÊN của Kỹ thuật Feynman là gì?', 'The Feynman Technique has 4 steps. Which one comes first?', 'Kỹ thuật Feynman có 4 bước. Bước nào đi trước?', 'Step 1 is choosing a concept to learn. You need to know what you want to understand before you can start explaining it.', 'Bước 1 là chọn một khái niệm để học. Bạn cần biết muốn hiểu gì trước khi bắt đầu giải thích.', 10, 1);
+INSERT INTO exercise_option (exercise_id, label, content, is_correct, explanation, order_index) VALUES
+(99, 'A', 'Choose a concept you want to understand', TRUE, 'Correct! Choosing the topic is always the first step', 1),
+(99, 'B', 'Explain the concept in simple language', FALSE, 'This is Step 2 — you need to choose the concept first', 2),
+(99, 'C', 'Identify gaps in your explanation', FALSE, 'This is Step 3 — comes after the explanation attempt', 3),
+(99, 'D', 'Read the textbook thoroughly', FALSE, 'The Feynman Technique starts with choosing a concept, not reading', 4);
+
+-- Exercise 100: Fill Blank
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(15, 'fill_blank', 'easy', 'Complete the Feynman Technique rule.', 'Hoàn thành quy tắc Kỹ thuật Feynman.', 'The Feynman Technique says: explain a concept as if teaching a ___.', 'Kỹ thuật Feynman nói: giải thích khái niệm như đang dạy một ___.', 'child', 'The technique requires explaining complex ideas in such simple language that even a child could understand, forcing you to strip away jargon.', 'Kỹ thuật yêu cầu giải thích ý tưởng phức tạp bằng ngôn ngữ đơn giản đến mức trẻ em cũng hiểu, buộc bạn loại bỏ thuật ngữ.', 10, 2);
+
+-- Exercise 101: Error Correction
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, hint, hint_vi, points, order_index) VALUES
+(15, 'error_correction', 'medium', 'This advice about the Feynman Technique contains an error. Correct it.', 'Lời khuyên về Kỹ thuật Feynman này có lỗi sai. Hãy sửa lại.', 'The Feynman Technique is most effective when you use technical jargon to explain concepts.', 'Kỹ thuật Feynman hiệu quả nhất khi bạn dùng thuật ngữ chuyên ngành để giải thích khái niệm.', 'The Feynman Technique is most effective when you use simple language to explain concepts.', 'The core principle of the Feynman Technique is to explain using simple language, not jargon. Technical jargon often masks a lack of true understanding.', 'Nguyên tắc cốt lõi của Kỹ thuật Feynman là giải thích bằng ngôn ngữ đơn giản, không dùng thuật ngữ. Thuật ngữ thường che giấu sự thiếu hiểu biết.', 'Think about what Feynman said about jargon and simplicity.', 'Hãy nghĩ về điều Feynman nói về thuật ngữ và sự đơn giản.', 15, 3);
+
+-- Exercise 102: Sentence Transform
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(15, 'sentence_transform', 'medium', 'Simplify this jargon-heavy explanation using the Feynman Technique.', 'Đơn giản hóa giải thích nhiều thuật ngữ này bằng Kỹ thuật Feynman.', 'Photosynthesis is the biochemical process by which chloroplasts convert light energy.', 'Quang hợp là quá trình sinh hóa mà lục lạp chuyển đổi năng lượng ánh sáng.', 'Photosynthesis is how plants use sunlight to make their own food.', 'The Feynman Technique requires replacing jargon ("biochemical process," "chloroplasts," "convert light energy") with everyday language that anyone can understand.', 'Kỹ thuật Feynman đòi hỏi thay thế thuật ngữ ("biochemical process," "chloroplasts," "convert light energy") bằng ngôn ngữ hàng ngày mà ai cũng hiểu.', 15, 4);
+
+-- Exercise 103: Arrange Words
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, word_bank, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(15, 'arrange_words', 'medium', 'Arrange the 4 steps of the Feynman Technique in the correct order.', 'Sắp xếp 4 bước của Kỹ thuật Feynman theo đúng thứ tự.', '["Identify gaps in your explanation", "Choose a concept to learn", "Go back and study the gaps, then simplify", "Explain it in simple language as if teaching a child"]', 'Choose a concept to learn, Explain it in simple language as if teaching a child, Identify gaps in your explanation, Go back and study the gaps, then simplify', 'The 4 steps are: Choose → Explain simply → Find gaps → Study gaps and simplify again. This cycle repeats until you can explain the concept clearly.', '4 bước: Chọn → Giải thích đơn giản → Tìm lỗ hổng → Học lại và đơn giản hóa. Chu trình lặp lại cho đến khi giải thích rõ ràng.', 10, 5);
+
+-- Exercise 104: Matching
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, explanation, explanation_vi, points, order_index) VALUES
+(15, 'matching', 'medium', 'Match each Feynman Technique step to its purpose.', 'Nối mỗi bước Kỹ thuật Feynman với mục đích của nó.', 'Each step serves a specific purpose in the learning cycle: choosing focuses attention, explaining tests understanding, identifying gaps reveals weaknesses, and simplifying deepens mastery.', 'Mỗi bước phục vụ mục đích cụ thể: chọn tập trung sự chú ý, giải thích kiểm tra hiểu biết, tìm lỗ hổng lộ điểm yếu, đơn giản hóa tăng chiều sâu.', 10, 6);
+INSERT INTO matching_pair (exercise_id, left_content, left_content_vi, right_content, right_content_vi, order_index) VALUES
+(104, 'Step 1: Choose a concept', 'Bước 1: Chọn khái niệm', 'Focus your attention on one topic', 'Tập trung vào một chủ đề', 1),
+(104, 'Step 2: Explain simply', 'Bước 2: Giải thích đơn giản', 'Test your understanding', 'Kiểm tra sự hiểu biết', 2),
+(104, 'Step 3: Identify gaps', 'Bước 3: Tìm lỗ hổng', 'Reveal what you don''t know', 'Lộ ra điều bạn chưa biết', 3),
+(104, 'Step 4: Study and simplify', 'Bước 4: Học và đơn giản hóa', 'Deepen mastery of the concept', 'Hiểu sâu hơn khái niệm', 4);
+
+-- Exercise 105: True/False
+INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, correct_answer, explanation, explanation_vi, points, order_index) VALUES
+(15, 'true_false', 'easy', 'Is this statement about the Feynman Technique correct?', 'Phát biểu sau về Kỹ thuật Feynman có đúng không?', 'If you can explain a concept using simple, everyday language without technical jargon, it means you truly understand it.', 'Nếu bạn có thể giải thích một khái niệm bằng ngôn ngữ đơn giản, đời thường, không dùng thuật ngữ chuyên ngành, điều đó có nghĩa bạn thật sự hiểu nó.', 'true', 'True! This is the core principle of the Feynman Technique. Richard Feynman believed that the ultimate test of understanding is the ability to explain something simply.', 'Đúng! Đây là nguyên tắc cốt lõi của Kỹ thuật Feynman. Richard Feynman tin rằng phép thử cao nhất của sự hiểu biết là khả năng giải thích đơn giản.', 5, 7);
+
+
 -- ============================================================================
 -- VERIFICATION QUERIES
 -- ============================================================================
@@ -1125,7 +1360,7 @@ UNION ALL SELECT 'Exercises', COUNT(*)::int FROM exercise
 UNION ALL SELECT 'Exercise Options', COUNT(*)::int FROM exercise_option
 UNION ALL SELECT 'Matching Pairs', COUNT(*)::int FROM matching_pair;
 
--- Verify all 12 lessons are complete
+-- Verify all 15 lessons are complete (12 grammar + 3 learning methods)
 SELECT l.name, fn_lesson_is_complete(l.id) AS complete
 FROM lesson l ORDER BY l.id;
 
