@@ -1,4 +1,4 @@
-.PHONY: help install dev lint format test build db-up db-down db-reset clean check
+.PHONY: help install dev lint format test test-unit test-integration build db-up db-down db-reset clean check
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
@@ -26,9 +26,17 @@ format-check: ## Check formatting without writing
 build: ## Build client for production
 	npm run build
 
-test: ## Run all tests (client + server)
+test: ## Run all tests (client + server unit + server integration)
 	npx vitest run
 	cd server && npx vitest run
+	cd server && npx vitest run -c vitest.integration.js
+
+test-unit: ## Run unit tests only (no DB required)
+	npx vitest run
+	cd server && npx vitest run
+
+test-integration: ## Run integration tests (requires PostgreSQL)
+	cd server && npx vitest run -c vitest.integration.js
 
 db-up: ## Start PostgreSQL container
 	docker compose up -d
@@ -46,6 +54,7 @@ check: ## Run all checks (lint + format + test + build)
 	npx prettier --check .
 	npx vitest run
 	cd server && npx vitest run
+	cd server && npx vitest run -c vitest.integration.js
 	npm run build
 	@echo "\n\033[32m✓ All checks passed\033[0m"
 

@@ -11,6 +11,9 @@
     "start": "node index.js",
     "lint": "eslint .",
     "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:integration": "vitest run -c vitest.integration.js",
+    "test:all": "vitest run && vitest run -c vitest.integration.js",
     "test:watch": "vitest"
   },
   "dependencies": {
