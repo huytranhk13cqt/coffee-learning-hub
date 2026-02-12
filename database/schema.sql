@@ -29,6 +29,7 @@ CREATE TYPE exercise_difficulty  AS ENUM ('easy', 'medium', 'hard');
 CREATE TYPE option_label         AS ENUM ('A', 'B', 'C', 'D', 'E', 'F');
 CREATE TYPE progress_status      AS ENUM ('not_started', 'in_progress', 'completed');
 CREATE TYPE section_type         AS ENUM ('formula', 'usage', 'signal_word', 'tip', 'exercise', 'comparison');
+CREATE TYPE lesson_section_type  AS ENUM ('markdown', 'key_points', 'info_box');
 
 
 -- ============================================================================
@@ -328,6 +329,31 @@ CREATE INDEX idx_tip_lesson ON tip(lesson_id);
 CREATE TRIGGER trg_tip_updated_at
   BEFORE UPDATE ON tip
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+
+-- ============================================================================
+-- TABLE 7b: lesson_section (generic data-driven content sections)
+-- ============================================================================
+
+CREATE TABLE lesson_section (
+    id          SERIAL              PRIMARY KEY,
+    lesson_id   INTEGER             NOT NULL REFERENCES lesson(id) ON DELETE CASCADE,
+    type        lesson_section_type NOT NULL,
+    title       VARCHAR(255),
+    title_vi    VARCHAR(255),
+    content     TEXT                NOT NULL,
+    content_vi  TEXT,
+    metadata    JSONB               NOT NULL DEFAULT '{}',
+    order_index SMALLINT            NOT NULL DEFAULT 0,
+    created_at  TIMESTAMPTZ         NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_lesson_section_lesson ON lesson_section(lesson_id, order_index);
+
+COMMENT ON TABLE lesson_section IS 'Generic ordered content sections for data-driven lesson rendering';
+COMMENT ON COLUMN lesson_section.type IS 'Rendering type: markdown, key_points, info_box';
+COMMENT ON COLUMN lesson_section.content IS 'Markdown content (rendered client-side)';
+COMMENT ON COLUMN lesson_section.metadata IS 'Extra hints: {variant} for info_box';
 
 
 -- ============================================================================

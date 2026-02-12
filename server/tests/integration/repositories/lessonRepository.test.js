@@ -147,6 +147,45 @@ describe('LessonRepository (integration)', () => {
     });
   });
 
+  describe('findSections', () => {
+    it('returns sections for a Learning Methods lesson', async () => {
+      // Lesson 13 = Spaced Repetition (has 3 sections)
+      const sections = await repo.findSections(13);
+      expect(sections.length).toBe(3);
+      expect(sections[0]).toHaveProperty('id');
+      expect(sections[0]).toHaveProperty('type');
+      expect(sections[0]).toHaveProperty('title');
+      expect(sections[0]).toHaveProperty('title_vi');
+      expect(sections[0]).toHaveProperty('content');
+      expect(sections[0]).toHaveProperty('content_vi');
+      expect(sections[0]).toHaveProperty('metadata');
+      expect(sections[0]).toHaveProperty('order_index');
+    });
+
+    it('returns sections ordered by order_index', async () => {
+      const sections = await repo.findSections(13);
+      for (let i = 1; i < sections.length; i++) {
+        expect(sections[i].order_index).toBeGreaterThanOrEqual(
+          sections[i - 1].order_index,
+        );
+      }
+    });
+
+    it('returns all 3 section types', async () => {
+      const sections = await repo.findSections(13);
+      const types = sections.map((s) => s.type);
+      expect(types).toContain('markdown');
+      expect(types).toContain('key_points');
+      expect(types).toContain('info_box');
+    });
+
+    it('returns empty array for lesson without sections', async () => {
+      // Lesson 1 = Simple Present (grammar, no sections)
+      const sections = await repo.findSections(1);
+      expect(sections).toEqual([]);
+    });
+  });
+
   describe('findFullBySlug (BFF)', () => {
     it('assembles complete lesson with all sections', async () => {
       const full = await repo.findFullBySlug('simple-present');
@@ -157,6 +196,7 @@ describe('LessonRepository (integration)', () => {
       expect(full).toHaveProperty('signalWords');
       expect(full).toHaveProperty('tips');
       expect(full).toHaveProperty('comparisons');
+      expect(full).toHaveProperty('sections');
       expect(full).toHaveProperty('navigation');
     });
 
@@ -179,6 +219,21 @@ describe('LessonRepository (integration)', () => {
       expect(full.navigation.next).not.toBeNull();
       expect(full.navigation.next).toHaveProperty('slug');
       expect(full.navigation.next).toHaveProperty('name_vi');
+    });
+
+    it('includes sections in BFF for Learning Methods lessons', async () => {
+      const full = await repo.findFullBySlug('spaced-repetition');
+
+      expect(full.sections.length).toBe(3);
+      expect(full.sections[0].type).toBe('markdown');
+      // Grammar-specific fields should be empty for non-grammar lessons
+      expect(full.formulas).toEqual([]);
+      expect(full.signalWords).toEqual([]);
+    });
+
+    it('returns empty sections array for grammar lessons', async () => {
+      const full = await repo.findFullBySlug('simple-present');
+      expect(full.sections).toEqual([]);
     });
   });
 });

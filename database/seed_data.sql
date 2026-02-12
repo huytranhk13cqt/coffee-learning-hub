@@ -1345,6 +1345,173 @@ INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, conten
 
 
 -- ============================================================================
+-- LESSON SECTIONS (Data-Driven Content for Learning Methods)
+-- ============================================================================
+-- These sections demonstrate the flexible lesson_section system.
+-- They render BEFORE legacy sections (formulas, usages, signal_words, tips).
+-- Grammar lessons have NO sections — they use legacy tables exclusively.
+
+-- Lesson 13: Spaced Repetition
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, metadata, order_index) VALUES
+(13, 'markdown', 'What is Spaced Repetition?', 'Ôn Tập Giãn Cách là gì?',
+'Spaced repetition is a **learning technique** that involves reviewing material at **increasing intervals** over time. Instead of cramming all at once, you space out your study sessions.
+
+The idea is simple: review material **just before you''re about to forget it**. Each successful review strengthens the memory and increases the time before the next review is needed.
+
+### How it works
+
+1. **Learn** new material
+2. **Review** after a short interval (e.g., 1 day)
+3. If you remember, **increase** the interval (3 days → 7 days → 14 days)
+4. If you forget, **reset** to a shorter interval
+
+> "The spacing effect is one of the most robust findings in experimental psychology." — Cepeda et al., 2006',
+'Ôn tập giãn cách là một **kỹ thuật học tập** bao gồm việc ôn lại tài liệu theo **khoảng thời gian tăng dần**. Thay vì nhồi nhét một lần, bạn giãn cách các buổi học.
+
+Ý tưởng rất đơn giản: ôn lại tài liệu **ngay trước khi bạn sắp quên**. Mỗi lần ôn thành công sẽ củng cố trí nhớ và tăng thời gian trước lần ôn tiếp theo.
+
+### Cách hoạt động
+
+1. **Học** tài liệu mới
+2. **Ôn lại** sau một khoảng ngắn (ví dụ: 1 ngày)
+3. Nếu nhớ, **tăng** khoảng cách (3 ngày → 7 ngày → 14 ngày)
+4. Nếu quên, **giảm** về khoảng cách ngắn hơn
+
+> "Hiệu ứng giãn cách là một trong những phát hiện vững chắc nhất trong tâm lý học thực nghiệm." — Cepeda et al., 2006',
+'{}', 1),
+
+(13, 'key_points', 'Key Principles', 'Nguyên tắc chính',
+'- **Forgetting is natural** — the forgetting curve shows memory decays exponentially without review
+- **Timing matters** — reviewing at the right moment maximizes retention with minimal effort
+- **Active recall + spacing** — combining both techniques produces the strongest long-term memories
+- **Consistency beats intensity** — 15 minutes daily > 2 hours once a week',
+'- **Quên là tự nhiên** — đường cong quên lãng cho thấy trí nhớ suy giảm theo hàm mũ nếu không ôn tập
+- **Thời điểm rất quan trọng** — ôn đúng lúc giúp ghi nhớ tối đa với nỗ lực tối thiểu
+- **Nhớ lại chủ động + giãn cách** — kết hợp cả hai kỹ thuật tạo trí nhớ dài hạn mạnh nhất
+- **Đều đặn tốt hơn cường độ** — 15 phút mỗi ngày > 2 giờ mỗi tuần',
+'{}', 2),
+
+(13, 'info_box', 'Pro Tip', 'Mẹo hay',
+'Start with **short intervals** (1 day, 3 days) and gradually increase. Most people try to space too far apart too quickly. Let your brain tell you when it''s ready — if you struggle to recall, shorten the interval.',
+'Bắt đầu với **khoảng cách ngắn** (1 ngày, 3 ngày) và tăng dần. Hầu hết mọi người cố giãn quá xa quá nhanh. Hãy để bộ não cho bạn biết khi nào sẵn sàng — nếu bạn khó nhớ lại, hãy rút ngắn khoảng cách.',
+'{"variant": "tip"}', 3);
+
+-- Lesson 14: Active Recall
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, metadata, order_index) VALUES
+(14, 'markdown', 'What is Active Recall?', 'Nhớ Lại Chủ Động là gì?',
+'Active recall is a **study strategy** where you actively stimulate your memory during learning, rather than passively reviewing material.
+
+Instead of:
+- Re-reading your notes ❌
+- Highlighting text ❌
+- Watching lectures again ❌
+
+You should:
+- **Close your notes** and try to remember what you just read ✅
+- **Write down** everything you can recall from memory ✅
+- **Test yourself** with questions before looking at answers ✅
+
+### The Science
+
+Research by Karpicke & Blunt (2011) showed that students who practiced active recall **remembered 50% more** than those who simply re-read the material, even when the re-readers spent more time studying.',
+'Nhớ lại chủ động là một **chiến lược học tập** trong đó bạn chủ động kích thích trí nhớ trong khi học, thay vì ôn tập thụ động.
+
+Thay vì:
+- Đọc lại ghi chú ❌
+- Tô sáng văn bản ❌
+- Xem lại bài giảng ❌
+
+Bạn nên:
+- **Đóng ghi chú** và cố nhớ lại những gì vừa đọc ✅
+- **Viết ra** mọi thứ bạn có thể nhớ ✅
+- **Tự kiểm tra** bằng câu hỏi trước khi xem đáp án ✅
+
+### Khoa học đằng sau
+
+Nghiên cứu của Karpicke & Blunt (2011) cho thấy sinh viên thực hành nhớ lại chủ động **nhớ nhiều hơn 50%** so với những người chỉ đọc lại tài liệu, dù nhóm đọc lại dành nhiều thời gian hơn.',
+'{}', 1),
+
+(14, 'info_box', 'Common Misconception', 'Hiểu lầm phổ biến',
+'Many students believe that **re-reading** is effective because the material feels familiar. But **familiarity is not the same as understanding**. You might recognize information when you see it, but fail to produce it when you need it — like on an exam.',
+'Nhiều sinh viên tin rằng **đọc lại** hiệu quả vì tài liệu có vẻ quen thuộc. Nhưng **quen thuộc không có nghĩa là hiểu**. Bạn có thể nhận ra thông tin khi nhìn thấy, nhưng không thể tái tạo nó khi cần — như trong kỳ thi.',
+'{"variant": "warning"}', 2),
+
+(14, 'key_points', 'How to Practice Active Recall', 'Cách thực hành Nhớ Lại Chủ Động',
+'1. **The Blank Page Method**: After reading a chapter, close the book and write everything you remember on a blank page
+2. **Flashcards**: Create question-answer pairs and quiz yourself regularly
+3. **Practice Questions**: Answer problems without looking at solutions first
+4. **Teach Someone**: Explain the concept to another person (or rubber duck)
+5. **Cornell Notes**: Cover the right side and use left-column cues to recall content',
+'1. **Phương pháp Trang Trắng**: Sau khi đọc một chương, đóng sách và viết mọi thứ bạn nhớ ra trang trắng
+2. **Flashcard**: Tạo các cặp câu hỏi-đáp và tự kiểm tra thường xuyên
+3. **Câu hỏi thực hành**: Trả lời bài tập mà không xem lời giải trước
+4. **Dạy ai đó**: Giải thích khái niệm cho người khác (hoặc con vịt cao su)
+5. **Ghi chú Cornell**: Che phần bên phải và dùng gợi ý bên trái để nhớ lại nội dung',
+'{}', 3);
+
+-- Lesson 15: The Feynman Technique
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, metadata, order_index) VALUES
+(15, 'markdown', 'What is the Feynman Technique?', 'Kỹ Thuật Feynman là gì?',
+'The Feynman Technique is a **mental model** for learning anything deeply. Named after Nobel Prize-winning physicist **Richard Feynman**, it forces you to understand concepts at a fundamental level.
+
+Feynman was known as the "Great Explainer" because he could make even quantum physics accessible. His secret? **If you can''t explain it simply, you don''t understand it well enough.**
+
+### The 4 Steps
+
+| Step | Action | Purpose |
+|------|--------|---------|
+| 1 | **Choose a concept** | Focus your learning |
+| 2 | **Explain it simply** | As if teaching a 12-year-old |
+| 3 | **Identify gaps** | Where did you get stuck? |
+| 4 | **Review and simplify** | Go back to source material |
+
+The power of this technique is in **Step 3** — when you struggle to explain something simply, you''ve found exactly where your understanding breaks down.',
+'Kỹ thuật Feynman là một **mô hình tư duy** để học bất cứ điều gì sâu sắc. Được đặt tên theo nhà vật lý đoạt giải Nobel **Richard Feynman**, nó buộc bạn phải hiểu khái niệm ở mức cơ bản nhất.
+
+Feynman được gọi là "Nhà Giải Thích Vĩ Đại" vì ông có thể làm cho ngay cả vật lý lượng tử cũng dễ hiểu. Bí mật của ông? **Nếu bạn không thể giải thích đơn giản, bạn chưa hiểu đủ sâu.**
+
+### 4 Bước
+
+| Bước | Hành động | Mục đích |
+|------|-----------|----------|
+| 1 | **Chọn một khái niệm** | Tập trung việc học |
+| 2 | **Giải thích đơn giản** | Như đang dạy học sinh 12 tuổi |
+| 3 | **Tìm lỗ hổng** | Chỗ nào bạn bị kẹt? |
+| 4 | **Ôn lại và đơn giản hóa** | Quay lại tài liệu gốc |
+
+Sức mạnh của kỹ thuật này nằm ở **Bước 3** — khi bạn gặp khó khăn để giải thích đơn giản, bạn đã tìm ra chính xác chỗ mà sự hiểu biết của bạn bị đứt gãy.',
+'{}', 1),
+
+(15, 'info_box', 'Real-World Example', 'Ví dụ thực tế',
+'**Trying to learn "photosynthesis"?**
+
+Don''t say: "Photosynthesis is the biochemical process by which chloroplasts convert electromagnetic radiation into chemical energy through a series of electron transport reactions."
+
+Say: "Plants eat sunlight. They take light energy, water from the ground, and CO₂ from the air, and turn them into sugar (food) and oxygen. The green parts of the plant are like tiny solar panels."
+
+If you can do this, you truly understand it!',
+'**Đang cố học "quang hợp"?**
+
+Đừng nói: "Quang hợp là quá trình sinh hóa mà qua đó lục lạp chuyển đổi bức xạ điện từ thành năng lượng hóa học thông qua chuỗi phản ứng vận chuyển electron."
+
+Hãy nói: "Cây ăn ánh sáng mặt trời. Chúng lấy năng lượng ánh sáng, nước từ đất, và CO₂ từ không khí, rồi biến thành đường (thức ăn) và oxy. Phần xanh của cây giống như tấm pin năng lượng mặt trời nhỏ xíu."
+
+Nếu bạn có thể làm được điều này, bạn thật sự hiểu nó!',
+'{"variant": "example"}', 2),
+
+(15, 'key_points', 'Why This Works', 'Tại sao kỹ thuật này hiệu quả',
+'- **Forces deep processing** — you can''t fake understanding when explaining simply
+- **Reveals knowledge gaps** — jargon and vague terms indicate areas you haven''t truly grasped
+- **Builds connections** — simplification requires linking new ideas to familiar concepts
+- **Improves communication** — a skill valuable far beyond studying',
+'- **Buộc xử lý sâu** — bạn không thể giả vờ hiểu khi giải thích đơn giản
+- **Phát hiện lỗ hổng** — thuật ngữ và từ mơ hồ chỉ ra những chỗ bạn chưa thật sự nắm
+- **Xây dựng kết nối** — đơn giản hóa đòi hỏi liên kết ý tưởng mới với khái niệm quen thuộc
+- **Cải thiện giao tiếp** — kỹ năng có giá trị vượt xa việc học',
+'{}', 3);
+
+
+-- ============================================================================
 -- VERIFICATION QUERIES
 -- ============================================================================
 
@@ -1355,6 +1522,7 @@ UNION ALL SELECT 'Usages', COUNT(*)::int FROM lesson_usage
 UNION ALL SELECT 'Examples', COUNT(*)::int FROM example
 UNION ALL SELECT 'Signal Words', COUNT(*)::int FROM signal_word
 UNION ALL SELECT 'Tips', COUNT(*)::int FROM tip
+UNION ALL SELECT 'Lesson Sections', COUNT(*)::int FROM lesson_section
 UNION ALL SELECT 'Comparisons', COUNT(*)::int FROM lesson_comparison
 UNION ALL SELECT 'Exercises', COUNT(*)::int FROM exercise
 UNION ALL SELECT 'Exercise Options', COUNT(*)::int FROM exercise_option

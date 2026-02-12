@@ -131,6 +131,16 @@ export class LessonRepository {
     `;
   }
 
+  // B7a: Generic content sections (data-driven)
+  async findSections(lessonId) {
+    return this.sql`
+      SELECT id, type, title, title_vi, content, content_vi, metadata, order_index
+      FROM lesson_section
+      WHERE lesson_id = ${lessonId}
+      ORDER BY order_index
+    `;
+  }
+
   // B7: Full lesson assembly (BFF pattern)
   async findFullBySlug(slug) {
     const lesson = await this.findBySlug(slug);
@@ -142,6 +152,7 @@ export class LessonRepository {
       signalWords,
       tips,
       comparisons,
+      sections,
       siblings,
     ] = await Promise.all([
       this.findFormulas(lesson.id),
@@ -150,6 +161,7 @@ export class LessonRepository {
       this.findSignalWords(lesson.id),
       this.findTips(lesson.id),
       this.findComparisons(lesson.id),
+      this.findSections(lesson.id),
       this.findByGroup(lesson.group_id),
     ]);
 
@@ -174,6 +186,7 @@ export class LessonRepository {
       signalWords,
       tips,
       comparisons,
+      sections,
       navigation: {
         prev: prev && { slug: prev.slug, name_vi: prev.name_vi },
         next: next && { slug: next.slug, name_vi: next.name_vi },

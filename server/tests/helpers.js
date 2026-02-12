@@ -16,6 +16,7 @@ function createMockLessonRepo(overrides = {}) {
     search: async () => [],
     findFullBySlug: async () => null,
     findByGroup: async () => [],
+    findSections: async () => [],
     ...overrides,
   };
 }

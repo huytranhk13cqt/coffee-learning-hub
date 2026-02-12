@@ -25,6 +25,7 @@ import UsageSection from '../components/lesson/UsageSection.jsx';
 import SignalWordSection from '../components/lesson/SignalWordSection.jsx';
 import TipSection from '../components/lesson/TipSection.jsx';
 import ComparisonSection from '../components/lesson/ComparisonSection.jsx';
+import SectionRenderer from '../components/lesson/SectionRenderer.jsx';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import LessonProgressSummary from '../components/progress/LessonProgressSummary.jsx';
 import ResetProgressDialog from '../components/progress/ResetProgressDialog.jsx';
@@ -159,8 +160,9 @@ export default function LessonPage() {
           </Stack>
         </Box>
 
-        {/* Theory Sections */}
+        {/* Theory Sections — data-driven sections first, then legacy grammar sections */}
         <Stack spacing={4} divider={<Divider />}>
+          <SectionRenderer sections={lesson.sections} />
           <FormulaSection formulas={lesson.formulas} />
           <UsageSection usages={lesson.usages} />
           <SignalWordSection signalWords={lesson.signalWords} />
