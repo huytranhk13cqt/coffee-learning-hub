@@ -1,8 +1,10 @@
+import { useRef, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 import ExerciseProgress from './ExerciseProgress.jsx';
 import ExerciseRenderer from './ExerciseRenderer.jsx';
@@ -26,9 +28,20 @@ export default function ExerciseWrapper({
   onSubmit,
   onNext,
 }) {
+  const feedbackRef = useRef(null);
   const isSubmitting = phase === 'submitting';
   const isFeedback = phase === 'feedback';
   const disabled = isSubmitting || isFeedback;
+
+  // Auto-scroll to feedback when it appears
+  useEffect(() => {
+    if (feedback && feedbackRef.current) {
+      feedbackRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [feedback]);
 
   return (
     <Box>
@@ -90,12 +103,25 @@ export default function ExerciseWrapper({
       )}
 
       {/* Feedback */}
-      <FeedbackPanel feedback={feedback} />
+      <div ref={feedbackRef}>
+        <FeedbackPanel feedback={feedback} />
+      </div>
 
-      {/* Error */}
+      {/* Error with retry */}
       {error && (
         <Alert severity="error" sx={{ mt: 2 }}>
-          {error}
+          <AlertTitle>Không thể gửi câu trả lời</AlertTitle>
+          Vui lòng kiểm tra kết nối mạng và thử lại.
+          <Box sx={{ mt: 1 }}>
+            <Button
+              size="small"
+              color="error"
+              variant="outlined"
+              onClick={onSubmit}
+            >
+              Thử lại
+            </Button>
+          </Box>
         </Alert>
       )}
 
