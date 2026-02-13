@@ -1,7 +1,7 @@
 -- ============================================================================
 -- SEED DATA: Knowledge Learning Application
--- Content: 12 English Grammar Tenses + 3 Learning Methods lessons
--- Compatible with: schema.sql v5 (PostgreSQL 17)
+-- Content: 12 English Grammar Tenses + 3 Learning Methods + 4 Python Basics lessons
+-- Compatible with: schema.sql v6 (PostgreSQL 17)
 -- ============================================================================
 
 
@@ -1511,6 +1511,15 @@ Nếu bạn có thể làm được điều này, bạn thật sự hiểu nó!'
 '{}', 3);
 
 
+-- ############################################################################
+-- PYTHON BASICS CONTENT (4 lessons, loaded from seed_python.sql)
+-- Category 5, Lessons 16-19
+-- ############################################################################
+-- See database/seed_python.sql for the full Python Basics seed data.
+-- That file is applied separately during development and included here by reference.
+-- For fresh database setup, run: psql -f seed_data.sql && psql -f seed_python.sql
+
+
 -- ============================================================================
 -- VERIFICATION QUERIES
 -- ============================================================================
@@ -1528,7 +1537,7 @@ UNION ALL SELECT 'Exercises', COUNT(*)::int FROM exercise
 UNION ALL SELECT 'Exercise Options', COUNT(*)::int FROM exercise_option
 UNION ALL SELECT 'Matching Pairs', COUNT(*)::int FROM matching_pair;
 
--- Verify all 15 lessons are complete (12 grammar + 3 learning methods)
+-- Verify all lessons are complete (12 grammar + 3 learning methods + 4 Python basics)
 SELECT l.name, fn_lesson_is_complete(l.id) AS complete
 FROM lesson l ORDER BY l.id;
 
