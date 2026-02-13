@@ -33,5 +33,9 @@ lerna-debug.log*
 # Docker PostgreSQL data
 postgres_data/
 
+# Playwright
+test-results/
+playwright-report/
+
 # Claude Code
 .claude/
