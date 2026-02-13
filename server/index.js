@@ -42,6 +42,7 @@ const app = await createApp({
   lessonController,
   exerciseController,
   progressController,
+  sql,
 });
 
 await app.listen({ port, host: '0.0.0.0' });

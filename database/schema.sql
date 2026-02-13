@@ -65,7 +65,8 @@ INSERT INTO schema_version (version, description) VALUES
 (2, 'PostgreSQL migration (v3.0 — SERIAL, ENUM types, JSONB, triggers)'),
 (3, 'Rename tense_group to category (generalize for multi-topic Learning Hub)'),
 (4, 'Add missing indexes and unique constraint for exercise_attempt'),
-(5, 'Remove exercises_total cached column, compute dynamically');
+(5, 'Remove exercises_total cached column, compute dynamically'),
+(6, 'Add lesson_section table for data-driven content rendering');
 
 
 -- ============================================================================

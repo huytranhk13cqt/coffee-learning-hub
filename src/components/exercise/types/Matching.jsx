@@ -20,6 +20,7 @@ export default function Matching({
   });
 
   // Pairs: [{ leftId, rightId }]
+  // Reset handled by key={exercise.id} on parent ExerciseRenderer
   const [pairs, setPairs] = useState([]);
   const [selectedLeft, setSelectedLeft] = useState(null);
 

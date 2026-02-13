@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -20,6 +20,14 @@ export default function SearchBar() {
   const [inputValue, setInputValue] = useState('');
   const timerRef = useRef(null);
   const abortRef = useRef(null);
+
+  // Cleanup on unmount: cancel pending debounce + in-flight request
+  useEffect(() => {
+    return () => {
+      clearTimeout(timerRef.current);
+      if (abortRef.current) abortRef.current.abort();
+    };
+  }, []);
 
   const fetchResults = useCallback((query) => {
     // Cancel previous in-flight request

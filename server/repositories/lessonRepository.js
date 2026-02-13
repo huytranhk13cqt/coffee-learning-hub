@@ -25,6 +25,7 @@ export class LessonRepository {
           OR l.short_desc_vi ILIKE ${pattern}
         )
       ORDER BY g.order_index, l.order_index
+      LIMIT 50
     `;
   }
 

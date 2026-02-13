@@ -21,6 +21,7 @@ export default function ArrangeWords({
   });
 
   // Track selected words as ordered indices
+  // Reset handled by key={exercise.id} on parent ExerciseRenderer
   const [selectedIndices, setSelectedIndices] = useState([]);
 
   // Sync answer string from selected words

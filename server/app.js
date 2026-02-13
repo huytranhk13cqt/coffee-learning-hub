@@ -16,6 +16,7 @@ export async function createApp({
   lessonController,
   exerciseController,
   progressController,
+  sql,
   logger = true,
 }) {
   const app = Fastify({ logger });
@@ -26,15 +27,29 @@ export async function createApp({
   });
   await app.register(cors, {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'X-Session-Id'],
+    maxAge: 86400,
   });
   await app.register(rateLimit, {
     max: 100,
     timeWindow: '1 minute',
   });
 
-  // --- Health check ---
-  app.get('/api/health', async () => {
-    return { status: 'ok', timestamp: new Date().toISOString() };
+  // --- Health check (includes DB ping) ---
+  app.get('/api/health', async (_request, reply) => {
+    const result = { status: 'ok', timestamp: new Date().toISOString() };
+    if (sql) {
+      try {
+        await sql`SELECT 1`;
+        result.database = 'connected';
+      } catch {
+        result.status = 'degraded';
+        result.database = 'disconnected';
+        return reply.status(503).send(result);
+      }
+    }
+    return result;
   });
 
   // --- API routes ---
