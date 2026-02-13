@@ -66,7 +66,8 @@ INSERT INTO schema_version (version, description) VALUES
 (3, 'Rename tense_group to category (generalize for multi-topic Learning Hub)'),
 (4, 'Add missing indexes and unique constraint for exercise_attempt'),
 (5, 'Remove exercises_total cached column, compute dynamically'),
-(6, 'Add lesson_section table for data-driven content rendering');
+(6, 'Add lesson_section table for data-driven content rendering'),
+(7, 'Add partial exercise index and composite lesson index for production performance');
 
 
 -- ============================================================================
@@ -137,6 +138,7 @@ COMMENT ON COLUMN lesson.description IS 'Full introduction';
 
 CREATE INDEX idx_lesson_group     ON lesson(group_id);
 CREATE INDEX idx_lesson_published ON lesson(is_published, order_index);
+CREATE INDEX idx_lesson_group_published_order ON lesson(group_id, is_published, order_index);
 
 CREATE TRIGGER trg_lesson_updated_at
   BEFORE UPDATE ON lesson
@@ -454,6 +456,7 @@ COMMENT ON COLUMN exercise.hint IS 'Hint for the student';
 COMMENT ON COLUMN exercise.time_limit IS 'Time limit in seconds (optional)';
 
 CREATE INDEX idx_exercise_lesson_type_diff ON exercise(lesson_id, type, difficulty);
+CREATE INDEX idx_exercise_lesson_active_order ON exercise(lesson_id, order_index) WHERE is_active = TRUE;
 
 CREATE TRIGGER trg_exercise_updated_at
   BEFORE UPDATE ON exercise
