@@ -29,7 +29,7 @@ CREATE TYPE exercise_difficulty  AS ENUM ('easy', 'medium', 'hard');
 CREATE TYPE option_label         AS ENUM ('A', 'B', 'C', 'D', 'E', 'F');
 CREATE TYPE progress_status      AS ENUM ('not_started', 'in_progress', 'completed');
 CREATE TYPE section_type         AS ENUM ('formula', 'usage', 'signal_word', 'tip', 'exercise', 'comparison');
-CREATE TYPE lesson_section_type  AS ENUM ('markdown', 'key_points', 'info_box');
+CREATE TYPE lesson_section_type  AS ENUM ('markdown', 'key_points', 'info_box', 'audio', 'video', 'chart', 'diagram');
 
 
 -- ============================================================================
