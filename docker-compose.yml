@@ -17,6 +17,10 @@ services:
       - ./database/seed_math.sql:/docker-entrypoint-initdb.d/04-seed-math.sql:ro
       - ./database/seed_cybersecurity.sql:/docker-entrypoint-initdb.d/05-seed-cyber.sql:ro
       - ./database/seed_psychology.sql:/docker-entrypoint-initdb.d/06-seed-psych.sql:ro
+      - ./database/seed_design.sql:/docker-entrypoint-initdb.d/07-seed-design.sql:ro
+      - ./database/seed_history.sql:/docker-entrypoint-initdb.d/08-seed-history.sql:ro
+      - ./database/seed_music.sql:/docker-entrypoint-initdb.d/09-seed-music.sql:ro
+      - ./database/seed_philosophy.sql:/docker-entrypoint-initdb.d/10-seed-philosophy.sql:ro
     healthcheck:
       test:
         [

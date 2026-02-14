@@ -89,7 +89,7 @@ CREATE TABLE category (
     PRIMARY KEY (id),
     CONSTRAINT uq_category_name  UNIQUE (name),
     CONSTRAINT chk_category_color CHECK (color ~ '^#[0-9A-Fa-f]{6}$'),
-    CONSTRAINT chk_category_order CHECK (order_index >= 0 AND order_index <= 10)
+    CONSTRAINT chk_category_order CHECK (order_index >= 0 AND order_index <= 20)
 );
 
 COMMENT ON COLUMN category.icon IS 'MUI icon name';
