@@ -72,6 +72,17 @@ function validateArrangeWords(userAnswer, data) {
   };
 }
 
+function validateCodeOutput(userAnswer, data) {
+  // userAnswer is the predicted output (string)
+  const isCorrect =
+    normalizeText(userAnswer) === normalizeText(data.correct_answer);
+  return {
+    isCorrect,
+    explanation: data.explanation,
+    explanationVi: data.explanation_vi,
+  };
+}
+
 function validateMatching(userAnswer, data) {
   // userAnswer = array of { leftId, rightId }
   // data = { pairs: [{ id, left_content, right_content }], explanation, explanation_vi }
@@ -105,6 +116,7 @@ const strategies = {
   true_false: validateTrueFalse,
   arrange_words: validateArrangeWords,
   matching: validateMatching,
+  code_output: validateCodeOutput,
 };
 
 // --- Shape validation (what the client must send) ---
@@ -116,6 +128,7 @@ const shapeValidators = {
   sentence_transform: (a) => typeof a === 'string' && a.trim().length > 0,
   true_false: (a) => typeof a === 'string' && /^(true|false)$/i.test(a),
   arrange_words: (a) => typeof a === 'string' && a.trim().length > 0,
+  code_output: (a) => typeof a === 'string' && a.trim().length > 0,
   matching: (a) =>
     Array.isArray(a) &&
     a.length > 0 &&

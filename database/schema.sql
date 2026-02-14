@@ -24,7 +24,7 @@ CREATE TYPE signal_word_category AS ENUM ('time', 'frequency', 'duration', 'sequ
 CREATE TYPE signal_word_position AS ENUM ('beginning', 'middle', 'end', 'flexible');
 CREATE TYPE tip_category         AS ENUM ('memory', 'common_mistake', 'comparison', 'native_usage', 'shortcut', 'general');
 CREATE TYPE importance_level     AS ENUM ('low', 'medium', 'high');
-CREATE TYPE exercise_type        AS ENUM ('multiple_choice', 'fill_blank', 'error_correction', 'sentence_transform', 'arrange_words', 'matching', 'true_false');
+CREATE TYPE exercise_type        AS ENUM ('multiple_choice', 'fill_blank', 'error_correction', 'sentence_transform', 'arrange_words', 'matching', 'true_false', 'code_output');
 CREATE TYPE exercise_difficulty  AS ENUM ('easy', 'medium', 'hard');
 CREATE TYPE option_label         AS ENUM ('A', 'B', 'C', 'D', 'E', 'F');
 CREATE TYPE progress_status      AS ENUM ('not_started', 'in_progress', 'completed');
@@ -430,6 +430,8 @@ CREATE TABLE exercise (
     explanation_vi  TEXT                    NULL,
     hint            VARCHAR(255)            NULL,
     hint_vi         VARCHAR(255)            NULL,
+    image_url       VARCHAR(500)            NULL,
+    audio_url       VARCHAR(500)            NULL,
     points          SMALLINT                NOT NULL DEFAULT 10,
     time_limit      SMALLINT                NULL,
     order_index     SMALLINT                NOT NULL DEFAULT 0,

@@ -11,6 +11,7 @@ export class ExerciseRepository {
       SELECT
         e.id, e.type, e.difficulty, e.question, e.question_vi,
         e.content, e.content_vi, e.context, e.context_vi,
+        e.image_url, e.audio_url,
         e.word_bank, e.hint, e.hint_vi,
         e.points, e.time_limit
       FROM exercise e

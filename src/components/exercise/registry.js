@@ -5,6 +5,7 @@ import SentenceTransform from './types/SentenceTransform.jsx';
 import ArrangeWords from './types/ArrangeWords.jsx';
 import TrueFalse from './types/TrueFalse.jsx';
 import Matching from './types/Matching.jsx';
+import CodeOutput from './types/CodeOutput.jsx';
 
 /**
  * Component Registry: maps exercise type → React component.
@@ -22,6 +23,7 @@ const exerciseRegistry = {
   arrange_words: ArrangeWords,
   true_false: TrueFalse,
   matching: Matching,
+  code_output: CodeOutput,
 };
 
 export default exerciseRegistry;

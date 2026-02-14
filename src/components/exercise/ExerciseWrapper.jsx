@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack';
 import ExerciseProgress from './ExerciseProgress.jsx';
 import ExerciseRenderer from './ExerciseRenderer.jsx';
 import FeedbackPanel from './FeedbackPanel.jsx';
+import MarkdownContent from '../lesson/MarkdownContent.jsx';
 import {
   EXERCISE_DIFFICULTY_LABELS,
   EXERCISE_DIFFICULTY_COLORS,
@@ -72,12 +73,38 @@ export default function ExerciseWrapper({
         )}
       </Stack>
 
+      {/* Exercise media (image, audio) */}
+      {exercise.image_url && (
+        <Box
+          component="img"
+          src={exercise.image_url}
+          alt={exercise.question}
+          sx={{
+            maxWidth: '100%',
+            height: 'auto',
+            borderRadius: 1,
+            mb: 2,
+            display: 'block',
+          }}
+        />
+      )}
+      {exercise.audio_url && (
+        <Box
+          component="audio"
+          controls
+          preload="metadata"
+          src={exercise.audio_url}
+          sx={{ display: 'block', mb: 2, maxWidth: 400 }}
+        />
+      )}
+
       {/* Context (reading passage, code snippet, etc.) */}
       {exercise.context && (
         <Paper variant="outlined" sx={{ p: 2, mb: 2, bgcolor: 'grey.50' }}>
-          <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-            {exercise.context}
-          </Typography>
+          <MarkdownContent
+            content={exercise.context}
+            sx={{ '& p:last-child': { mb: 0 } }}
+          />
           {exercise.context_vi && (
             <Typography
               variant="body2"
