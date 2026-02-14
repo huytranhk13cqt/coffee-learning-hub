@@ -14,8 +14,10 @@ import cpp from 'highlight.js/lib/languages/cpp';
 import typescript from 'highlight.js/lib/languages/typescript';
 import json from 'highlight.js/lib/languages/json';
 import go from 'highlight.js/lib/languages/go';
+import markedKatex from 'marked-katex-extension';
 import DOMPurify from 'dompurify';
 import Box from '@mui/material/Box';
+import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/github-dark.css';
 
 // Register languages + common aliases for code blocks
@@ -42,7 +44,9 @@ for (const [name, def, ...aliases] of LANGUAGES) {
   }
 }
 
-// Configure marked with syntax highlighting
+// Configure marked with syntax highlighting + LaTeX math rendering
+// KaTeX: $inline$ and $$display$$ LaTeX blocks → rendered HTML
+// highlight.js: ```lang code blocks → syntax-highlighted HTML
 const marked = new Marked(
   markedHighlight({
     langPrefix: 'hljs language-',
@@ -53,17 +57,22 @@ const marked = new Marked(
       return code;
     },
   }),
+  markedKatex({ output: 'html', throwOnError: false }),
   { breaks: true, gfm: true },
 );
 
+// DOMPurify config: allow KaTeX inline styles + media elements.
+// Content is trusted (server-seeded), this is defense-in-depth only.
+const SANITIZE_OPTIONS = {
+  ADD_TAGS: ['audio', 'video'],
+  ADD_ATTR: ['controls', 'src', 'preload', 'poster', 'loop', 'muted', 'style'],
+};
+
 export default function MarkdownContent({ content, sx }) {
-  // SECURITY: Content is trusted (server-seeded DB only, no user-generated input).
-  // DOMPurify sanitizes marked output as defense-in-depth before rendering.
-  // If a CMS or user input is added in the future, add input sanitization too.
   const html = useMemo(() => {
     if (!content) return '';
     const raw = marked.parse(content);
-    return DOMPurify.sanitize(raw);
+    return DOMPurify.sanitize(raw, SANITIZE_OPTIONS);
   }, [content]);
 
   if (!html) return null;
@@ -139,6 +148,12 @@ export default function MarkdownContent({ content, sx }) {
           borderTop: 1,
           borderColor: 'divider',
           my: 2,
+        },
+        // KaTeX display math: centered block with vertical spacing
+        '& .katex-display': {
+          my: 2,
+          overflowX: 'auto',
+          overflowY: 'hidden',
         },
         ...sx,
       }}

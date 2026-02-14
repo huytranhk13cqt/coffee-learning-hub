@@ -57,37 +57,31 @@ Algebra uses **letters (variables)** to represent unknown numbers. This lets us 
 
 ### Variables and Expressions
 
-```
-Variable: x, y, n (letters that stand for numbers)
-Expression: 2x + 3 (combines variables, numbers, and operations)
-Equation: 2x + 3 = 11 (two expressions set equal)
-```
+- **Variable:** $x$, $y$, $n$ (letters that stand for numbers)
+- **Expression:** $2x + 3$ (combines variables, numbers, and operations)
+- **Equation:** $2x + 3 = 11$ (two expressions set equal)
 
 ### Solving Equations — Step by Step
 
 The goal is to **isolate the variable** on one side:
 
-```
-Solve: 2x + 3 = 11
+$$\text{Solve: } 2x + 3 = 11$$
 
-Step 1: Subtract 3 from both sides
-        2x + 3 - 3 = 11 - 3
-        2x = 8
+$$\text{Step 1: Subtract 3 from both sides}$$
+$$2x + 3 - 3 = 11 - 3$$
+$$2x = 8$$
 
-Step 2: Divide both sides by 2
-        2x / 2 = 8 / 2
-        x = 4
+$$\text{Step 2: Divide both sides by 2}$$
+$$\frac{2x}{2} = \frac{8}{2}$$
+$$x = 4$$
 
-Check: 2(4) + 3 = 8 + 3 = 11 ✓
-```
+$$\text{Check: } 2(4) + 3 = 8 + 3 = 11 \; ✓$$
 
 ### Inequalities
 
-```
-x + 5 > 12     →  x > 7      (subtract 5)
-3x <= 15       →  x <= 5     (divide by 3)
--2x > 6        →  x < -3     (divide by -2, FLIP the sign!)
-```
+$$x + 5 > 12 \quad \Rightarrow \quad x > 7 \quad \text{(subtract 5)}$$
+$$3x \leq 15 \quad \Rightarrow \quad x \leq 5 \quad \text{(divide by 3)}$$
+$$-2x > 6 \quad \Rightarrow \quad x < -3 \quad \text{(divide by -2, FLIP the sign!)}$$
 
 > **Key Rule:** When you multiply or divide by a **negative number**, flip the inequality sign.',
 '## Đại Số là gì?
@@ -96,37 +90,31 @@ x + 5 > 12     →  x > 7      (subtract 5)
 
 ### Biến và Biểu thức
 
-```
-Biến: x, y, n (chữ cái đại diện cho số)
-Biểu thức: 2x + 3 (kết hợp biến, số và phép tính)
-Phương trình: 2x + 3 = 11 (hai biểu thức bằng nhau)
-```
+- **Biến:** $x$, $y$, $n$ (chữ cái đại diện cho số)
+- **Biểu thức:** $2x + 3$ (kết hợp biến, số và phép tính)
+- **Phương trình:** $2x + 3 = 11$ (hai biểu thức bằng nhau)
 
 ### Giải Phương trình — Từng bước
 
 Mục tiêu là **cô lập biến** về một vế:
 
-```
-Giải: 2x + 3 = 11
+$$\text{Giải: } 2x + 3 = 11$$
 
-Bước 1: Trừ 3 hai vế
-        2x + 3 - 3 = 11 - 3
-        2x = 8
+$$\text{Bước 1: Trừ 3 hai vế}$$
+$$2x + 3 - 3 = 11 - 3$$
+$$2x = 8$$
 
-Bước 2: Chia hai vế cho 2
-        2x / 2 = 8 / 2
-        x = 4
+$$\text{Bước 2: Chia hai vế cho 2}$$
+$$\frac{2x}{2} = \frac{8}{2}$$
+$$x = 4$$
 
-Kiểm tra: 2(4) + 3 = 8 + 3 = 11 ✓
-```
+$$\text{Kiểm tra: } 2(4) + 3 = 8 + 3 = 11 \; ✓$$
 
 ### Bất phương trình
 
-```
-x + 5 > 12     →  x > 7      (trừ 5)
-3x <= 15       →  x <= 5     (chia cho 3)
--2x > 6        →  x < -3     (chia cho -2, ĐỔI CHIỀU dấu!)
-```
+$$x + 5 > 12 \quad \Rightarrow \quad x > 7 \quad \text{(trừ 5)}$$
+$$3x \leq 15 \quad \Rightarrow \quad x \leq 5 \quad \text{(chia cho 3)}$$
+$$-2x > 6 \quad \Rightarrow \quad x < -3 \quad \text{(chia cho -2, ĐỔI CHIỀU dấu!)}$$
 
 > **Quy tắc quan trọng:** Khi nhân hoặc chia cho **số âm**, đổi chiều dấu bất phương trình.', 1, '{}'),
 
@@ -244,43 +232,37 @@ These summarize a data set with a **single representative value**.
 
 ### Mean (Average)
 
-```
-Data: 4, 8, 6, 5, 7
-Mean = (4 + 8 + 6 + 5 + 7) / 5 = 30 / 5 = 6
-```
+$$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}$$
+
+Data: $4, 8, 6, 5, 7$
+
+$$\bar{x} = \frac{4 + 8 + 6 + 5 + 7}{5} = \frac{30}{5} = 6$$
 
 ### Median (Middle Value)
 
-```
-Sorted data: 4, 5, 6, 7, 8
-Median = 6 (the middle value)
-
-Even count: 4, 5, 7, 8
-Median = (5 + 7) / 2 = 6
-```
+- Sorted data: $4, 5, 6, 7, 8$ — Median $= 6$ (the middle value)
+- Even count: $4, 5, 7, 8$ — Median $= \frac{5 + 7}{2} = 6$
 
 ### Mode (Most Frequent)
 
-```
-Data: 3, 5, 5, 7, 8, 5, 9
-Mode = 5 (appears 3 times)
-```
+- Data: $3, 5, 5, 7, 8, 5, 9$ — Mode $= 5$ (appears 3 times)
 
 ## Measures of Spread
 
 ### Range
 
-```
-Data: 4, 8, 6, 5, 7
-Range = max - min = 8 - 4 = 4
-```
+$$\text{Range} = x_{\max} - x_{\min}$$
+
+Data: $4, 8, 6, 5, 7$
+
+$$\text{Range} = 8 - 4 = 4$$
 
 ### Standard Deviation (concept)
 
-```
-Low SD:  {48, 49, 50, 51, 52} → data clustered near mean
-High SD: {10, 30, 50, 70, 90} → data spread far from mean
-```
+$$\sigma = \sqrt{\frac{\sum_{i=1}^{n}(x_i - \bar{x})^2}{n}}$$
+
+- Low $\sigma$: $\{48, 49, 50, 51, 52\}$ — data clustered near mean
+- High $\sigma$: $\{10, 30, 50, 70, 90\}$ — data spread far from mean
 
 > **Tip:** Mean is sensitive to outliers; median is resistant. Choose wisely based on your data.',
 '## Đại lượng xu hướng trung tâm
@@ -289,43 +271,37 @@ Tóm tắt tập dữ liệu bằng **một giá trị đại diện**.
 
 ### Trung bình (Mean)
 
-```
-Dữ liệu: 4, 8, 6, 5, 7
-Trung bình = (4 + 8 + 6 + 5 + 7) / 5 = 30 / 5 = 6
-```
+$$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}$$
+
+Dữ liệu: $4, 8, 6, 5, 7$
+
+$$\bar{x} = \frac{4 + 8 + 6 + 5 + 7}{5} = \frac{30}{5} = 6$$
 
 ### Trung vị (Median)
 
-```
-Dữ liệu sắp xếp: 4, 5, 6, 7, 8
-Trung vị = 6 (giá trị ở giữa)
-
-Số chẵn: 4, 5, 7, 8
-Trung vị = (5 + 7) / 2 = 6
-```
+- Dữ liệu sắp xếp: $4, 5, 6, 7, 8$ — Trung vị $= 6$ (giá trị ở giữa)
+- Số chẵn: $4, 5, 7, 8$ — Trung vị $= \frac{5 + 7}{2} = 6$
 
 ### Yếu vị (Mode)
 
-```
-Dữ liệu: 3, 5, 5, 7, 8, 5, 9
-Yếu vị = 5 (xuất hiện 3 lần)
-```
+- Dữ liệu: $3, 5, 5, 7, 8, 5, 9$ — Yếu vị $= 5$ (xuất hiện 3 lần)
 
 ## Đại lượng phân tán
 
 ### Khoảng biến thiên (Range)
 
-```
-Dữ liệu: 4, 8, 6, 5, 7
-Khoảng biến thiên = max - min = 8 - 4 = 4
-```
+$$\text{Range} = x_{\max} - x_{\min}$$
+
+Dữ liệu: $4, 8, 6, 5, 7$
+
+$$\text{Range} = 8 - 4 = 4$$
 
 ### Độ lệch chuẩn (khái niệm)
 
-```
-SD thấp:  {48, 49, 50, 51, 52} → dữ liệu tập trung gần trung bình
-SD cao:   {10, 30, 50, 70, 90} → dữ liệu phân tán xa trung bình
-```
+$$\sigma = \sqrt{\frac{\sum_{i=1}^{n}(x_i - \bar{x})^2}{n}}$$
+
+- $\sigma$ thấp: $\{48, 49, 50, 51, 52\}$ — dữ liệu tập trung gần trung bình
+- $\sigma$ cao: $\{10, 30, 50, 70, 90\}$ — dữ liệu phân tán xa trung bình
 
 > **Mẹo:** Trung bình nhạy cảm với ngoại lai; trung vị kháng ngoại lai. Chọn phù hợp theo dữ liệu.', 1, '{}'),
 
@@ -449,102 +425,86 @@ INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_v
 
 A **proposition** is a statement that is either TRUE or FALSE.
 
-```
-TRUE propositions:  "2 + 2 = 4", "The Earth orbits the Sun"
-FALSE propositions: "5 > 10", "All birds can swim"
-NOT propositions:   "Is it raining?" (question), "Close the door" (command)
-```
+- TRUE propositions: "$2 + 2 = 4$", "The Earth orbits the Sun"
+- FALSE propositions: "$5 > 10$", "All birds can swim"
+- NOT propositions: "Is it raining?" (question), "Close the door" (command)
 
 ## Logical Operators
 
-### AND (Conjunction)
+### AND (Conjunction) — $p \land q$
 
-```
-P AND Q — TRUE only when BOTH are TRUE
+$p \land q$ is TRUE only when BOTH are TRUE.
 
-P     | Q     | P AND Q
-------|-------|--------
-TRUE  | TRUE  | TRUE
-TRUE  | FALSE | FALSE
-FALSE | TRUE  | FALSE
-FALSE | FALSE | FALSE
-```
+| $p$ | $q$ | $p \land q$ |
+|-----|-----|-------------|
+| T | T | T |
+| T | F | F |
+| F | T | F |
+| F | F | F |
 
-### OR (Disjunction)
+### OR (Disjunction) — $p \lor q$
 
-```
-P OR Q — TRUE when AT LEAST ONE is TRUE
+$p \lor q$ is TRUE when AT LEAST ONE is TRUE.
 
-P     | Q     | P OR Q
-------|-------|--------
-TRUE  | TRUE  | TRUE
-TRUE  | FALSE | TRUE
-FALSE | TRUE  | TRUE
-FALSE | FALSE | FALSE
-```
+| $p$ | $q$ | $p \lor q$ |
+|-----|-----|------------|
+| T | T | T |
+| T | F | T |
+| F | T | T |
+| F | F | F |
 
-### NOT (Negation)
+### NOT (Negation) — $\neg p$
 
-```
-NOT P — flips the truth value
+$\neg p$ flips the truth value.
 
-P     | NOT P
-------|------
-TRUE  | FALSE
-FALSE | TRUE
-```
+| $p$ | $\neg p$ |
+|-----|----------|
+| T | F |
+| F | T |
 
-> **Remember:** AND is strict (both must be true). OR is lenient (only one needs to be true).',
+> **Remember:** $\land$ (AND) is strict (both must be true). $\lor$ (OR) is lenient (only one needs to be true).',
 '## Mệnh đề và Giá trị Chân lý
 
 **Mệnh đề** là phát biểu đúng hoặc sai.
 
-```
-Mệnh đề ĐÚNG: "2 + 2 = 4", "Trái Đất quay quanh Mặt Trời"
-Mệnh đề SAI:  "5 > 10", "Tất cả chim biết bơi"
-KHÔNG phải mệnh đề: "Trời có mưa không?" (câu hỏi), "Đóng cửa lại" (mệnh lệnh)
-```
+- Mệnh đề ĐÚNG: "$2 + 2 = 4$", "Trái Đất quay quanh Mặt Trời"
+- Mệnh đề SAI: "$5 > 10$", "Tất cả chim biết bơi"
+- KHÔNG phải mệnh đề: "Trời có mưa không?" (câu hỏi), "Đóng cửa lại" (mệnh lệnh)
 
 ## Toán tử Logic
 
-### AND (Hội)
+### AND (Hội) — $p \land q$
 
-```
-P AND Q — TRUE chỉ khi CẢ HAI đều TRUE
+$p \land q$ là TRUE chỉ khi CẢ HAI đều TRUE.
 
-P     | Q     | P AND Q
-------|-------|--------
-TRUE  | TRUE  | TRUE
-TRUE  | FALSE | FALSE
-FALSE | TRUE  | FALSE
-FALSE | FALSE | FALSE
-```
+| $p$ | $q$ | $p \land q$ |
+|-----|-----|-------------|
+| T | T | T |
+| T | F | F |
+| F | T | F |
+| F | F | F |
 
-### OR (Tuyển)
+### OR (Tuyển) — $p \lor q$
 
-```
-P OR Q — TRUE khi ÍT NHẤT MỘT là TRUE
+$p \lor q$ là TRUE khi ÍT NHẤT MỘT là TRUE.
 
-P     | Q     | P OR Q
-------|-------|--------
-TRUE  | TRUE  | TRUE
-TRUE  | FALSE | TRUE
-FALSE | TRUE  | TRUE
-FALSE | FALSE | FALSE
-```
+| $p$ | $q$ | $p \lor q$ |
+|-----|-----|------------|
+| T | T | T |
+| T | F | T |
+| F | T | T |
+| F | F | F |
 
-### NOT (Phủ định)
+### NOT (Phủ định) — $\neg p$
 
-```
-NOT P — đảo giá trị chân lý
+$\neg p$ đảo giá trị chân lý.
 
-P     | NOT P
-------|------
-TRUE  | FALSE
-FALSE | TRUE
-```
+| $p$ | $\neg p$ |
+|-----|----------|
+| T | F |
+| F | T |
 
-> **Nhớ:** AND nghiêm ngặt (cả hai phải đúng). OR thoải mái (chỉ cần một đúng).', 1, '{}'),
+> **Nhớ:** $\land$ (AND) nghiêm ngặt (cả hai phải đúng). $\lor$ (OR) thoải mái (chỉ cần một đúng).', 1, '{}'),
 
 (22, 'key_points', 'Key Points', 'Điểm chính',
 '- A **proposition** is a statement that is definitively TRUE or FALSE
@@ -666,94 +626,80 @@ INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_v
 
 A **prime number** has exactly two factors: 1 and itself.
 
-```
-Prime:     2, 3, 5, 7, 11, 13, 17, 19, 23, 29 ...
-NOT prime: 1 (only one factor), 4 (= 2x2), 9 (= 3x3)
-```
+- Prime: $2, 3, 5, 7, 11, 13, \ldots$
+- NOT prime: $1$ (only one factor), $4 = 2 \times 2$, $9 = 3 \times 3$
 
 ### Divisibility Rules
 
-```
-Divisible by 2:  last digit is even (0, 2, 4, 6, 8)
-Divisible by 3:  sum of digits divisible by 3
-Divisible by 5:  last digit is 0 or 5
-Divisible by 9:  sum of digits divisible by 9
-Divisible by 10: last digit is 0
-```
+| Divisor | Rule | Example |
+|---------|------|---------|
+| $2$ | Last digit is even | $138$ ✓ |
+| $3$ | Sum of digits divisible by $3$ | $123 \to 1+2+3=6$ ✓ |
+| $5$ | Last digit is $0$ or $5$ | $245$ ✓ |
+| $9$ | Sum of digits divisible by $9$ | $729 \to 7+2+9=18$ ✓ |
+| $10$ | Last digit is $0$ | $350$ ✓ |
 
 ## GCD and LCM
 
-```
-GCD(12, 18):
-  Factors of 12: 1, 2, 3, 4, 6, 12
-  Factors of 18: 1, 2, 3, 6, 9, 18
-  Common: 1, 2, 3, 6
-  GCD = 6
+$$\gcd(12, 18) = 6$$
 
-LCM(4, 6):
-  Multiples of 4: 4, 8, 12, 16, 20 ...
-  Multiples of 6: 6, 12, 18, 24 ...
-  LCM = 12
+Factors of $12$: $\{1, 2, 3, 4, 6, 12\}$ — Factors of $18$: $\{1, 2, 3, 6, 9, 18\}$ — Common: $\{1, 2, 3, 6\}$
 
-Shortcut: GCD(a,b) x LCM(a,b) = a x b
-```
+$$\text{lcm}(4, 6) = 12$$
+
+Multiples of $4$: $4, 8, 12, 16, \ldots$ — Multiples of $6$: $6, 12, 18, \ldots$ — First common: $12$
+
+**Shortcut:**
+
+$$\gcd(a,b) \times \text{lcm}(a,b) = a \times b$$
 
 ## Modular Arithmetic
 
-```
-17 mod 5 = 2    (17 = 5 x 3 + 2)
-25 mod 7 = 4    (25 = 7 x 3 + 4)
-12 mod 4 = 0    (12 = 4 x 3 + 0, divides evenly)
+$$17 \bmod 5 = 2 \quad (17 = 5 \times 3 + 2)$$
+$$25 \bmod 7 = 4 \quad (25 = 7 \times 3 + 4)$$
+$$12 \bmod 4 = 0 \quad (12 = 4 \times 3 + 0, \text{ divides evenly})$$
 
-Clock: 10 + 5 = 15 mod 12 = 3 o''clock
-```
+Clock arithmetic: $10 + 5 = 15$ and $15 \equiv 3 \pmod{12}$ — so it is 3 o''clock.
 
 > **Key insight:** Modular arithmetic "wraps around" — used in clocks, calendars, and encryption.',
 '## Số Nguyên Tố
 
 **Số nguyên tố** có đúng hai ước: 1 và chính nó.
 
-```
-Nguyên tố:        2, 3, 5, 7, 11, 13, 17, 19, 23, 29 ...
-KHÔNG nguyên tố:  1 (chỉ một ước), 4 (= 2x2), 9 (= 3x3)
-```
+- Nguyên tố: $2, 3, 5, 7, 11, 13, \ldots$
+- KHÔNG nguyên tố: $1$ (chỉ một ước), $4 = 2 \times 2$, $9 = 3 \times 3$
 
 ### Quy tắc Chia hết
 
-```
-Chia hết cho 2:  chữ số cuối chẵn (0, 2, 4, 6, 8)
-Chia hết cho 3:  tổng các chữ số chia hết cho 3
-Chia hết cho 5:  chữ số cuối là 0 hoặc 5
-Chia hết cho 9:  tổng các chữ số chia hết cho 9
-Chia hết cho 10: chữ số cuối là 0
-```
+| Ước số | Quy tắc | Ví dụ |
+|--------|---------|-------|
+| $2$ | Chữ số cuối chẵn | $138$ ✓ |
+| $3$ | Tổng các chữ số chia hết cho $3$ | $123 \to 1+2+3=6$ ✓ |
+| $5$ | Chữ số cuối là $0$ hoặc $5$ | $245$ ✓ |
+| $9$ | Tổng các chữ số chia hết cho $9$ | $729 \to 7+2+9=18$ ✓ |
+| $10$ | Chữ số cuối là $0$ | $350$ ✓ |
 
 ## ƯCLN và BCNN
 
-```
-ƯCLN(12, 18):
-  Ước của 12: 1, 2, 3, 4, 6, 12
-  Ước của 18: 1, 2, 3, 6, 9, 18
-  Ước chung: 1, 2, 3, 6
-  ƯCLN = 6
+$$\gcd(12, 18) = 6$$
 
-BCNN(4, 6):
-  Bội của 4: 4, 8, 12, 16, 20 ...
-  Bội của 6: 6, 12, 18, 24 ...
-  BCNN = 12
+Ước của $12$: $\{1, 2, 3, 4, 6, 12\}$ — Ước của $18$: $\{1, 2, 3, 6, 9, 18\}$ — Ước chung: $\{1, 2, 3, 6\}$
 
-Mẹo: ƯCLN(a,b) x BCNN(a,b) = a x b
-```
+$$\text{lcm}(4, 6) = 12$$
+
+Bội của $4$: $4, 8, 12, 16, \ldots$ — Bội của $6$: $6, 12, 18, \ldots$ — Bội chung đầu tiên: $12$
+
+**Mẹo:**
+
+$$\gcd(a,b) \times \text{lcm}(a,b) = a \times b$$
 
 ## Số học Đồng dư
 
-```
-17 mod 5 = 2    (17 = 5 x 3 + 2)
-25 mod 7 = 4    (25 = 7 x 3 + 4)
-12 mod 4 = 0    (12 = 4 x 3 + 0, chia hết)
+$$17 \bmod 5 = 2 \quad (17 = 5 \times 3 + 2)$$
+$$25 \bmod 7 = 4 \quad (25 = 7 \times 3 + 4)$$
+$$12 \bmod 4 = 0 \quad (12 = 4 \times 3 + 0, \text{ chia hết})$$
 
-Đồng hồ: 10 + 5 = 15 mod 12 = 3 giờ
-```
+Số học đồng hồ: $10 + 5 = 15$ và $15 \equiv 3 \pmod{12}$ — nên là 3 giờ.
 
 > **Điểm chính:** Số học đồng dư "quay vòng" — dùng trong đồng hồ, lịch và mã hóa.', 1, '{}'),
 

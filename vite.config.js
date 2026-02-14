@@ -10,6 +10,9 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            if (id.includes('katex')) {
+              return 'vendor-katex';
+            }
             if (id.includes('@mui/') || id.includes('@emotion/')) {
               return 'vendor-mui';
             }
