@@ -54,9 +54,7 @@ test.describe('Smoke Tests', () => {
     ).toBeVisible();
 
     // Exercise CTA button should exist
-    await expect(
-      page.getByRole('button', { name: /bài tập/i }),
-    ).toBeVisible();
+    await expect(page.getByRole('button', { name: /bài tập/i })).toBeVisible();
   });
 
   test('Python lesson shows code with syntax highlighting', async ({

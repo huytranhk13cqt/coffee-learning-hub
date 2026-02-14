@@ -44,6 +44,9 @@
     "server/**/*.js": [
       "prettier --write"
     ],
+    "e2e/**/*.js": [
+      "prettier --write"
+    ],
     "*.{json,css,md,yml,yaml}": [
       "prettier --write"
     ]
