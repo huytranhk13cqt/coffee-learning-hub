@@ -5,9 +5,11 @@ export class LessonRepository {
     this.sql = sql;
   }
 
-  // F1: Search lessons by keyword (ILIKE — adequate for ~12 lessons)
+  // F1: Search lessons by keyword (ILIKE — adequate for ~31 lessons)
   async search(keyword) {
-    const pattern = `%${keyword}%`;
+    // Escape ILIKE metacharacters (% and _) so they match literally
+    const escaped = keyword.replace(/[%_\\]/g, '\\$&');
+    const pattern = `%${escaped}%`;
     return this.sql`
       SELECT
         l.id, l.name, l.name_vi, l.slug,

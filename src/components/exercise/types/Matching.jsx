@@ -75,6 +75,7 @@ export default function Matching({
                       size="small"
                       variant="outlined"
                       onClick={() => handleRemovePair(pair.leftId)}
+                      aria-label={`Xóa cặp ${left?.content} — ${right?.content}`}
                       sx={{ ml: 'auto', minWidth: 32 }}
                     />
                   )}
@@ -103,6 +104,7 @@ export default function Matching({
                 variant={isPaired ? 'outlined' : 'filled'}
                 onClick={() => handleLeftClick(item.id)}
                 disabled={disabled || isPaired}
+                aria-label={`Chọn ${item.content} để ghép cặp`}
                 sx={{
                   opacity: isPaired ? 0.4 : 1,
                   justifyContent: 'flex-start',
@@ -129,6 +131,7 @@ export default function Matching({
                 variant={isPaired ? 'outlined' : 'filled'}
                 onClick={() => handleRightClick(item.id)}
                 disabled={disabled || isPaired || selectedLeft === null}
+                aria-label={`Ghép ${item.content} với mục đã chọn`}
                 sx={{
                   opacity: isPaired ? 0.4 : 1,
                   justifyContent: 'flex-start',

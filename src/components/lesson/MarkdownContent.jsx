@@ -28,6 +28,9 @@ const marked = new Marked(
 );
 
 export default function MarkdownContent({ content, sx }) {
+  // SECURITY: Content is trusted (server-seeded DB only, no user-generated input).
+  // DOMPurify sanitizes marked output as defense-in-depth before rendering.
+  // If a CMS or user input is added in the future, add input sanitization too.
   const html = useMemo(() => {
     if (!content) return '';
     const raw = marked.parse(content);
