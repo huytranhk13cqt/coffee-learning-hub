@@ -4,14 +4,43 @@ import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js/lib/core';
 import python from 'highlight.js/lib/languages/python';
 import javascript from 'highlight.js/lib/languages/javascript';
+import bash from 'highlight.js/lib/languages/bash';
+import sql from 'highlight.js/lib/languages/sql';
+import xml from 'highlight.js/lib/languages/xml';
+import css from 'highlight.js/lib/languages/css';
+import java from 'highlight.js/lib/languages/java';
+import c from 'highlight.js/lib/languages/c';
+import cpp from 'highlight.js/lib/languages/cpp';
+import typescript from 'highlight.js/lib/languages/typescript';
+import json from 'highlight.js/lib/languages/json';
+import go from 'highlight.js/lib/languages/go';
 import DOMPurify from 'dompurify';
 import Box from '@mui/material/Box';
 import 'highlight.js/styles/github-dark.css';
 
-// Register only the languages we need (tree-shaking)
-hljs.registerLanguage('python', python);
-hljs.registerLanguage('javascript', javascript);
-hljs.registerLanguage('js', javascript);
+// Register languages + common aliases for code blocks
+// Format: [canonical name, definition, ...aliases]
+const LANGUAGES = [
+  ['python', python],
+  ['javascript', javascript, 'js'],
+  ['bash', bash, 'sh', 'shell'],
+  ['sql', sql],
+  ['xml', xml, 'html'],
+  ['css', css],
+  ['java', java],
+  ['c', c],
+  ['cpp', cpp, 'c++'],
+  ['typescript', typescript, 'ts'],
+  ['json', json],
+  ['go', go],
+];
+
+for (const [name, def, ...aliases] of LANGUAGES) {
+  hljs.registerLanguage(name, def);
+  for (const alias of aliases) {
+    hljs.registerLanguage(alias, def);
+  }
+}
 
 // Configure marked with syntax highlighting
 const marked = new Marked(
@@ -81,6 +110,36 @@ export default function MarkdownContent({ content, sx }) {
         },
         '& strong': { fontWeight: 600 },
         '& a': { color: 'primary.main' },
+        '& img': {
+          maxWidth: '100%',
+          height: 'auto',
+          borderRadius: 1,
+          my: 1.5,
+          display: 'block',
+        },
+        '& table': {
+          width: '100%',
+          borderCollapse: 'collapse',
+          mb: 1.5,
+          '& th, & td': {
+            border: 1,
+            borderColor: 'divider',
+            px: 1.5,
+            py: 1,
+            textAlign: 'left',
+            fontSize: '0.875rem',
+          },
+          '& th': {
+            bgcolor: 'grey.100',
+            fontWeight: 600,
+          },
+        },
+        '& hr': {
+          border: 'none',
+          borderTop: 1,
+          borderColor: 'divider',
+          my: 2,
+        },
         ...sx,
       }}
       dangerouslySetInnerHTML={{ __html: html }}

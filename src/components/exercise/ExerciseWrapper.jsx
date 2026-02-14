@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import ExerciseProgress from './ExerciseProgress.jsx';
 import ExerciseRenderer from './ExerciseRenderer.jsx';
@@ -70,6 +71,24 @@ export default function ExerciseWrapper({
           />
         )}
       </Stack>
+
+      {/* Context (reading passage, code snippet, etc.) */}
+      {exercise.context && (
+        <Paper variant="outlined" sx={{ p: 2, mb: 2, bgcolor: 'grey.50' }}>
+          <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+            {exercise.context}
+          </Typography>
+          {exercise.context_vi && (
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ mt: 1, whiteSpace: 'pre-wrap' }}
+            >
+              {exercise.context_vi}
+            </Typography>
+          )}
+        </Paper>
+      )}
 
       {/* Question */}
       <Typography variant="h6" sx={{ mb: 1 }}>

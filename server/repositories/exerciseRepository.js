@@ -10,7 +10,8 @@ export class ExerciseRepository {
     return this.sql`
       SELECT
         e.id, e.type, e.difficulty, e.question, e.question_vi,
-        e.content, e.content_vi, e.word_bank, e.hint, e.hint_vi,
+        e.content, e.content_vi, e.context, e.context_vi,
+        e.word_bank, e.hint, e.hint_vi,
         e.points, e.time_limit
       FROM exercise e
       WHERE e.lesson_id = ${lessonId} AND e.is_active = TRUE

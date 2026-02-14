@@ -6,6 +6,30 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
+/**
+ * Highlight a specific word within text using theme primary color.
+ * Returns the original string unchanged if the word is not found.
+ */
+function highlightText(text, word) {
+  if (!word || !text) return text;
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const parts = text.split(new RegExp(`(${escaped})`, 'i'));
+  if (parts.length === 1) return text;
+  return parts.map((part, i) =>
+    part.toLowerCase() === word.toLowerCase() ? (
+      <Box
+        component="span"
+        key={i}
+        sx={{ color: 'primary.main', fontWeight: 700 }}
+      >
+        {part}
+      </Box>
+    ) : (
+      part
+    ),
+  );
+}
+
 export default function UsageSection({ usages }) {
   if (!usages.length) return null;
 
@@ -35,14 +59,35 @@ export default function UsageSection({ usages }) {
               {usage.examples.length > 0 && (
                 <List dense sx={{ mt: 1 }}>
                   {usage.examples.map((ex) => (
-                    <ListItem key={ex.id} sx={{ px: 0 }}>
+                    <ListItem
+                      key={ex.id}
+                      sx={{
+                        px: 0,
+                        ...(ex.audio_url && {
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                        }),
+                      }}
+                    >
                       <ListItemText
-                        primary={ex.sentence}
+                        primary={highlightText(ex.sentence, ex.highlight_word)}
                         secondary={ex.sentence_vi}
                         slotProps={{
                           primary: { sx: { fontStyle: 'italic' } },
                         }}
                       />
+                      {ex.audio_url && (
+                        <Box
+                          component="audio"
+                          controls
+                          src={ex.audio_url}
+                          sx={{
+                            mt: 0.5,
+                            height: 32,
+                            maxWidth: 300,
+                          }}
+                        />
+                      )}
                     </ListItem>
                   ))}
                 </List>
