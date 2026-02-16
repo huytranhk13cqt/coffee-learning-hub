@@ -118,4 +118,51 @@ test.describe('Smoke Tests', () => {
       timeout: 5_000,
     });
   });
+
+  test('exercise submission shows feedback and next button', async ({
+    page,
+  }) => {
+    // Simple Present (lesson_id=1) starts with multiple_choice exercises
+    await page.goto('/lessons/1/exercises');
+
+    // Wait for first exercise to render
+    await expect(page.getByRole('progressbar')).toBeVisible({
+      timeout: 10_000,
+    });
+
+    // Select first radio option (multiple_choice)
+    const firstRadio = page.getByRole('radio').first();
+    await expect(firstRadio).toBeVisible({ timeout: 5_000 });
+    await firstRadio.click();
+
+    // Submit answer
+    await page.getByRole('button', { name: 'Kiểm tra' }).click();
+
+    // Feedback panel appears (role="status" from FeedbackPanel)
+    await expect(page.getByRole('status')).toBeVisible({ timeout: 10_000 });
+
+    // FSM transitions to feedback phase: "next" button replaces "submit"
+    await expect(
+      page.getByRole('button', { name: /Câu tiếp theo|Xem kết quả/ }),
+    ).toBeVisible();
+  });
+
+  test('dark mode toggle switches color scheme', async ({ page }) => {
+    await page.goto('/');
+
+    // Initially light mode — toggle shows "switch to dark"
+    const toggle = page.getByRole('button', {
+      name: 'Chuyển sang chế độ tối',
+    });
+    await expect(toggle).toBeVisible({ timeout: 5_000 });
+
+    // Switch to dark mode
+    await toggle.click();
+    await expect(page.locator('[data-mui-color-scheme="dark"]')).toBeAttached();
+
+    // Toggle now shows "switch to light"
+    await expect(
+      page.getByRole('button', { name: 'Chuyển sang chế độ sáng' }),
+    ).toBeVisible();
+  });
 });
