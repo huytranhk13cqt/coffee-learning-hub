@@ -19,61 +19,14 @@ function validateMultipleChoice(userAnswer, data) {
   };
 }
 
-function validateFillBlank(userAnswer, data) {
-  // data = { correct_answer, explanation, explanation_vi } from exercise
-  const isCorrect =
-    normalizeText(userAnswer) === normalizeText(data.correct_answer);
-  return {
-    isCorrect,
-    explanation: data.explanation,
-    explanationVi: data.explanation_vi,
-  };
-}
-
-function validateErrorCorrection(userAnswer, data) {
-  const isCorrect =
-    normalizeText(userAnswer) === normalizeText(data.correct_answer);
-  return {
-    isCorrect,
-    explanation: data.explanation,
-    explanationVi: data.explanation_vi,
-  };
-}
-
-function validateSentenceTransform(userAnswer, data) {
-  const isCorrect =
-    normalizeText(userAnswer) === normalizeText(data.correct_answer);
-  return {
-    isCorrect,
-    explanation: data.explanation,
-    explanationVi: data.explanation_vi,
-  };
-}
-
-function validateTrueFalse(userAnswer, data) {
-  // correct_answer is 'true' or 'false' (string)
-  const isCorrect =
-    normalizeText(userAnswer) === normalizeText(data.correct_answer);
-  return {
-    isCorrect,
-    explanation: data.explanation,
-    explanationVi: data.explanation_vi,
-  };
-}
-
-function validateArrangeWords(userAnswer, data) {
-  // userAnswer is the arranged sentence (string)
-  const isCorrect =
-    normalizeText(userAnswer) === normalizeText(data.correct_answer);
-  return {
-    isCorrect,
-    explanation: data.explanation,
-    explanationVi: data.explanation_vi,
-  };
-}
-
-function validateCodeOutput(userAnswer, data) {
-  // userAnswer is the predicted output (string)
+/**
+ * Shared validator for all text-based exercise types.
+ * Compares normalized user input against the correct answer string.
+ *
+ * Used by: fill_blank, error_correction, sentence_transform,
+ *          true_false, arrange_words, code_output
+ */
+function validateTextAnswer(userAnswer, data) {
   const isCorrect =
     normalizeText(userAnswer) === normalizeText(data.correct_answer);
   return {
@@ -86,11 +39,7 @@ function validateCodeOutput(userAnswer, data) {
 function validateMatching(userAnswer, data) {
   // userAnswer = array of { leftId, rightId }
   // data = { pairs: [{ id, left_content, right_content }], explanation, explanation_vi }
-  const correctMap = new Map();
-  for (const pair of data.pairs) {
-    correctMap.set(pair.id, pair.id); // left and right belong to same pair row
-  }
-
+  //
   // userAnswer pairs: user sends [{ leftId: pairRowId, rightId: pairRowId }]
   // where leftId = the pair whose left they chose, rightId = the pair whose right they chose
   // Correct if every pair's leftId === rightId (matched the same row)
@@ -110,25 +59,27 @@ function validateMatching(userAnswer, data) {
 
 const strategies = {
   multiple_choice: validateMultipleChoice,
-  fill_blank: validateFillBlank,
-  error_correction: validateErrorCorrection,
-  sentence_transform: validateSentenceTransform,
-  true_false: validateTrueFalse,
-  arrange_words: validateArrangeWords,
+  fill_blank: validateTextAnswer,
+  error_correction: validateTextAnswer,
+  sentence_transform: validateTextAnswer,
+  true_false: validateTextAnswer,
+  arrange_words: validateTextAnswer,
+  code_output: validateTextAnswer,
   matching: validateMatching,
-  code_output: validateCodeOutput,
 };
 
 // --- Shape validation (what the client must send) ---
 
+const isNonEmptyString = (a) => typeof a === 'string' && a.trim().length > 0;
+
 const shapeValidators = {
   multiple_choice: (a) => typeof a === 'string' && /^[A-F]$/.test(a),
-  fill_blank: (a) => typeof a === 'string' && a.trim().length > 0,
-  error_correction: (a) => typeof a === 'string' && a.trim().length > 0,
-  sentence_transform: (a) => typeof a === 'string' && a.trim().length > 0,
+  fill_blank: isNonEmptyString,
+  error_correction: isNonEmptyString,
+  sentence_transform: isNonEmptyString,
+  arrange_words: isNonEmptyString,
+  code_output: isNonEmptyString,
   true_false: (a) => typeof a === 'string' && /^(true|false)$/i.test(a),
-  arrange_words: (a) => typeof a === 'string' && a.trim().length > 0,
-  code_output: (a) => typeof a === 'string' && a.trim().length > 0,
   matching: (a) =>
     Array.isArray(a) &&
     a.length > 0 &&

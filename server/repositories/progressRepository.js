@@ -7,12 +7,18 @@ export class ProgressRepository {
   async findAllBySession(sessionId) {
     return this.sql`
       SELECT
-        lesson_id, status, theory_completed,
-        exercises_attempted, exercises_correct,
-        (SELECT COUNT(*)::int FROM exercise WHERE lesson_id = up.lesson_id AND is_active = TRUE) AS exercises_total,
-        current_score, best_score, total_attempts
+        up.lesson_id, up.status, up.theory_completed,
+        up.exercises_attempted, up.exercises_correct,
+        COALESCE(ec.total, 0) AS exercises_total,
+        up.current_score, up.best_score, up.total_attempts
       FROM user_progress up
-      WHERE session_id = ${sessionId}
+      LEFT JOIN (
+        SELECT lesson_id, COUNT(*)::int AS total
+        FROM exercise
+        WHERE is_active = TRUE
+        GROUP BY lesson_id
+      ) ec ON ec.lesson_id = up.lesson_id
+      WHERE up.session_id = ${sessionId}
     `;
   }
 
@@ -35,11 +41,11 @@ export class ProgressRepository {
   async markTheoryComplete(sessionId, lessonId, timeSpent) {
     await this.sql`
       INSERT INTO user_progress (session_id, lesson_id, theory_completed, last_position, theory_time_spent)
-      VALUES (${sessionId}, ${lessonId}, TRUE, 'theory', ${timeSpent || 0})
+      VALUES (${sessionId}, ${lessonId}, TRUE, 'theory', ${timeSpent ?? 0})
       ON CONFLICT (session_id, lesson_id) DO UPDATE SET
         theory_completed = TRUE,
         last_position = 'theory',
-        theory_time_spent = user_progress.theory_time_spent + ${timeSpent || 0}
+        theory_time_spent = user_progress.theory_time_spent + ${timeSpent ?? 0}
     `;
   }
 
@@ -65,14 +71,14 @@ export class ProgressRepository {
       INSERT INTO exercise_attempt
         (session_id, exercise_id, user_answer, is_correct, time_taken, attempt_number)
       VALUES
-        (${sessionId}, ${exerciseId}, ${userAnswer}, ${isCorrect}, ${timeTaken || null}, ${attemptNumber})
+        (${sessionId}, ${exerciseId}, ${userAnswer}, ${isCorrect}, ${timeTaken ?? null}, ${attemptNumber})
     `;
   }
 
   // C5c: Upsert progress
   async upsertProgress(tx, { sessionId, lessonId, isCorrect, timeTaken }) {
     const correctIncrement = isCorrect ? 1 : 0;
-    const timeIncrement = timeTaken || 0;
+    const timeIncrement = timeTaken ?? 0;
 
     await tx`
       INSERT INTO user_progress
@@ -105,6 +111,12 @@ export class ProgressRepository {
   // D3: Dashboard overview — all lessons with progress overlay
   async getDashboardOverview(sessionId) {
     return this.sql`
+      WITH exercise_counts AS (
+        SELECT lesson_id, COUNT(*)::int AS total
+        FROM exercise
+        WHERE is_active = TRUE
+        GROUP BY lesson_id
+      )
       SELECT
         g.id            AS group_id,
         g.name          AS group_name,
@@ -120,11 +132,12 @@ export class ProgressRepository {
         COALESCE(up.theory_completed, FALSE) AS theory_completed,
         COALESCE(up.best_score, 0)           AS best_score,
         COALESCE(up.exercises_attempted, 0)  AS exercises_attempted,
-        (SELECT COUNT(*)::int FROM exercise ex WHERE ex.lesson_id = l.id AND ex.is_active = TRUE) AS exercises_total,
+        COALESCE(ec.total, 0)                AS exercises_total,
         up.completed_at
       FROM lesson l
       JOIN category g ON l.group_id = g.id
       LEFT JOIN user_progress up ON up.lesson_id = l.id AND up.session_id = ${sessionId}
+      LEFT JOIN exercise_counts ec ON ec.lesson_id = l.id
       WHERE l.is_published = TRUE
       ORDER BY g.order_index, l.order_index
     `;

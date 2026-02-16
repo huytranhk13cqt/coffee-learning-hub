@@ -1,5 +1,6 @@
 import { useEffect, useState, useId } from 'react';
 import mermaid from 'mermaid';
+import DOMPurify from 'dompurify';
 import { useColorScheme } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -45,7 +46,7 @@ export default function DiagramSection({ section }) {
       .render(elementId, diagramCode)
       .then(({ svg: result }) => {
         if (!cancelled) {
-          setSvg(result);
+          setSvg(DOMPurify.sanitize(result, { USE_PROFILES: { svg: true } }));
           setError(null);
         }
       })

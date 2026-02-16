@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
+import SectionErrorBoundary from './SectionErrorBoundary.jsx';
 import sectionRegistry from './sectionRegistry.js';
 
 const SectionFallback = (
@@ -20,9 +21,11 @@ export default function SectionRenderer({ sections }) {
     if (!Component) return null;
 
     return (
-      <Suspense key={section.id} fallback={SectionFallback}>
-        <Component section={section} />
-      </Suspense>
+      <SectionErrorBoundary key={section.id}>
+        <Suspense fallback={SectionFallback}>
+          <Component section={section} />
+        </Suspense>
+      </SectionErrorBoundary>
     );
   });
 }

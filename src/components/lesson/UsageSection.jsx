@@ -25,7 +25,7 @@ function highlightText(text, word) {
         {part}
       </Box>
     ) : (
-      part
+      <span key={i}>{part}</span>
     ),
   );
 }
