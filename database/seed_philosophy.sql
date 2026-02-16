@@ -186,6 +186,13 @@ Không có câu trả lời "đúng". Giá trị của thí nghiệm tư duy nà
 
 **Thử điều này:** Sau khi chọn câu trả lời, hãy lập luận theo vị trí ngược lại trong hai phút. Bạn phát hiện điều gì về lập luận của mình?', 3, '{"variant": "warning"}');
 
+-- Diagram section: argument evaluation flowchart (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(35, 'diagram', 'Evaluating Arguments', 'Đánh giá luận chứng',
+'This flowchart shows how to evaluate any deductive argument. First check **validity** (does the conclusion follow logically?), then check **soundness** (are the premises actually true?). A sound argument is both valid AND has true premises.',
+'Lưu đồ này cho thấy cách đánh giá bất kỳ luận chứng diễn dịch nào. Đầu tiên kiểm tra **tính hợp lệ** (kết luận có theo logic?), rồi kiểm tra **tính đúng đắn** (tiền đề có thật sự đúng?). Luận chứng đúng đắn vừa hợp lệ VÀ có tiền đề đúng.', 4,
+'{"code": "graph TD\n    A([Evaluate Argument]) --> B{Does conclusion follow logically from premises?}\n    B -->|Yes| C[Valid Argument]\n    B -->|No| D[Invalid Argument]\n    C --> E{Are all premises actually true?}\n    E -->|Yes| F[Sound Argument]\n    E -->|No| G[Valid but Unsound]"}');
+
 -- Exercise 239: Multiple Choice (11 values)
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
 (35, 'multiple_choice', 'easy', 'Which type of reasoning moves from general premises to a specific conclusion?', 'Loại suy luận nào đi từ tiền đề tổng quát đến kết luận cụ thể?', 'Select the reasoning method where the conclusion is guaranteed if the premises are true and the form is valid.', 'Chọn phương pháp suy luận mà kết luận được đảm bảo nếu tiền đề đúng và hình thức hợp lệ.', 'Deductive reasoning moves from the general to the specific. If the premises are true and the logical form is valid, the conclusion must be true. Aristotle formalized this in his theory of syllogisms. Inductive reasoning, by contrast, moves from specific observations to general conclusions and can only produce probable (not certain) conclusions.', 'Suy luận diễn dịch đi từ tổng quát đến cụ thể. Nếu tiền đề đúng và hình thức logic hợp lệ, kết luận phải đúng. Aristotle hình thức hóa điều này trong lý thuyết tam đoạn luận. Suy luận quy nạp, ngược lại, đi từ quan sát cụ thể đến kết luận tổng quát và chỉ có thể tạo kết luận có khả năng (không chắc chắn).', 10, 1);

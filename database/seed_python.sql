@@ -551,6 +551,13 @@ print(result)               # In: 8
 
 **Quy tắc:** Nếu cần **dùng kết quả** sau đó → dùng `return`. Nếu chỉ cần **hiển thị** → dùng `print`.', 3, '{"variant": "warning"}');
 
+-- Diagram section: function call & return flow (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(18, 'diagram', 'Function Call Flow', 'Luồng gọi hàm',
+'This diagram shows what happens when Python calls a function: the caller passes arguments, the function body executes, and `return` sends the result back. Without `return`, the function returns `None`.',
+'Sơ đồ này cho thấy điều gì xảy ra khi Python gọi hàm: nơi gọi truyền đối số, thân hàm thực thi, và `return` gửi kết quả về. Không có `return`, hàm trả về `None`.', 4,
+'{"code": "graph TD\n    A[\"result = double(5)\"] --> B[\"Call: double(n=5)\"]\n    B --> C[\"Execute body: n * 2\"]\n    C --> D{\"Has return?\"}\n    D -->|Yes| E[\"return 10\"]\n    D -->|No| F[\"return None\"]\n    E --> G[\"result = 10\"]\n    F --> H[\"result = None\"]"}');
+
 -- Exercise 120: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
 (18, 'multiple_choice', 'easy', 'What does this function return?', 'Hàm này trả về gì?', 'def double(n):\n    return n * 2\n\nresult = double(5)', 'def double(n):\n    return n * 2\n\nresult = double(5)', 'double(5) passes 5 as the parameter n. Inside the function, n * 2 = 10, which is returned and stored in result.', 'double(5) truyền 5 làm tham số n. Bên trong hàm, n * 2 = 10, được trả về và lưu vào result.', 10, 1);

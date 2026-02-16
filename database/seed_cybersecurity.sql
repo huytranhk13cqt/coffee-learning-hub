@@ -176,6 +176,13 @@ Nếu một lớp thất bại, lớp tiếp theo vẫn bảo vệ bạn. Ví d�
 
 **Hãy nghĩ như một lâu đài:** hào nước + tường thành + lính canh + cửa khóa — không chỉ một ổ khóa.', 3, '{"variant": "info"}');
 
+-- Diagram section: defense-in-depth layers (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(24, 'diagram', 'Defense in Depth', 'Phòng thủ nhiều lớp',
+'Network security uses **layered defenses** — if one layer fails, the next one protects. An attacker must bypass every layer to reach the data. This is the "castle" model: moat → walls → guards → locks.',
+'Bảo mật mạng dùng **phòng thủ nhiều lớp** — nếu một lớp thất bại, lớp tiếp theo bảo vệ. Kẻ tấn công phải vượt qua mọi lớp để đến dữ liệu. Đây là mô hình "lâu đài": hào nước → tường → lính → khóa.', 4,
+'{"code": "graph TD\n    A([Internet]) --> B[Firewall]\n    B --> C[IDS / IPS]\n    C --> D[Load Balancer]\n    D --> E[Web Server]\n    E --> F[Application Server]\n    F --> G[(Database)]"}');
+
 -- Exercise 162: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
 (24, 'multiple_choice', 'easy', 'Which port does HTTPS use by default?', 'HTTPS sử dụng cổng nào theo mặc định?', 'HTTPS is the secure version of HTTP that encrypts web traffic using TLS.', 'HTTPS là phiên bản an toàn của HTTP, mã hóa lưu lượng web bằng TLS.', 'HTTPS uses port 443 by default. HTTP (unencrypted) uses port 80. The TLS encryption layer is what makes HTTPS secure.', 'HTTPS sử dụng cổng 443 theo mặc định. HTTP (không mã hóa) dùng cổng 80. Lớp mã hóa TLS là thứ làm HTTPS an toàn.', 10, 1);
@@ -392,6 +399,13 @@ const result = await pool.query(
 ```
 
 Một thực hành này ngăn chặn phần lớn tấn công SQL Injection. Hãy biến nó thành **thói quen không thể thỏa hiệp**.', 3, '{"variant": "warning"}');
+
+-- Diagram section: stored XSS attack flow (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(25, 'diagram', 'Stored XSS Attack Flow', 'Luồng tấn công XSS lưu trữ',
+'This sequence diagram shows a **Stored XSS** attack: the attacker injects malicious JavaScript into a website (e.g., a comment). When a victim loads the page, the script executes in their browser and steals their session cookie.',
+'Sơ đồ tuần tự này cho thấy tấn công **XSS lưu trữ**: kẻ tấn công chèn JavaScript độc hại vào website (ví dụ: bình luận). Khi nạn nhân tải trang, script chạy trong trình duyệt và đánh cắp cookie phiên.', 4,
+'{"code": "sequenceDiagram\n    participant Attacker\n    participant Website\n    participant Victim\n    Attacker->>Website: Post comment with <script> tag\n    Website->>Website: Store malicious script in DB\n    Victim->>Website: Visit page with comments\n    Website->>Victim: HTML with injected script\n    Victim->>Attacker: Cookie sent to attacker server"}');
 
 -- Exercise 169: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES

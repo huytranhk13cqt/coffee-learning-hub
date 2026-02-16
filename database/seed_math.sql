@@ -744,6 +744,13 @@ Số học đồng hồ: $10 + 5 = 15$ và $15 \equiv 3 \pmod{12}$ — nên là 
 
 **Ứng dụng thực tế:** Mã hóa internet (HTTPS) dựa trên việc nhân hai số nguyên tố lớn rất dễ, nhưng phân tích ngược kết quả thành số nguyên tố cực kỳ khó.', 3, '{"variant": "info"}');
 
+-- Chart section: prime number distribution (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(23, 'chart', 'Prime Distribution', 'Phân bố số nguyên tố',
+'This chart shows how many prime numbers exist in each range of 10. Notice that primes become **less frequent** as numbers grow — this is a fundamental result in number theory called the **Prime Number Theorem**.',
+'Biểu đồ cho thấy có bao nhiêu số nguyên tố trong mỗi khoảng 10 số. Lưu ý rằng số nguyên tố trở nên **ít hơn** khi số lớn dần — đây là kết quả cơ bản trong lý thuyết số gọi là **Định lý Số Nguyên Tố**.', 4,
+'{"chartType": "bar", "xKey": "range", "dataKey": "primes", "data": [{"range": "1-10", "primes": 4}, {"range": "11-20", "primes": 4}, {"range": "21-30", "primes": 2}, {"range": "31-40", "primes": 2}, {"range": "41-50", "primes": 3}, {"range": "51-60", "primes": 2}, {"range": "61-70", "primes": 2}, {"range": "71-80", "primes": 3}, {"range": "81-90", "primes": 2}, {"range": "91-100", "primes": 1}]}');
+
 -- Exercise 155: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
 (23, 'multiple_choice', 'easy', 'Which of the following is a prime number?', 'Số nào sau đây là số nguyên tố?', 'Choose the number that has exactly two factors: 1 and itself.', 'Chọn số có đúng hai ước: 1 và chính nó.', '17 has exactly two factors (1 and 17), making it prime. 1 has only one factor, 9 = 3x3, and 15 = 3x5.', '17 có đúng hai ước (1 và 17), nên là số nguyên tố. 1 chỉ có một ước, 9 = 3x3, và 15 = 3x5.', 10, 1);

@@ -134,6 +134,13 @@ Roediger & Karpicke (2006) phát hiện học sinh học một lần rồi làm 
 
 **Áp dụng ngay:** Sau khi đọc bài này, đóng lại và thử liệt kê ba giai đoạn của trí nhớ từ trí nhớ!', 3, '{"variant": "tip"}');
 
+-- Chart section: Ebbinghaus forgetting curve (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(28, 'chart', 'The Forgetting Curve', 'Đường cong quên lãng',
+'The **Ebbinghaus forgetting curve** (1885) shows how memory fades without review. The blue line shows natural forgetting; the green line shows how **spaced repetition** maintains retention above 80% by reviewing at increasing intervals.',
+'**Đường cong quên lãng Ebbinghaus** (1885) cho thấy trí nhớ phai nhạt khi không ôn tập. Đường xanh dương thể hiện quên tự nhiên; đường xanh lá cho thấy **ôn tập giãn cách** duy trì trí nhớ trên 80% bằng cách ôn ở khoảng cách tăng dần.', 4,
+'{"chartType": "line", "xKey": "time", "series": [{"dataKey": "noReview", "name": "Without review"}, {"dataKey": "spacedRepetition", "name": "Spaced repetition"}], "data": [{"time": "0h", "noReview": 100, "spacedRepetition": 100}, {"time": "1h", "noReview": 58, "spacedRepetition": 95}, {"time": "1d", "noReview": 33, "spacedRepetition": 80}, {"time": "3d", "noReview": 28, "spacedRepetition": 75}, {"time": "7d", "noReview": 25, "spacedRepetition": 85}, {"time": "30d", "noReview": 21, "spacedRepetition": 90}]}');
+
 -- Exercise 190: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
 (28, 'multiple_choice', 'easy', 'How many items can short-term memory typically hold at once?', 'Trí nhớ ngắn hạn thường có thể chứa bao nhiêu mục cùng lúc?', 'According to Miller''s Law (1956), the capacity of short-term memory is:', 'Theo Định luật Miller (1956), dung lượng trí nhớ ngắn hạn là:', 'George Miller''s classic 1956 paper found that short-term memory capacity is approximately 7 plus or minus 2 items (5-9 items). This is one of the most cited findings in cognitive psychology.', 'Bài báo kinh điển năm 1956 của George Miller phát hiện dung lượng trí nhớ ngắn hạn khoảng 7 cộng trừ 2 mục (5-9 mục). Đây là một trong những phát hiện được trích dẫn nhiều nhất trong tâm lý học nhận thức.', 10, 1);
@@ -461,6 +468,13 @@ Trong nghiên cứu nổi tiếng (Lepper, Greene & Nisbett, 1973), trẻ em th�
 **Kết quả:** Nhóm A vẽ ít hơn đáng kể trong thời gian rảnh sau đó. Phần thưởng dự kiến biến chơi thành công việc!
 
 **Bài học thực tế:** Cẩn thận với phần thưởng cho hoạt động đã thú vị. Dùng phần thưởng ít và bất ngờ khi cần. Thay vào đó tập trung nuôi dưỡng tự chủ, năng lực và mối quan hệ.', 3, '{"variant": "warning"}');
+
+-- Diagram section: Maslow's hierarchy of needs (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(30, 'diagram', 'Maslow''s Hierarchy', 'Tháp nhu cầu Maslow',
+'Maslow''s hierarchy (1943) proposes that humans must satisfy **lower needs before higher ones**. Basic survival needs come first; self-actualization is only pursued when safety, belonging, and esteem are met.',
+'Tháp nhu cầu Maslow (1943) đề xuất con người phải thỏa mãn **nhu cầu thấp trước nhu cầu cao**. Nhu cầu sinh tồn cơ bản đến trước; tự thực hiện chỉ được theo đuổi khi an toàn, thuộc về và tôn trọng đã được đáp ứng.', 4,
+'{"code": "graph BT\n    E[\"Physiological: food, water, shelter\"] --> D[\"Safety: security, stability, health\"]\n    D --> C[\"Love & Belonging: relationships, community\"]\n    C --> B[\"Esteem: respect, achievement, confidence\"]\n    B --> A[\"Self-Actualization: full potential, creativity\"]"}');
 
 -- Exercise 204: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES

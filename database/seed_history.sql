@@ -159,6 +159,13 @@ Nước Anh có sự kết hợp lợi thế độc đáo:
 -- EXERCISES FOR LESSON 33 (exercise IDs 225-231)
 -- ############################################################################
 
+-- Chart section: Britain population growth (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(33, 'chart', 'Population Explosion', 'Bùng nổ dân số',
+'Britain''s population nearly **tripled** during the Industrial Revolution (1750-1850). Urbanization, improved agriculture, and factory jobs fueled this growth — but also created overcrowded cities with poor sanitation.',
+'Dân số Anh gần **gấp ba** trong Cách Mạng Công Nghiệp (1750-1850). Đô thị hóa, cải tiến nông nghiệp và việc làm nhà máy thúc đẩy tăng trưởng — nhưng cũng tạo ra các thành phố chật chội với vệ sinh kém.', 4,
+'{"chartType": "area", "xKey": "year", "dataKey": "population", "data": [{"year": "1750", "population": 5.7}, {"year": "1770", "population": 6.4}, {"year": "1790", "population": 7.7}, {"year": "1800", "population": 8.9}, {"year": "1820", "population": 12.0}, {"year": "1840", "population": 14.8}, {"year": "1850", "population": 16.6}]}');
+
 -- Exercise 225: Multiple Choice (11 values)
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
 (33, 'multiple_choice', 'easy', 'Which invention is Richard Arkwright most famous for?', 'Phát minh nào khiến Richard Arkwright nổi tiếng nhất?', 'Richard Arkwright (1732-1792) is often called the "father of the factory system." Select the invention he patented in 1769:', 'Richard Arkwright (1732-1792) thường được gọi là "cha đẻ của hệ thống nhà máy." Chọn phát minh ông cấp bằng sáng chế năm 1769:', 'Arkwright patented the water frame in 1769 — a spinning machine powered by water that produced strong cotton thread. Because the machine was too large for workers'' homes, Arkwright built centralized mills, creating the factory system that defined the Industrial Revolution.', 'Arkwright cấp bằng sáng chế khung nước năm 1769 — máy kéo sợi chạy bằng nước sản xuất sợi bông chắc. Vì máy quá lớn cho nhà công nhân, Arkwright xây nhà máy tập trung, tạo ra hệ thống nhà máy định hình Cách Mạng Công Nghiệp.', 10, 1);
