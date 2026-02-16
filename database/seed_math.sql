@@ -345,6 +345,13 @@ Trung vị = 87.5 (vẫn đại diện)
 
 **Quy tắc chung:** Nếu dữ liệu có giá trị cực đoan, báo cáo **trung vị** thay vì trung bình.', 3, '{"variant": "tip"}');
 
+-- Chart section: test score distribution (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(21, 'chart', 'Score Distribution', 'Phân bố điểm số',
+'This bar chart shows how 45 students scored on a math test. Notice that most scores cluster in the 61-80 range, making the distribution **left-skewed** (the tail extends toward lower scores).',
+'Biểu đồ cột cho thấy cách 45 học sinh đạt điểm trong bài kiểm tra toán. Lưu ý phần lớn điểm tập trung ở khoảng 61-80, tạo phân bố **lệch trái** (đuôi kéo dài về phía điểm thấp).', 4,
+'{"chartType": "bar", "xKey": "range", "dataKey": "students", "data": [{"range": "0-20", "students": 2}, {"range": "21-40", "students": 5}, {"range": "41-60", "students": 12}, {"range": "61-80", "students": 18}, {"range": "81-100", "students": 8}]}');
+
 -- Exercise 141: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
 (21, 'multiple_choice', 'easy', 'What is the median of the data set {2, 5, 7, 9, 12}?', 'Trung vị của tập dữ liệu {2, 5, 7, 9, 12} là bao nhiêu?', 'Find the middle value of the sorted data set: 2, 5, 7, 9, 12', 'Tìm giá trị giữa của tập dữ liệu đã sắp xếp: 2, 5, 7, 9, 12', 'The data is already sorted with 5 values. The middle (3rd) value is 7. For odd-count data sets, the median is always the single middle value.', 'Dữ liệu đã sắp xếp có 5 giá trị. Giá trị giữa (thứ 3) là 7. Với tập dữ liệu có số lẻ phần tử, trung vị luôn là giá trị giữa duy nhất.', 10, 1);

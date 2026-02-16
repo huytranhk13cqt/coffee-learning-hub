@@ -341,6 +341,13 @@ if age >= 18:
 
 Luôn dùng **4 dấu cách** (không dùng Tab) và kiểm tra thụt lề khi gặp lỗi.', 3, '{"variant": "tip"}');
 
+-- Diagram section: if/elif/else flowchart (order_index 4)
+INSERT INTO lesson_section (lesson_id, type, title, title_vi, content, content_vi, order_index, metadata) VALUES
+(17, 'diagram', 'Control Flow Diagram', 'Lưu đồ luồng điều khiển',
+'This flowchart shows how Python evaluates an **if/elif/else** chain. Execution flows top-to-bottom: each condition is checked in order, and only the **first** matching branch runs. If no condition is True, the `else` block runs.',
+'Lưu đồ này cho thấy cách Python thực thi chuỗi **if/elif/else**. Chạy từ trên xuống: mỗi điều kiện kiểm tra theo thứ tự, và chỉ nhánh **đầu tiên** khớp được chạy. Nếu không điều kiện nào True, khối `else` chạy.', 4,
+'{"code": "graph TD\n    A([Start]) --> B{score >= 90?}\n    B -->|Yes| C[Grade: A]\n    B -->|No| D{score >= 80?}\n    D -->|Yes| E[Grade: B]\n    D -->|No| F{score >= 70?}\n    F -->|Yes| G[Grade: C]\n    F -->|No| H[Grade: F]\n    C --> I([End])\n    E --> I\n    G --> I\n    H --> I"}');
+
 -- Exercise 113: Multiple Choice
 INSERT INTO exercise (lesson_id, type, difficulty, question, question_vi, content, content_vi, explanation, explanation_vi, points, order_index) VALUES
 (17, 'multiple_choice', 'easy', 'What will this code print?', 'Code này sẽ in ra gì?', 'x = 10\nif x > 5:\n    print("big")\nelse:\n    print("small")', 'x = 10\nif x > 5:\n    print("big")\nelse:\n    print("small")', 'Since x is 10 and 10 > 5 is True, the if block executes and prints "big". The else block is skipped.', 'Vì x là 10 và 10 > 5 là True, khối if chạy và in "big". Khối else bị bỏ qua.', 10, 1);
