@@ -54,6 +54,18 @@ describe('validateAnswerShape', () => {
     );
   });
 
+  it('accepts valid code_output answer', () => {
+    expect(() =>
+      validateAnswerShape('code_output', 'Hello, World!'),
+    ).not.toThrow();
+  });
+
+  it('rejects empty code_output answer', () => {
+    expect(() => validateAnswerShape('code_output', '   ')).toThrow(
+      'Invalid answer format',
+    );
+  });
+
   it('throws for unknown exercise type', () => {
     expect(() => validateAnswerShape('unknown_type', 'x')).toThrow(
       'Unknown exercise type',
@@ -163,6 +175,36 @@ describe('validateAnswer', () => {
       const answer = [{ leftId: 1, rightId: 1 }];
       const result = validateAnswer('matching', answer, matchData);
       expect(result.isCorrect).toBe(false);
+    });
+  });
+
+  describe('code_output', () => {
+    it('returns correct for exact output match', () => {
+      const data = {
+        correct_answer: 'Hello, World!',
+        explanation: 'print() outputs the string',
+        explanation_vi: 'print() in ra chuỗi',
+      };
+      const result = validateAnswer('code_output', 'Hello, World!', data);
+      expect(result.isCorrect).toBe(true);
+      expect(result.explanation).toBe(data.explanation);
+    });
+
+    it('normalizes whitespace and case', () => {
+      const data = { ...baseData, correct_answer: '42' };
+      const result = validateAnswer('code_output', '  42  ', data);
+      expect(result.isCorrect).toBe(true);
+    });
+
+    it('returns incorrect for wrong output', () => {
+      const data = {
+        correct_answer: '[1, 2, 3]',
+        explanation: 'List comprehension output',
+        explanation_vi: 'Kết quả list comprehension',
+      };
+      const result = validateAnswer('code_output', '[1, 2]', data);
+      expect(result.isCorrect).toBe(false);
+      expect(result.explanationVi).toBe(data.explanation_vi);
     });
   });
 

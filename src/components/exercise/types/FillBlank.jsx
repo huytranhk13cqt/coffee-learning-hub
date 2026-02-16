@@ -23,6 +23,7 @@ export default function FillBlank({
         <TextField
           fullWidth
           size="small"
+          label="Câu trả lời"
           placeholder="Nhập câu trả lời..."
           value={answer || ''}
           onChange={(e) => onAnswerChange(e.target.value)}
@@ -42,6 +43,7 @@ export default function FillBlank({
         size="small"
         sx={{ width: 180 }}
         placeholder="..."
+        aria-label="Điền vào chỗ trống"
         value={answer || ''}
         onChange={(e) => onAnswerChange(e.target.value)}
         disabled={disabled}

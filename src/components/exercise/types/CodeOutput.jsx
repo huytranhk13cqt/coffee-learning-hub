@@ -26,6 +26,7 @@ export default function CodeOutput({
       <TextField
         fullWidth
         size="small"
+        label="Dự đoán output"
         placeholder="Nhập kết quả output..."
         value={answer || ''}
         onChange={(e) => onAnswerChange(e.target.value)}

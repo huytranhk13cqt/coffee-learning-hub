@@ -100,7 +100,7 @@ export default function ExerciseWrapper({
 
       {/* Context (reading passage, code snippet, etc.) */}
       {exercise.context && (
-        <Paper variant="outlined" sx={{ p: 2, mb: 2, bgcolor: 'grey.50' }}>
+        <Paper variant="outlined" sx={{ p: 2, mb: 2, bgcolor: 'action.hover' }}>
           <MarkdownContent
             content={exercise.context}
             sx={{ '& p:last-child': { mb: 0 } }}
@@ -149,7 +149,7 @@ export default function ExerciseWrapper({
       )}
 
       {/* Feedback */}
-      <div ref={feedbackRef}>
+      <div ref={feedbackRef} aria-live="polite">
         <FeedbackPanel feedback={feedback} />
       </div>
 
