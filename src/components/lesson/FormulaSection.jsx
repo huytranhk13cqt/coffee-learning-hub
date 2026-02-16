@@ -49,7 +49,7 @@ export default function FormulaSection({ formulas }) {
           <Chip label={current.subject_note} size="small" sx={{ mb: 2 }} />
         )}
 
-        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+        <Paper sx={{ p: 2, bgcolor: 'action.hover' }}>
           <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
             {current.example}
           </Typography>

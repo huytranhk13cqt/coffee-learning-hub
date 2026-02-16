@@ -187,7 +187,7 @@ export default function ResultsPage() {
 
                     {/* Explanation */}
                     {ex.explanation_vi && (
-                      <Paper sx={{ p: 1.5, bgcolor: 'grey.50', mt: 1 }}>
+                      <Paper sx={{ p: 1.5, bgcolor: 'action.hover', mt: 1 }}>
                         <Typography variant="body2">
                           {ex.explanation_vi}
                         </Typography>

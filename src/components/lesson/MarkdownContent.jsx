@@ -90,7 +90,7 @@ export default function MarkdownContent({ content, sx }) {
         '& ul, & ol': { pl: 3, mb: 1.5 },
         '& li': { mb: 0.5 },
         '& code': {
-          bgcolor: 'grey.100',
+          bgcolor: 'action.hover',
           px: 0.75,
           py: 0.25,
           borderRadius: 0.5,
@@ -139,7 +139,7 @@ export default function MarkdownContent({ content, sx }) {
             fontSize: '0.875rem',
           },
           '& th': {
-            bgcolor: 'grey.100',
+            bgcolor: 'action.hover',
             fontWeight: 600,
           },
         },
