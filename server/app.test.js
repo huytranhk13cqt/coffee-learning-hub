@@ -207,6 +207,94 @@ describe('Session Validation', () => {
 // 5. Happy Paths
 // ---------------------------------------------------------------------------
 describe('Happy Paths', () => {
+  it('GET /api/home returns grouped lessons with progress (BFF)', async () => {
+    const mockRows = [
+      {
+        group_id: 1,
+        group_name: 'Present Tenses',
+        group_name_vi: 'Thì hiện tại',
+        group_color: '#4CAF50',
+        lesson_id: 1,
+        lesson_name: 'Simple Present',
+        lesson_name_vi: 'Hiện tại đơn',
+        lesson_slug: 'simple-present',
+        lesson_difficulty: 'beginner',
+        progress_status: 'completed',
+        best_score: 90,
+      },
+      {
+        group_id: 1,
+        group_name: 'Present Tenses',
+        group_name_vi: 'Thì hiện tại',
+        group_color: '#4CAF50',
+        lesson_id: 2,
+        lesson_name: 'Present Continuous',
+        lesson_name_vi: 'Hiện tại tiếp diễn',
+        lesson_slug: 'present-continuous',
+        lesson_difficulty: 'beginner',
+        progress_status: 'not_started',
+        best_score: 0,
+      },
+    ];
+    const app = await createTestApp({
+      categoryRepoOverrides: {
+        findHomePageData: async () => mockRows,
+      },
+    });
+    const res = await app.inject({ method: 'GET', url: '/api/home' });
+    expect(res.statusCode).toBe(200);
+    const body = res.json();
+    expect(body.data.groups).toHaveLength(1);
+    expect(body.data.groups[0].name).toBe('Present Tenses');
+    expect(body.data.groups[0].lessons).toHaveLength(2);
+    expect(body.data.groups[0].lessons[0].status).toBe('completed');
+    expect(body.data.groups[0].lessons[0].best_score).toBe(90);
+    expect(body.data.groups[0].lessons[1].status).toBe('not_started');
+    await app.close();
+  });
+
+  it('GET /api/home works without session header', async () => {
+    const app = await createTestApp({
+      categoryRepoOverrides: {
+        findHomePageData: async () => [],
+      },
+    });
+    const res = await app.inject({ method: 'GET', url: '/api/home' });
+    expect(res.statusCode).toBe(200);
+    expect(res.json().data.groups).toEqual([]);
+    await app.close();
+  });
+
+  it('GET /api/home handles empty categories', async () => {
+    const mockRows = [
+      {
+        group_id: 1,
+        group_name: 'Empty Category',
+        group_name_vi: 'Danh mục trống',
+        group_color: '#999',
+        lesson_id: null,
+        lesson_name: null,
+        lesson_name_vi: null,
+        lesson_slug: null,
+        lesson_difficulty: null,
+        progress_status: 'not_started',
+        best_score: 0,
+      },
+    ];
+    const app = await createTestApp({
+      categoryRepoOverrides: {
+        findHomePageData: async () => mockRows,
+      },
+    });
+    const res = await app.inject({ method: 'GET', url: '/api/home' });
+    expect(res.statusCode).toBe(200);
+    const groups = res.json().data.groups;
+    expect(groups).toHaveLength(1);
+    expect(groups[0].name).toBe('Empty Category');
+    expect(groups[0].lessons).toHaveLength(0);
+    await app.close();
+  });
+
   it('GET /api/groups returns categories', async () => {
     const mockGroups = [
       { id: 1, name: 'Present Tenses', lesson_count: 4 },

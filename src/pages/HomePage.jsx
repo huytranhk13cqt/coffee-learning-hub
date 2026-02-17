@@ -1,7 +1,5 @@
 import { useLoaderData, Link as RouterLink } from 'react-router';
-import { fetchGroups } from '../api/groups.js';
-import { fetchLessonsByGroup } from '../api/lessons.js';
-import { fetchSessionOverview } from '../api/progress.js';
+import { fetchHomePage } from '../api/groups.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -19,33 +17,12 @@ import Fade from '@mui/material/Fade';
 import { DIFFICULTY_LABELS } from '../constants/difficulty.js';
 
 export async function loader({ request }) {
-  const groups = await fetchGroups({ signal: request.signal });
-
-  // Load lessons + session progress in parallel
-  const [lessonsPerGroup, progressData] = await Promise.all([
-    Promise.all(
-      groups.map((g) => fetchLessonsByGroup(g.id, { signal: request.signal })),
-    ),
-    fetchSessionOverview({ signal: request.signal }).catch(() => []),
-  ]);
-
-  // Index progress by lesson_id for O(1) lookup
-  const progressByLesson = Object.create(null);
-  for (const p of progressData) {
-    progressByLesson[p.lesson_id] = p;
-  }
-
-  return {
-    groups: groups.map((group, i) => ({
-      ...group,
-      lessons: lessonsPerGroup[i],
-    })),
-    progressByLesson,
-  };
+  const { groups } = await fetchHomePage({ signal: request.signal });
+  return { groups };
 }
 
 export default function HomePage() {
-  const { groups, progressByLesson } = useLoaderData();
+  const { groups } = useLoaderData();
 
   return (
     <Fade in timeout={300}>
@@ -80,40 +57,37 @@ export default function HomePage() {
                   </Typography>
 
                   <List dense disablePadding>
-                    {group.lessons.map((lesson) => {
-                      const progress = progressByLesson[lesson.id];
-                      return (
-                        <ListItemButton
-                          key={lesson.id}
-                          component={RouterLink}
-                          to={`/lessons/${lesson.slug}`}
-                          sx={{ borderRadius: 1 }}
-                        >
-                          <ListItemIcon sx={{ minWidth: 36 }}>
-                            <MenuBookIcon
-                              fontSize="small"
-                              sx={{ color: group.color }}
-                            />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={lesson.name}
-                            secondary={`${lesson.name_vi} · ${DIFFICULTY_LABELS[lesson.difficulty] || lesson.difficulty}`}
+                    {group.lessons.map((lesson) => (
+                      <ListItemButton
+                        key={lesson.id}
+                        component={RouterLink}
+                        to={`/lessons/${lesson.slug}`}
+                        sx={{ borderRadius: 1 }}
+                      >
+                        <ListItemIcon sx={{ minWidth: 36 }}>
+                          <MenuBookIcon
+                            fontSize="small"
+                            sx={{ color: group.color }}
                           />
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: 1,
-                              ml: 1,
-                              flexShrink: 0,
-                            }}
-                          >
-                            <ScoreBadge score={progress?.best_score} label="" />
-                            <LessonStatusChip status={progress?.status} />
-                          </Box>
-                        </ListItemButton>
-                      );
-                    })}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={lesson.name}
+                          secondary={`${lesson.name_vi} · ${DIFFICULTY_LABELS[lesson.difficulty] || lesson.difficulty}`}
+                        />
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            ml: 1,
+                            flexShrink: 0,
+                          }}
+                        >
+                          <ScoreBadge score={lesson.best_score} label="" />
+                          <LessonStatusChip status={lesson.status} />
+                        </Box>
+                      </ListItemButton>
+                    ))}
                   </List>
 
                   <Box sx={{ mt: 1 }}>

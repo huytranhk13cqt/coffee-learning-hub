@@ -7,6 +7,7 @@ import { ProgressController } from '../controllers/progressController.js';
 function createMockCategoryRepo(overrides = {}) {
   return {
     findAllWithLessonCount: async () => [],
+    findHomePageData: async () => [],
     ...overrides,
   };
 }

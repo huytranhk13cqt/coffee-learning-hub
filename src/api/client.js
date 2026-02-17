@@ -1,6 +1,9 @@
 import { getSessionId } from '../hooks/useSessionId.js';
 
 const API_BASE = '/api';
+const DEFAULT_TIMEOUT = 30_000;
+const MAX_GET_RETRIES = 2;
+const RETRY_BASE_DELAY = 500;
 
 export class ApiError extends Error {
   constructor(message, status, data) {
@@ -11,7 +14,32 @@ export class ApiError extends Error {
   }
 }
 
-const DEFAULT_TIMEOUT = 30_000;
+function isRetryable(err) {
+  if (err.name === 'AbortError' || err.name === 'TimeoutError') return false;
+  if (err instanceof ApiError) return err.status >= 500;
+  return err instanceof TypeError; // network failure
+}
+
+function jitteredDelay(attempt) {
+  return RETRY_BASE_DELAY * 2 ** attempt + Math.random() * RETRY_BASE_DELAY;
+}
+
+async function withRetry(fn, { maxRetries = 0, signal } = {}) {
+  let lastErr;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (attempt < maxRetries && isRetryable(err) && !signal?.aborted) {
+        await new Promise((r) => setTimeout(r, jitteredDelay(attempt)));
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastErr;
+}
 
 async function request(endpoint, { headers, timeout, ...options } = {}) {
   const url = `${API_BASE}${endpoint}`;
@@ -56,7 +84,11 @@ async function request(endpoint, { headers, timeout, ...options } = {}) {
 }
 
 export const api = {
-  get: (endpoint, opts) => request(endpoint, { method: 'GET', ...opts }),
+  get: (endpoint, { retries, ...opts } = {}) =>
+    withRetry(() => request(endpoint, { method: 'GET', ...opts }), {
+      maxRetries: retries ?? MAX_GET_RETRIES,
+      signal: opts?.signal,
+    }),
 
   post: (endpoint, body, opts) =>
     request(endpoint, { method: 'POST', body: JSON.stringify(body), ...opts }),

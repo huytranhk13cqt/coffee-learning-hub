@@ -10,3 +10,15 @@ export function extractSessionId(request) {
   }
   return sessionId;
 }
+
+/**
+ * Like extractSessionId but returns null instead of throwing.
+ * Use for endpoints where session is optional (e.g. home page).
+ */
+export function tryExtractSessionId(request) {
+  const sessionId = request.headers['x-session-id'];
+  if (!sessionId || typeof sessionId !== 'string' || !UUID_RE.test(sessionId)) {
+    return null;
+  }
+  return sessionId;
+}

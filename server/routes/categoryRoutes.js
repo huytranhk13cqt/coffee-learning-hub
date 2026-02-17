@@ -3,3 +3,9 @@ export function categoryRoutes(controller) {
     fastify.get('/', controller.getAll);
   };
 }
+
+export function homeRoutes(controller) {
+  return async function (fastify) {
+    fastify.get('/', controller.getHomePage);
+  };
+}

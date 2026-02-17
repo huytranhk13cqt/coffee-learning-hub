@@ -4,7 +4,7 @@ import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
 import compress from '@fastify/compress';
 import rateLimit from '@fastify/rate-limit';
-import { categoryRoutes } from './routes/categoryRoutes.js';
+import { categoryRoutes, homeRoutes } from './routes/categoryRoutes.js';
 import { lessonRoutes, groupLessonRoutes } from './routes/lessonRoutes.js';
 import {
   lessonExerciseRoutes,
@@ -65,6 +65,7 @@ export async function createApp({
   });
 
   // --- API routes ---
+  app.register(homeRoutes(categoryController), { prefix: '/api/home' });
   app.register(categoryRoutes(categoryController), {
     prefix: '/api/groups',
   });

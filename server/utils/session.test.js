@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { extractSessionId } from './session.js';
+import { extractSessionId, tryExtractSessionId } from './session.js';
 
 const validUUID = '550e8400-e29b-41d4-a716-446655440000';
 
@@ -51,5 +51,23 @@ describe('extractSessionId', () => {
     expect(() => extractSessionId(fakeRequest('a'.repeat(200)))).toThrow(
       'Missing or invalid X-Session-Id',
     );
+  });
+});
+
+describe('tryExtractSessionId', () => {
+  it('returns valid UUID', () => {
+    expect(tryExtractSessionId(fakeRequest(validUUID))).toBe(validUUID);
+  });
+
+  it('returns null for missing header', () => {
+    expect(tryExtractSessionId({ headers: {} })).toBeNull();
+  });
+
+  it('returns null for invalid UUID', () => {
+    expect(tryExtractSessionId(fakeRequest('not-a-uuid'))).toBeNull();
+  });
+
+  it('returns null for empty string', () => {
+    expect(tryExtractSessionId(fakeRequest(''))).toBeNull();
   });
 });
