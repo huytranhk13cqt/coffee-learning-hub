@@ -190,9 +190,37 @@ describe('validateAnswer', () => {
       expect(result.explanation).toBe(data.explanation);
     });
 
-    it('normalizes whitespace and case', () => {
+    it('normalizes whitespace but preserves case', () => {
       const data = { ...baseData, correct_answer: '42' };
       const result = validateAnswer('code_output', '  42  ', data);
+      expect(result.isCorrect).toBe(true);
+    });
+
+    it('is case-sensitive (Python True vs true)', () => {
+      const data = { ...baseData, correct_answer: 'True' };
+      expect(validateAnswer('code_output', 'True', data).isCorrect).toBe(true);
+      expect(validateAnswer('code_output', 'true', data).isCorrect).toBe(false);
+    });
+
+    it('is case-sensitive for None vs none', () => {
+      const data = { ...baseData, correct_answer: 'None' };
+      expect(validateAnswer('code_output', 'None', data).isCorrect).toBe(true);
+      expect(validateAnswer('code_output', 'none', data).isCorrect).toBe(false);
+    });
+
+    it('is case-sensitive for mixed-case output', () => {
+      const data = { ...baseData, correct_answer: 'TypeError' };
+      expect(validateAnswer('code_output', 'TypeError', data).isCorrect).toBe(
+        true,
+      );
+      expect(validateAnswer('code_output', 'typeerror', data).isCorrect).toBe(
+        false,
+      );
+    });
+
+    it('still trims surrounding whitespace', () => {
+      const data = { ...baseData, correct_answer: 'True' };
+      const result = validateAnswer('code_output', '  True  ', data);
       expect(result.isCorrect).toBe(true);
     });
 

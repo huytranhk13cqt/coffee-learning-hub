@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { createTestApp } from './tests/helpers.js';
 
+const TEST_SESSION = '550e8400-e29b-41d4-a716-446655440000';
+
 // ---------------------------------------------------------------------------
 // 1. Health & Routing
 // ---------------------------------------------------------------------------
@@ -85,7 +87,7 @@ describe('Schema Validation', () => {
     const res = await app.inject({
       method: 'GET',
       url: '/api/progress/abc',
-      headers: { 'x-session-id': 'test-session' },
+      headers: { 'x-session-id': TEST_SESSION },
     });
     expect(res.statusCode).toBe(400);
     expect(res.json().error).toBeDefined();
@@ -167,11 +169,21 @@ describe('Session Validation', () => {
     const res = await app.inject({
       method: 'GET',
       url: '/api/progress/1',
-      headers: { 'x-session-id': 'valid-session-id-123' },
+      headers: { 'x-session-id': TEST_SESSION },
     });
     expect(res.statusCode).toBe(200);
     // Default mock returns null progress
     expect(res.json().data).toBeNull();
+  });
+
+  it('rejects non-UUID X-Session-Id header', async () => {
+    const res = await app.inject({
+      method: 'GET',
+      url: '/api/progress/1',
+      headers: { 'x-session-id': 'not-a-valid-uuid' },
+    });
+    expect(res.statusCode).toBe(400);
+    expect(res.json().error).toMatch(/Session/i);
   });
 });
 
@@ -261,7 +273,7 @@ describe('Happy Paths', () => {
     const res = await app.inject({
       method: 'GET',
       url: '/api/progress/session/dashboard',
-      headers: { 'x-session-id': 'test-session' },
+      headers: { 'x-session-id': TEST_SESSION },
     });
     expect(res.statusCode).toBe(200);
     const body = res.json();
@@ -284,13 +296,13 @@ describe('Happy Paths', () => {
       url: '/api/progress/1/theory-complete',
       headers: {
         'content-type': 'application/json',
-        'x-session-id': 'test-session',
+        'x-session-id': TEST_SESSION,
       },
       payload: { timeSpent: 42 },
     });
     expect(res.statusCode).toBe(200);
     expect(res.json().data.success).toBe(true);
-    expect(capturedArgs.sid).toBe('test-session');
+    expect(capturedArgs.sid).toBe(TEST_SESSION);
     expect(capturedArgs.lid).toBe(1);
     expect(capturedArgs.ts).toBe(42);
     await app.close();
@@ -350,7 +362,7 @@ describe('Happy Paths', () => {
     const res = await app.inject({
       method: 'GET',
       url: '/api/lessons/1/results',
-      headers: { 'x-session-id': 'test-session' },
+      headers: { 'x-session-id': TEST_SESSION },
     });
     expect(res.statusCode).toBe(200);
     const data = res.json().data;
@@ -380,7 +392,7 @@ describe('Happy Paths', () => {
       url: '/api/exercises/1/submit',
       headers: {
         'content-type': 'application/json',
-        'x-session-id': 'test-session',
+        'x-session-id': TEST_SESSION,
       },
       payload: { answer: 'goes', timeTaken: 10 },
     });
@@ -411,7 +423,7 @@ describe('Happy Paths', () => {
       url: '/api/exercises/1/submit',
       headers: {
         'content-type': 'application/json',
-        'x-session-id': 'test-session',
+        'x-session-id': TEST_SESSION,
       },
       payload: { answer: 'go' },
     });

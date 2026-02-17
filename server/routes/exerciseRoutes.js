@@ -44,7 +44,16 @@ export function exerciseSubmitRoutes(controller) {
   return async function (fastify) {
     fastify.post(
       '/:exerciseId/submit',
-      { schema: { params: exerciseIdParams, body: submitBody } },
+      {
+        schema: { params: exerciseIdParams, body: submitBody },
+        config: {
+          rateLimit: {
+            max: 20,
+            timeWindow: '1 minute',
+            keyGenerator: (req) => req.headers['x-session-id'] || req.ip,
+          },
+        },
+      },
       controller.submit,
     );
   };

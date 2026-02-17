@@ -3,9 +3,19 @@ import { ValidationError } from '../errors/AppError.js';
 /**
  * Normalize text for comparison:
  * trim, collapse whitespace, lowercase.
+ * Used by grammar/language exercises where case doesn't matter.
  */
 function normalizeText(text) {
   return String(text).trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+/**
+ * Normalize text preserving original case:
+ * trim and collapse whitespace only.
+ * Used by code_output where case matters (e.g. Python True vs true).
+ */
+function normalizeTextPreserveCase(text) {
+  return String(text).trim().replace(/\s+/g, ' ');
 }
 
 // --- Validation strategies (one per exercise type) ---
@@ -20,15 +30,31 @@ function validateMultipleChoice(userAnswer, data) {
 }
 
 /**
- * Shared validator for all text-based exercise types.
+ * Shared validator for text-based exercise types (case-insensitive).
  * Compares normalized user input against the correct answer string.
  *
  * Used by: fill_blank, error_correction, sentence_transform,
- *          true_false, arrange_words, code_output
+ *          true_false, arrange_words
  */
 function validateTextAnswer(userAnswer, data) {
   const isCorrect =
     normalizeText(userAnswer) === normalizeText(data.correct_answer);
+  return {
+    isCorrect,
+    explanation: data.explanation,
+    explanationVi: data.explanation_vi,
+  };
+}
+
+/**
+ * Case-sensitive validator for code output exercises.
+ * Trims whitespace but preserves original casing.
+ * Critical for programming languages where True ≠ true (Python, etc.).
+ */
+function validateCodeOutput(userAnswer, data) {
+  const isCorrect =
+    normalizeTextPreserveCase(userAnswer) ===
+    normalizeTextPreserveCase(data.correct_answer);
   return {
     isCorrect,
     explanation: data.explanation,
@@ -64,7 +90,7 @@ const strategies = {
   sentence_transform: validateTextAnswer,
   true_false: validateTextAnswer,
   arrange_words: validateTextAnswer,
-  code_output: validateTextAnswer,
+  code_output: validateCodeOutput,
   matching: validateMatching,
 };
 

@@ -50,7 +50,7 @@ export class ProgressController {
     await this.progressRepo.markTheoryComplete(
       sessionId,
       lessonId,
-      timeSpent || 0,
+      timeSpent ?? 0,
     );
     return { data: { success: true } };
   };

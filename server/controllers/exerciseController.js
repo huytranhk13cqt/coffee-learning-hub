@@ -119,14 +119,14 @@ export class ExerciseController {
         exerciseId,
         userAnswer: userAnswerStr,
         isCorrect: result.isCorrect,
-        timeTaken: timeTaken || null,
+        timeTaken: timeTaken ?? null,
         attemptNumber,
       });
       await this.progressRepo.upsertProgress(tx, {
         sessionId,
         lessonId,
         isCorrect: result.isCorrect,
-        timeTaken: timeTaken || null,
+        timeTaken: timeTaken ?? null,
       });
       await this.progressRepo.updateScores(tx, sessionId, lessonId);
     });

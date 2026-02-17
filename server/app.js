@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
+import compress from '@fastify/compress';
 import rateLimit from '@fastify/rate-limit';
 import { categoryRoutes } from './routes/categoryRoutes.js';
 import { lessonRoutes, groupLessonRoutes } from './routes/lessonRoutes.js';
@@ -31,6 +32,7 @@ export async function createApp({
     allowedHeaders: ['Content-Type', 'X-Session-Id'],
     maxAge: 86400,
   });
+  await app.register(compress, { threshold: 1024 });
   await app.register(rateLimit, {
     max: 100,
     timeWindow: '1 minute',
