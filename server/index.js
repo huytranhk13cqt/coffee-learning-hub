@@ -17,10 +17,28 @@ import { ExerciseController } from './controllers/exerciseController.js';
 import { ProgressController } from './controllers/progressController.js';
 import { createApp } from './app.js';
 
+// --- Startup env validation (fail-fast) ---
+const requiredEnv = ['DB_HOST', 'DB_USER', 'DB_NAME'];
+for (const key of requiredEnv) {
+  if (!process.env[key]) {
+    console.error(`Missing required environment variable: ${key}`);
+    process.exit(1);
+  }
+}
+
 const port = parseInt(process.env.PORT, 10) || 3001;
 
 // --- Composition Root: wire all dependencies ---
 const sql = getSql();
+
+// --- DB connectivity check (fail-fast) ---
+try {
+  await sql`SELECT 1`;
+} catch (err) {
+  console.error('Failed to connect to database:', err.message);
+  await closeSql();
+  process.exit(1);
+}
 
 const categoryRepo = new CategoryRepository(sql);
 const categoryController = new CategoryController(categoryRepo);

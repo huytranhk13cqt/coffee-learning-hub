@@ -16,27 +16,24 @@ const DEFAULT_TIMEOUT = 30_000;
 async function request(endpoint, { headers, timeout, ...options } = {}) {
   const url = `${API_BASE}${endpoint}`;
 
-  // Timeout: create internal abort if none provided, or chain with external signal
-  let timeoutId;
-  let signal = options.signal;
-  if (!signal && timeout !== 0) {
-    const controller = new AbortController();
-    signal = controller.signal;
-    timeoutId = setTimeout(
-      () => controller.abort(),
-      timeout || DEFAULT_TIMEOUT,
-    );
+  // Combine external signal (React Router) with timeout signal
+  const signals = [];
+  if (options.signal) signals.push(options.signal);
+  if (timeout !== 0) {
+    signals.push(AbortSignal.timeout(timeout || DEFAULT_TIMEOUT));
   }
+  const signal =
+    signals.length > 1 ? AbortSignal.any(signals) : signals[0] || undefined;
+
+  // Only set Content-Type for requests with a body
+  const reqHeaders = { 'X-Session-Id': getSessionId(), ...headers };
+  if (options.body) reqHeaders['Content-Type'] = 'application/json';
 
   try {
     const res = await fetch(url, {
       ...options,
       signal,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Session-Id': getSessionId(),
-        ...headers,
-      },
+      headers: reqHeaders,
     });
 
     if (!res.ok) {
@@ -51,12 +48,10 @@ async function request(endpoint, { headers, timeout, ...options } = {}) {
     return res.json();
   } catch (err) {
     if (err instanceof ApiError) throw err;
-    if (err.name === 'AbortError' && !options.signal) {
+    if (err.name === 'AbortError' || err.name === 'TimeoutError') {
       throw new ApiError('Request timeout', 408);
     }
     throw err;
-  } finally {
-    clearTimeout(timeoutId);
   }
 }
 

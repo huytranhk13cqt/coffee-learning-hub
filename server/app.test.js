@@ -28,6 +28,22 @@ describe('Health & Routing', () => {
     expect(res.statusCode).toBe(404);
     expect(res.json().error).toMatch(/Cannot GET/);
   });
+
+  it('returns X-Request-Id header on every response', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/health' });
+    expect(res.headers['x-request-id']).toBeDefined();
+    expect(res.headers['x-request-id'].length).toBeGreaterThan(0);
+  });
+
+  it('echoes client-provided X-Request-Id', async () => {
+    const clientId = '550e8400-e29b-41d4-a716-446655440099';
+    const res = await app.inject({
+      method: 'GET',
+      url: '/api/health',
+      headers: { 'x-request-id': clientId },
+    });
+    expect(res.headers['x-request-id']).toBe(clientId);
+  });
 });
 
 // ---------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import Fastify from 'fastify';
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
@@ -20,7 +21,10 @@ export async function createApp({
   sql,
   logger = true,
 }) {
-  const app = Fastify({ logger });
+  const app = Fastify({
+    logger,
+    genReqId: (req) => req.headers['x-request-id'] || randomUUID(),
+  });
 
   // --- Plugins ---
   await app.register(helmet, {
@@ -29,8 +33,14 @@ export async function createApp({
   await app.register(cors, {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
     methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'X-Session-Id'],
+    allowedHeaders: ['Content-Type', 'X-Session-Id', 'X-Request-Id'],
+    exposedHeaders: ['X-Request-Id'],
     maxAge: 86400,
+  });
+
+  // --- Request ID propagation ---
+  app.addHook('onSend', async (request, reply) => {
+    reply.header('x-request-id', request.id);
   });
   await app.register(compress, { threshold: 1024 });
   await app.register(rateLimit, {
