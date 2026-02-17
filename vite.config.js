@@ -12,6 +12,9 @@ export default defineConfig({
   ],
   build: {
     target: ['es2020', 'safari13'],
+    // Recharts (523KB) and Mermaid (2.2MB) are lazy-loaded via React.lazy —
+    // they never appear in the critical path, so the default 500KB warning is misleading.
+    chunkSizeWarningLimit: 2500,
     rollupOptions: {
       output: {
         manualChunks(id) {
