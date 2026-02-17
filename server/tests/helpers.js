@@ -36,6 +36,9 @@ function createMockExerciseRepo(overrides = {}) {
     findAnswerForValidation: async () => {
       throw new Error('Not mocked');
     },
+    findExplanationById: async () => {
+      throw new Error('Not mocked');
+    },
     findMatchingPairsForValidation: async () => {
       throw new Error('Not mocked');
     },

@@ -542,4 +542,83 @@ describe('Happy Paths', () => {
     expect(res.json().data.isCorrect).toBe(false);
     await app.close();
   });
+
+  it('POST /api/exercises/:id/submit handles matching exercise correctly', async () => {
+    const matchingPairs = [
+      { id: 1, left_content: 'Cat', right_content: 'Mèo' },
+      { id: 2, left_content: 'Dog', right_content: 'Chó' },
+    ];
+    const app = await createTestApp({
+      exerciseRepoOverrides: {
+        findTypeById: async () => ({
+          id: 10,
+          type: 'matching',
+          lesson_id: 1,
+        }),
+        findMatchingPairsForValidation: async () => matchingPairs,
+        findExplanationById: async () => ({
+          explanation: 'Match animals to translations.',
+          explanation_vi: 'Nối động vật với bản dịch.',
+        }),
+      },
+    });
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/exercises/10/submit',
+      headers: {
+        'content-type': 'application/json',
+        'x-session-id': TEST_SESSION,
+      },
+      payload: {
+        answer: [
+          { leftId: 1, rightId: 1 },
+          { leftId: 2, rightId: 2 },
+        ],
+        timeTaken: 15,
+      },
+    });
+    expect(res.statusCode).toBe(200);
+    const data = res.json().data;
+    expect(data.isCorrect).toBe(true);
+    expect(data.explanation).toBe('Match animals to translations.');
+    await app.close();
+  });
+
+  it('POST /api/exercises/:id/submit returns incorrect for wrong matching', async () => {
+    const matchingPairs = [
+      { id: 1, left_content: 'Cat', right_content: 'Mèo' },
+      { id: 2, left_content: 'Dog', right_content: 'Chó' },
+    ];
+    const app = await createTestApp({
+      exerciseRepoOverrides: {
+        findTypeById: async () => ({
+          id: 10,
+          type: 'matching',
+          lesson_id: 1,
+        }),
+        findMatchingPairsForValidation: async () => matchingPairs,
+        findExplanationById: async () => ({
+          explanation: 'Match animals to translations.',
+          explanation_vi: 'Nối động vật với bản dịch.',
+        }),
+      },
+    });
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/exercises/10/submit',
+      headers: {
+        'content-type': 'application/json',
+        'x-session-id': TEST_SESSION,
+      },
+      payload: {
+        answer: [
+          { leftId: 1, rightId: 2 },
+          { leftId: 2, rightId: 1 },
+        ],
+      },
+    });
+    expect(res.statusCode).toBe(200);
+    expect(res.json().data.isCorrect).toBe(false);
+    await app.close();
+  });
 });

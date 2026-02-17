@@ -89,10 +89,10 @@ export class ExerciseController {
         answer,
       );
     } else if (type === 'matching') {
-      const pairs =
-        await this.exerciseRepo.findMatchingPairsForValidation(exerciseId);
-      const exerciseData =
-        await this.exerciseRepo.findAnswerForValidation(exerciseId);
+      const [pairs, exerciseData] = await Promise.all([
+        this.exerciseRepo.findMatchingPairsForValidation(exerciseId),
+        this.exerciseRepo.findExplanationById(exerciseId),
+      ]);
       validationData = {
         pairs,
         explanation: exerciseData.explanation,

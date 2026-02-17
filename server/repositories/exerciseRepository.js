@@ -75,7 +75,18 @@ export class ExerciseRepository {
     return rows[0];
   }
 
-  // C4c: Get matching pairs for validation (correct pairings)
+  // C4c: Get explanation for exercise types that don't use correct_answer (e.g. matching)
+  async findExplanationById(exerciseId) {
+    const rows = await this.sql`
+      SELECT e.explanation, e.explanation_vi
+      FROM exercise e
+      WHERE e.id = ${exerciseId}
+    `;
+    if (!rows.length) throw new NotFoundError('Exercise');
+    return rows[0];
+  }
+
+  // C4d: Get matching pairs for validation (correct pairings)
   async findMatchingPairsForValidation(exerciseId) {
     return this.sql`
       SELECT mp.id, mp.left_content, mp.right_content
