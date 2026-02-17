@@ -153,8 +153,15 @@ jobs:
         run: |
           PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/schema.sql
           PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/seed_data.sql
-          for f in database/seed_*.sql; do
-            [ "$f" = "database/seed_data.sql" ] && continue
+          for f in \
+            database/seed_python.sql \
+            database/seed_math.sql \
+            database/seed_cybersecurity.sql \
+            database/seed_psychology.sql \
+            database/seed_design.sql \
+            database/seed_history.sql \
+            database/seed_music.sql \
+            database/seed_philosophy.sql; do
             PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f "$f"
           done
 
