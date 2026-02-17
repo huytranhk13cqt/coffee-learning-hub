@@ -18,6 +18,7 @@ const initialState = {
   results: [], // [{ exerciseId, isCorrect, timeTaken }]
   error: null,
   startTime: null, // timestamp when current exercise started
+  newAchievements: [], // achievements earned during this session
 };
 
 function reducer(state, action) {
@@ -50,7 +51,8 @@ function reducer(state, action) {
       };
 
     case 'SUBMIT_SUCCESS': {
-      const { isCorrect, explanation, explanationVi } = action.payload;
+      const { isCorrect, explanation, explanationVi, gamification } =
+        action.payload;
       const exercise = state.exercises[state.currentIndex];
       const timeTaken = Math.round((Date.now() - state.startTime) / 1000);
 
@@ -61,6 +63,10 @@ function reducer(state, action) {
         results: [
           ...state.results,
           { exerciseId: exercise.id, isCorrect, timeTaken },
+        ],
+        newAchievements: [
+          ...state.newAchievements,
+          ...(gamification?.newAchievements ?? []),
         ],
       };
     }
@@ -93,7 +99,7 @@ function reducer(state, action) {
   }
 }
 
-export function useExerciseFlow() {
+export function useExerciseFlow({ onGamificationUpdate } = {}) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const loadExercises = useCallback((exercises) => {
@@ -122,6 +128,10 @@ export function useExerciseFlow() {
         timeTaken,
       });
       dispatch({ type: 'SUBMIT_SUCCESS', payload: result });
+      // Update gamification context with data from submit response
+      if (result.gamification) {
+        onGamificationUpdate?.(result.gamification);
+      }
     } catch (err) {
       dispatch({
         type: 'SUBMIT_ERROR',
@@ -133,6 +143,7 @@ export function useExerciseFlow() {
     state.currentIndex,
     state.currentAnswer,
     state.startTime,
+    onGamificationUpdate,
   ]);
 
   const next = useCallback(() => {
@@ -152,6 +163,7 @@ export function useExerciseFlow() {
     feedback: state.feedback,
     results: state.results,
     error: state.error,
+    newAchievements: state.newAchievements,
 
     // Actions
     loadExercises,

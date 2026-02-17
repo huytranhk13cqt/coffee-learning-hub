@@ -645,6 +645,113 @@ COMMENT ON COLUMN bookmark.note IS 'User note';
 
 
 -- ============================================================================
+-- TABLE 15: xp_event (append-only XP event sourcing log)
+-- ============================================================================
+
+CREATE TABLE xp_event (
+    id              SERIAL          PRIMARY KEY,
+    session_id      UUID            NOT NULL,
+    event_type      VARCHAR(30)     NOT NULL,
+    xp_amount       INTEGER         NOT NULL,
+    reference_id    INTEGER,
+    created_at      TIMESTAMPTZ     NOT NULL DEFAULT NOW()
+);
+
+COMMENT ON TABLE xp_event IS 'Append-only XP event log (event sourcing)';
+COMMENT ON COLUMN xp_event.event_type IS 'exercise_correct, exercise_incorrect, achievement_bonus';
+COMMENT ON COLUMN xp_event.reference_id IS 'exercise_id or achievement_id depending on event_type';
+
+CREATE INDEX idx_xp_event_session ON xp_event (session_id);
+CREATE INDEX idx_xp_event_session_date ON xp_event (session_id, created_at);
+
+
+-- ============================================================================
+-- TABLE 16: daily_activity (one row per session per day)
+-- ============================================================================
+
+CREATE TABLE daily_activity (
+    id                  SERIAL      PRIMARY KEY,
+    session_id          UUID        NOT NULL,
+    activity_date       DATE        NOT NULL DEFAULT CURRENT_DATE,
+    exercises_completed INTEGER     NOT NULL DEFAULT 0,
+    xp_earned           INTEGER     NOT NULL DEFAULT 0,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    UNIQUE (session_id, activity_date)
+);
+
+COMMENT ON TABLE daily_activity IS 'Daily activity tracker — source of truth for streaks and daily goals';
+
+CREATE TRIGGER update_daily_activity_updated_at
+    BEFORE UPDATE ON daily_activity
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+
+-- ============================================================================
+-- TABLE 17: achievement (definitions — seeded data)
+-- ============================================================================
+
+CREATE TABLE achievement (
+    id              SERIAL          PRIMARY KEY,
+    code            VARCHAR(50)     NOT NULL UNIQUE,
+    name            VARCHAR(100)    NOT NULL,
+    name_vi         VARCHAR(100)    NOT NULL,
+    description     VARCHAR(255)    NOT NULL,
+    description_vi  VARCHAR(255)    NOT NULL,
+    icon            VARCHAR(50)     NOT NULL,
+    category        VARCHAR(30)     NOT NULL,
+    condition_type  VARCHAR(30)     NOT NULL,
+    condition_value INTEGER         NOT NULL DEFAULT 1,
+    xp_reward       INTEGER         NOT NULL DEFAULT 0,
+    sort_order      INTEGER         NOT NULL DEFAULT 0,
+    is_active       BOOLEAN         NOT NULL DEFAULT TRUE
+);
+
+COMMENT ON TABLE achievement IS 'Achievement badge definitions (seeded, not user-created)';
+COMMENT ON COLUMN achievement.condition_type IS 'exercises_completed, lessons_completed, streak_days, total_xp, perfect_score, categories_explored';
+COMMENT ON COLUMN achievement.icon IS 'MUI icon component name (e.g. EmojiEvents, LocalFireDepartment)';
+
+
+-- ============================================================================
+-- TABLE 18: user_achievement (junction — earned badges per session)
+-- ============================================================================
+
+CREATE TABLE user_achievement (
+    id              SERIAL          PRIMARY KEY,
+    session_id      UUID            NOT NULL,
+    achievement_id  INTEGER         NOT NULL REFERENCES achievement(id),
+    earned_at       TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
+
+    UNIQUE (session_id, achievement_id)
+);
+
+COMMENT ON TABLE user_achievement IS 'Tracks achievements earned by each session';
+
+CREATE INDEX idx_user_achievement_session ON user_achievement (session_id);
+
+
+-- ============================================================================
+-- TABLE 19: user_streak (derived cache + daily goal setting)
+-- ============================================================================
+
+CREATE TABLE user_streak (
+    session_id      UUID            PRIMARY KEY,
+    current_streak  INTEGER         NOT NULL DEFAULT 0,
+    longest_streak  INTEGER         NOT NULL DEFAULT 0,
+    last_active_date DATE,
+    daily_goal      INTEGER         NOT NULL DEFAULT 5,
+    updated_at      TIMESTAMPTZ     NOT NULL DEFAULT NOW()
+);
+
+COMMENT ON TABLE user_streak IS 'Cached streak data + daily goal setting per session';
+
+CREATE TRIGGER update_user_streak_updated_at
+    BEFORE UPDATE ON user_streak
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+
+-- ============================================================================
 -- VIEWS (3)
 -- ============================================================================
 
@@ -802,7 +909,7 @@ CREATE TRIGGER tr_progress_check_completion
 -- ============================================================================
 -- INDEX SUMMARY
 -- ============================================================================
--- Total: 29 indexes (15 PK + 6 UNIQUE + 8 regular)
+-- Total: 37 indexes (20 PK + 8 UNIQUE + 9 regular)
 --
 -- Regular indexes (8):
 --   idx_category_order              → ORDER BY group display

@@ -11,6 +11,7 @@ import {
   exerciseSubmitRoutes,
 } from './routes/exerciseRoutes.js';
 import { progressRoutes } from './routes/progressRoutes.js';
+import { gamificationRoutes } from './routes/gamificationRoutes.js';
 import { AppError } from './errors/AppError.js';
 
 export async function createApp({
@@ -18,6 +19,7 @@ export async function createApp({
   lessonController,
   exerciseController,
   progressController,
+  gamificationController,
   sql,
   logger = true,
 }) {
@@ -85,6 +87,9 @@ export async function createApp({
     prefix: '/api/exercises',
   });
   app.register(progressRoutes(progressController), { prefix: '/api/progress' });
+  app.register(gamificationRoutes(gamificationController), {
+    prefix: '/api/gamification',
+  });
 
   // --- 404 handler ---
   app.setNotFoundHandler((request, reply) => {

@@ -7,9 +7,10 @@ import { extractSessionId } from '../utils/session.js';
 import { groupBy, shuffle } from '../utils/collections.js';
 
 export class ExerciseController {
-  constructor(exerciseRepo, progressRepo, sql) {
+  constructor(exerciseRepo, progressRepo, gamificationRepo, sql) {
     this.exerciseRepo = exerciseRepo;
     this.progressRepo = progressRepo;
+    this.gamificationRepo = gamificationRepo;
     this.sql = sql;
   }
 
@@ -131,11 +132,53 @@ export class ExerciseController {
       await this.progressRepo.updateScores(tx, sessionId, lessonId);
     });
 
+    // 5. Award XP + update gamification (separate transaction — non-critical)
+    let gamification = null;
+    try {
+      gamification = await this.sql.begin(async (tx) => {
+        const xpAmount = result.isCorrect ? 10 : 5;
+        const eventType = result.isCorrect
+          ? 'exercise_correct'
+          : 'exercise_incorrect';
+
+        await this.gamificationRepo.recordXPEvent(tx, {
+          sessionId,
+          eventType,
+          xpAmount,
+          referenceId: exerciseId,
+        });
+        await this.gamificationRepo.updateDailyActivity(
+          tx,
+          sessionId,
+          xpAmount,
+        );
+        const streak = await this.gamificationRepo.updateStreak(tx, sessionId);
+        const newAchievements =
+          await this.gamificationRepo.checkAndAwardAchievements(tx, sessionId);
+
+        const totalXP = await this.gamificationRepo.getTotalXP(sessionId);
+
+        return {
+          xpEarned: xpAmount,
+          totalXP,
+          level: Math.floor(totalXP / 100) + 1,
+          streak: streak.current_streak,
+          newAchievements,
+        };
+      });
+    } catch (err) {
+      request.log.warn(
+        { err: err.message },
+        'Gamification update failed (non-critical)',
+      );
+    }
+
     return {
       data: {
         isCorrect: result.isCorrect,
         explanation: result.explanation,
         explanationVi: result.explanationVi,
+        gamification,
       },
     };
   };

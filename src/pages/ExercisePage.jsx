@@ -9,8 +9,10 @@ import {
 import { fetchExercises } from '../api/exercises.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import { useExerciseFlow } from '../hooks/useExerciseFlow.js';
+import { useGamification } from '../hooks/useGamification.js';
 import ExerciseWrapper from '../components/exercise/ExerciseWrapper.jsx';
 import LeaveExerciseDialog from '../components/exercise/LeaveExerciseDialog.jsx';
+import AchievementToast from '../components/gamification/AchievementToast.jsx';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -35,6 +37,8 @@ export default function ExercisePage() {
   const lessonName = location.state?.lessonName;
   useDocumentTitle(lessonName ? `Bài tập — ${lessonName}` : 'Bài tập');
 
+  const gamification = useGamification();
+
   const {
     phase,
     currentExercise,
@@ -45,12 +49,15 @@ export default function ExercisePage() {
     feedback,
     results,
     error,
+    newAchievements,
     loadExercises,
     setAnswer,
     showHint,
     submit,
     next,
-  } = useExerciseFlow();
+  } = useExerciseFlow({
+    onGamificationUpdate: gamification?.updateFromSubmit,
+  });
 
   const blocker = useBlocker(
     phase === 'answering' || phase === 'submitting' || phase === 'feedback',
@@ -191,6 +198,7 @@ export default function ExercisePage() {
         />
 
         <LeaveExerciseDialog blocker={blocker} />
+        <AchievementToast achievements={newAchievements} />
       </Box>
     </Fade>
   );
