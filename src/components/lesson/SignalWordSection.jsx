@@ -16,11 +16,15 @@ export default function SignalWordSection({ signalWords }) {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" component="h2" gutterBottom>
         Dấu hiệu nhận biết
       </Typography>
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+      <Box
+        sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}
+        role="list"
+        aria-label="Danh sách dấu hiệu nhận biết"
+      >
         {signalWords.map((sw) => (
           <Tooltip
             key={sw.id}
@@ -37,6 +41,7 @@ export default function SignalWordSection({ signalWords }) {
             arrow
           >
             <Chip
+              role="listitem"
               label={sw.word}
               color={CATEGORY_COLORS[sw.category] || 'default'}
               variant="outlined"

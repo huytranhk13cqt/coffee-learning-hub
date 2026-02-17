@@ -35,7 +35,7 @@ export default function UsageSection({ usages }) {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" component="h2" gutterBottom>
         Cách sử dụng
       </Typography>
 
@@ -81,6 +81,7 @@ export default function UsageSection({ usages }) {
                           component="audio"
                           controls
                           src={ex.audio_url}
+                          aria-label={`Nghe phát âm: ${ex.sentence}`}
                           sx={{
                             mt: 0.5,
                             height: 32,

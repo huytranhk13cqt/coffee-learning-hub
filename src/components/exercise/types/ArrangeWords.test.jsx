@@ -33,7 +33,7 @@ describe('ArrangeWords', () => {
 
   it('shows placeholder when no words selected', () => {
     setup();
-    expect(screen.getByText(/Nhấp vào từ/)).toBeInTheDocument();
+    expect(screen.getByText(/Chọn từ bên dưới/)).toBeInTheDocument();
   });
 
   it('builds sentence as words are clicked', async () => {

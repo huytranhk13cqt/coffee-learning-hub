@@ -22,18 +22,26 @@ export default function ComparisonSection({ comparisons, lessonName }) {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" component="h2" gutterBottom>
         So sánh
       </Typography>
 
       {Object.values(grouped).map((group) => (
         <Box key={group.name} sx={{ mb: 3 }}>
-          <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+          <Typography
+            variant="subtitle1"
+            component="h3"
+            fontWeight={600}
+            gutterBottom
+          >
             {lessonName} vs {group.name}
           </Typography>
 
           <TableContainer component={Paper} variant="outlined">
-            <Table size="small">
+            <Table
+              size="small"
+              aria-label={`So sánh ${lessonName} và ${group.name}`}
+            >
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 600 }}>Khía cạnh</TableCell>

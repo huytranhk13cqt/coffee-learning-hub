@@ -67,7 +67,7 @@ export default function ResultsPage() {
 
         {/* Summary */}
         <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" component="h1" gutterBottom>
             Kết quả chi tiết
           </Typography>
           <Typography

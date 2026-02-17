@@ -95,6 +95,7 @@ export default function ExerciseWrapper({
           controls
           preload="metadata"
           src={exercise.audio_url}
+          aria-label="Nghe âm thanh bài tập"
           sx={{ display: 'block', mb: 2, maxWidth: 400 }}
         />
       )}
@@ -119,7 +120,7 @@ export default function ExerciseWrapper({
       )}
 
       {/* Question */}
-      <Typography variant="h6" sx={{ mb: 1 }}>
+      <Typography variant="h6" component="h2" sx={{ mb: 1 }}>
         {exercise.question}
       </Typography>
       {exercise.question_vi && (

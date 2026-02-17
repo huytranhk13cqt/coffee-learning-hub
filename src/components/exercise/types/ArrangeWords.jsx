@@ -45,6 +45,8 @@ export default function ArrangeWords({
       {/* Answer area */}
       <Paper
         variant="outlined"
+        role="region"
+        aria-label="Câu trả lời đã sắp xếp"
         sx={{
           p: 2,
           mb: 2,
@@ -56,7 +58,7 @@ export default function ArrangeWords({
       >
         {selectedIndices.length === 0 ? (
           <Typography color="text.secondary" sx={{ fontStyle: 'italic' }}>
-            Nhấp vào từ bên dưới để sắp xếp câu...
+            Chọn từ bên dưới để sắp xếp câu...
           </Typography>
         ) : (
           selectedIndices.map((wordIndex, posIndex) => (

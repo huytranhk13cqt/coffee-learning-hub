@@ -29,7 +29,7 @@ export default function TipSection({ tips }) {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" component="h2" gutterBottom>
         Mẹo ghi nhớ
       </Typography>
 

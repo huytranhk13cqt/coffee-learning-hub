@@ -162,7 +162,9 @@ export default function DashboardPage() {
               sx={{ borderTop: 4, borderColor: group.color }}
             >
               <Box sx={{ px: 2.5, pt: 2, pb: 1 }}>
-                <Typography variant="h6">{group.name}</Typography>
+                <Typography variant="h6" component="h2">
+                  {group.name}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {group.name_vi}
                 </Typography>

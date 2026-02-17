@@ -21,11 +21,16 @@ export default function FormulaSection({ formulas }) {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" component="h2" gutterBottom>
         Công thức
       </Typography>
 
-      <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 2 }}>
+      <Tabs
+        value={tab}
+        onChange={(_, v) => setTab(v)}
+        aria-label="Chọn loại công thức"
+        sx={{ mb: 2 }}
+      >
         {formulas.map((f) => (
           <Tab key={f.type} label={TYPE_LABELS[f.type]?.label || f.type} />
         ))}

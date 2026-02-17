@@ -67,7 +67,7 @@ export default function ExercisePage() {
     return (
       <Fade in timeout={300}>
         <Box sx={{ textAlign: 'center', py: 6 }}>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" component="h1" gutterBottom>
             Chưa có bài tập
           </Typography>
           <Typography color="text.secondary" sx={{ mb: 3 }}>
@@ -160,6 +160,20 @@ export default function ExercisePage() {
           )}
           <Typography color="text.primary">Bài tập</Typography>
         </Breadcrumbs>
+
+        <Typography
+          variant="h5"
+          component="h1"
+          sx={{
+            position: 'absolute',
+            width: 1,
+            height: 1,
+            overflow: 'hidden',
+            clip: 'rect(0,0,0,0)',
+          }}
+        >
+          {lessonName ? `Bài tập — ${lessonName}` : 'Bài tập'}
+        </Typography>
 
         <ExerciseWrapper
           exercise={currentExercise}

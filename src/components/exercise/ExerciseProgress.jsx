@@ -7,7 +7,11 @@ export default function ExerciseProgress({ current, total }) {
 
   return (
     <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <Typography variant="body2" color="text.secondary">
           Bài {current + 1} / {total}
         </Typography>
