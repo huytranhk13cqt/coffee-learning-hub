@@ -102,3 +102,68 @@ jobs:
 
       - name: Run integration tests
         run: cd server && npx vitest run -c vitest.integration.js
+
+  test-e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [lint-and-build]
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: knowledge_learning
+          POSTGRES_USER: relax_user
+          POSTGRES_PASSWORD: relaxpass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U relax_user -d knowledge_learning"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: relax_user
+      DB_PASSWORD: relaxpass
+      DB_NAME: knowledge_learning
+      PORT: 3001
+      CORS_ORIGIN: http://localhost:5173
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            server/package-lock.json
+
+      - name: Install client dependencies
+        run: npm ci
+
+      - name: Install server dependencies
+        run: cd server && npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Seed database
+        run: |
+          PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/schema.sql
+          PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/seed_data.sql
+          for f in database/seed_*.sql; do
+            [ "$f" = "database/seed_data.sql" ] && continue
+            PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f "$f"
+          done
+
+      - name: Run E2E tests
+        run: npx playwright test
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: test-results/
+          retention-days: 7

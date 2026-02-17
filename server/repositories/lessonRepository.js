@@ -5,11 +5,12 @@ export class LessonRepository {
     this.sql = sql;
   }
 
-  // F1: Search lessons by keyword (ILIKE — adequate for ~31 lessons)
+  // F1: Search lessons by keyword (ILIKE substring + pg_trgm fuzzy matching)
   async search(keyword) {
     // Escape ILIKE metacharacters (% and _) so they match literally
     const escaped = keyword.replace(/[%_\\]/g, '\\$&');
     const pattern = `%${escaped}%`;
+    const lowerKeyword = keyword.toLowerCase();
     return this.sql`
       SELECT
         l.id, l.name, l.name_vi, l.slug,
@@ -25,8 +26,15 @@ export class LessonRepository {
           OR l.name_vi ILIKE ${pattern}
           OR l.short_desc ILIKE ${pattern}
           OR l.short_desc_vi ILIKE ${pattern}
+          OR word_similarity(${lowerKeyword}, lower(l.name)) > 0.3
+          OR word_similarity(${lowerKeyword}, lower(l.name_vi)) > 0.3
         )
-      ORDER BY g.order_index, l.order_index
+      ORDER BY
+        GREATEST(
+          word_similarity(${lowerKeyword}, lower(l.name)),
+          word_similarity(${lowerKeyword}, lower(l.name_vi))
+        ) DESC,
+        g.order_index, l.order_index
       LIMIT 50
     `;
   }

@@ -15,6 +15,13 @@
 
 
 -- ============================================================================
+-- EXTENSIONS
+-- ============================================================================
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+
+-- ============================================================================
 -- ENUM TYPES (11)
 -- ============================================================================
 
@@ -139,6 +146,8 @@ COMMENT ON COLUMN lesson.description IS 'Full introduction';
 CREATE INDEX idx_lesson_group     ON lesson(group_id);
 CREATE INDEX idx_lesson_published ON lesson(is_published, order_index);
 CREATE INDEX idx_lesson_group_published_order ON lesson(group_id, is_published, order_index);
+CREATE INDEX idx_lesson_name_trgm    ON lesson USING gin(name gin_trgm_ops);
+CREATE INDEX idx_lesson_name_vi_trgm ON lesson USING gin(name_vi gin_trgm_ops);
 
 CREATE TRIGGER trg_lesson_updated_at
   BEFORE UPDATE ON lesson
@@ -793,12 +802,14 @@ CREATE TRIGGER tr_progress_check_completion
 -- ============================================================================
 -- INDEX SUMMARY
 -- ============================================================================
--- Total: 27 indexes (15 PK + 6 UNIQUE + 6 regular)
+-- Total: 29 indexes (15 PK + 6 UNIQUE + 8 regular)
 --
--- Regular indexes (6):
+-- Regular indexes (8):
 --   idx_category_order              → ORDER BY group display
 --   idx_lesson_group                → Filter lessons by group
 --   idx_lesson_published            → Filter published + order
+--   idx_lesson_name_trgm            → GIN trigram for ILIKE + fuzzy search (EN)
+--   idx_lesson_name_vi_trgm         → GIN trigram for ILIKE + fuzzy search (VI)
 --   idx_lesson_usage_lesson_order   → Filter + order usages
 --   idx_example_usage               → Join examples ← usages
 --   idx_tip_lesson                  → Filter tips by lesson

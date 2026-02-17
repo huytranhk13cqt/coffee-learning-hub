@@ -47,6 +47,35 @@ describe('LessonRepository (integration)', () => {
       expect(r).toHaveProperty('group_name_vi');
       expect(r).toHaveProperty('group_color');
     });
+
+    it('finds lessons despite typos via fuzzy matching', async () => {
+      // "Presnt" is a typo for "Present" — pg_trgm word_similarity catches it
+      const results = await repo.search('Presnt');
+      expect(results.length).toBeGreaterThan(0);
+      expect(
+        results.some((r) => r.name.toLowerCase().includes('present')),
+      ).toBe(true);
+    });
+
+    it('ranks more relevant results first', async () => {
+      const results = await repo.search('Simple Present');
+      expect(results.length).toBeGreaterThan(0);
+      // Exact name match should rank highest
+      expect(results[0].name).toBe('Simple Present');
+    });
+
+    it('handles short queries via ILIKE substring', async () => {
+      // Short queries (2-3 chars) use ILIKE, not fuzzy
+      const results = await repo.search('Si');
+      expect(results.length).toBeGreaterThan(0);
+      expect(
+        results.every((r) =>
+          `${r.name} ${r.name_vi} ${r.short_desc || ''} ${r.short_desc_vi || ''}`
+            .toLowerCase()
+            .includes('si'),
+        ),
+      ).toBe(true);
+    });
   });
 
   describe('findBySlug', () => {
