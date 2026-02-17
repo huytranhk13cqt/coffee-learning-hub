@@ -22,6 +22,8 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import Fade from '@mui/material/Fade';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';
+import GamificationOverview from '../components/dashboard/GamificationOverview.jsx';
+import { useGamification } from '../hooks/useGamification.js';
 
 export async function loader({ request }) {
   return fetchDashboard({ signal: request.signal });
@@ -90,6 +92,7 @@ function getStatValue(key, stats) {
 
 export default function DashboardPage() {
   const { stats, lessons } = useLoaderData();
+  const gamification = useGamification();
   useDocumentTitle('Tổng quan học tập');
   const grouped = groupBy(lessons, (l) => l.group_id);
 
@@ -136,6 +139,9 @@ export default function DashboardPage() {
             </Grid>
           ))}
         </Grid>
+
+        {/* Gamification Overview */}
+        <GamificationOverview stats={gamification?.stats} />
 
         {/* Empty state */}
         {isEmpty && (
