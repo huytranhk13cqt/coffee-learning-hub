@@ -28,7 +28,14 @@ export async function createApp({
 
   // --- Plugins ---
   await app.register(helmet, {
-    contentSecurityPolicy: false,
+    // API-only server: strictest CSP since responses are JSON, not HTML.
+    // If Fastify ever serves the SPA directly, this must be relaxed.
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+      },
+    },
   });
   await app.register(cors, {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',

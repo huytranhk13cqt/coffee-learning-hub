@@ -44,6 +44,13 @@ describe('Health & Routing', () => {
     });
     expect(res.headers['x-request-id']).toBe(clientId);
   });
+
+  it('returns Content-Security-Policy header', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/health' });
+    const csp = res.headers['content-security-policy'];
+    expect(csp).toContain("default-src 'none'");
+    expect(csp).toContain("frame-ancestors 'none'");
+  });
 });
 
 // ---------------------------------------------------------------------------
