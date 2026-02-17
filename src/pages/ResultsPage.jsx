@@ -1,6 +1,7 @@
 import { useLoaderData, Link as RouterLink } from 'react-router';
 import { fetchResults } from '../api/exercises.js';
 import { fetchProgress } from '../api/progress.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -37,6 +38,7 @@ const typeLabels = {
 
 export default function ResultsPage() {
   const { results, lessonId, progress } = useLoaderData();
+  useDocumentTitle('Kết quả chi tiết');
 
   const attempted = results.filter((r) => r.user_answer != null);
   const correct = attempted.filter((r) => r.is_correct);

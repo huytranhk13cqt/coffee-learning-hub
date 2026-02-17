@@ -1,5 +1,6 @@
 import { useLoaderData, Link as RouterLink } from 'react-router';
 import { fetchHomePage } from '../api/groups.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -23,6 +24,7 @@ export async function loader({ request }) {
 
 export default function HomePage() {
   const { groups } = useLoaderData();
+  useDocumentTitle(null); // Home page uses base title
 
   return (
     <Fade in timeout={300}>

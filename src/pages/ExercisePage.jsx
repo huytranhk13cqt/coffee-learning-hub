@@ -7,6 +7,7 @@ import {
   Link as RouterLink,
 } from 'react-router';
 import { fetchExercises } from '../api/exercises.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import { useExerciseFlow } from '../hooks/useExerciseFlow.js';
 import ExerciseWrapper from '../components/exercise/ExerciseWrapper.jsx';
 import LeaveExerciseDialog from '../components/exercise/LeaveExerciseDialog.jsx';
@@ -32,6 +33,7 @@ export default function ExercisePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const lessonName = location.state?.lessonName;
+  useDocumentTitle(lessonName ? `Bài tập — ${lessonName}` : 'Bài tập');
 
   const {
     phase,
@@ -93,10 +95,10 @@ export default function ExercisePage() {
           <CheckCircleOutlineIcon
             sx={{ fontSize: 64, color: 'success.main', mb: 2 }}
           />
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" component="h1" gutterBottom>
             Hoàn thành!
           </Typography>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
             Bạn đã trả lời đúng {correctCount}/{totalExercises} câu ({score}%)
           </Typography>
 
@@ -116,7 +118,7 @@ export default function ExercisePage() {
                     color={r.isCorrect ? 'success.main' : 'error.main'}
                     fontWeight={600}
                   >
-                    {r.isCorrect ? 'Đúng' : 'Sai'}
+                    {r.isCorrect ? '✓ Đúng' : '✗ Sai'}
                   </Typography>
                 </Box>
               ))}

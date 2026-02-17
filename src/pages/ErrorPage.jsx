@@ -1,4 +1,5 @@
 import { useRouteError, Link as RouterLink } from 'react-router';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -38,10 +39,11 @@ function getErrorInfo(error) {
 export default function ErrorPage() {
   const error = useRouteError();
   const { title, message, showRetry } = getErrorInfo(error);
+  useDocumentTitle(title);
 
   return (
     <Box sx={{ textAlign: 'center', py: 8 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom>
         {title}
       </Typography>
       <Typography color="text.secondary" sx={{ mb: 3 }}>

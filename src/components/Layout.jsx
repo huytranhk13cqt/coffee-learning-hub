@@ -20,6 +20,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import theme from '../theme/theme.js';
+import MuiLink from '@mui/material/Link';
 import SearchBar from './search/SearchBar.jsx';
 import PageSkeleton from './skeletons/PageSkeleton.jsx';
 
@@ -63,9 +64,29 @@ function LayoutContent() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <AppBar position="sticky">
+      {/* Skip navigation link (WCAG 2.4.1) */}
+      <MuiLink
+        href="#main-content"
+        sx={{
+          position: 'absolute',
+          left: '-100vw',
+          '&:focus': {
+            left: 8,
+            top: 8,
+            zIndex: (t) => t.zIndex.tooltip + 1,
+            bgcolor: 'background.paper',
+            px: 2,
+            py: 1,
+            borderRadius: 1,
+            boxShadow: 3,
+          },
+        }}
+      >
+        Bỏ qua thanh điều hướng
+      </MuiLink>
+      <AppBar position="sticky" component="nav">
         <Toolbar>
-          <SchoolIcon sx={{ mr: 1.5 }} />
+          <SchoolIcon aria-hidden="true" sx={{ mr: 1.5 }} />
           <Typography
             variant="h6"
             component={RouterLink}
@@ -87,9 +108,10 @@ function LayoutContent() {
               color="inherit"
               component={RouterLink}
               to="/dashboard"
+              aria-label="Tổng quan học tập"
               sx={{ ml: 0.5 }}
             >
-              <BarChartIcon />
+              <BarChartIcon aria-hidden="true" />
             </IconButton>
           </Tooltip>
         </Toolbar>
@@ -100,7 +122,12 @@ function LayoutContent() {
           />
         )}
       </AppBar>
-      <Container maxWidth="lg" sx={{ py: 4, flex: 1 }}>
+      <Container
+        component="main"
+        id="main-content"
+        maxWidth="lg"
+        sx={{ py: 4, flex: 1 }}
+      >
         {isLoading ? <PageSkeleton /> : <Outlet />}
       </Container>
     </Box>

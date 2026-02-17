@@ -35,6 +35,7 @@ import {
   DIFFICULTY_LABELS,
   DIFFICULTY_COLORS,
 } from '../constants/difficulty.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export async function loader({ params, request }) {
   const lesson = await fetchLesson(params.slug, { signal: request.signal });
@@ -57,6 +58,7 @@ function getExerciseCTA(progress) {
 export default function LessonPage() {
   const { lesson, progress: loaderProgress } = useLoaderData();
   const navigate = useNavigate();
+  useDocumentTitle(lesson.name_vi || lesson.name);
 
   // Local state for optimistic updates (theory complete, reset)
   // Sync with loader data when navigating between lessons

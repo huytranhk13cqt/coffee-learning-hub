@@ -5,8 +5,9 @@ const theme = createTheme({
   colorSchemes: {
     light: {
       palette: {
-        primary: { main: '#6366f1' },
-        secondary: { main: '#ec4899' },
+        // Contrast-safe: #4f46e5 on white = 4.7:1 (AA), #c2185b on white = 5.6:1
+        primary: { main: '#4f46e5' },
+        secondary: { main: '#c2185b' },
       },
     },
     dark: {

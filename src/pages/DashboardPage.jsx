@@ -1,5 +1,6 @@
 import { useLoaderData, Link as RouterLink } from 'react-router';
 import { fetchDashboard } from '../api/progress.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -89,6 +90,7 @@ function getStatValue(key, stats) {
 
 export default function DashboardPage() {
   const { stats, lessons } = useLoaderData();
+  useDocumentTitle('Tổng quan học tập');
   const grouped = groupBy(lessons, (l) => l.group_id);
 
   // Extract unique groups in order (lessons are already sorted by group order)
