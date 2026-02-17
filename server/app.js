@@ -89,11 +89,19 @@ export async function createApp({
   // --- Error handler ---
   app.setErrorHandler((err, request, reply) => {
     if (err instanceof AppError) {
+      request.log.warn(
+        { err: err.message, statusCode: err.statusCode },
+        'App error',
+      );
       return reply.status(err.statusCode).send({ error: err.message });
     }
 
     // Fastify plugin errors (rate-limit 429, schema validation 400, etc.)
     if (err.statusCode && err.statusCode < 500) {
+      request.log.warn(
+        { err: err.message, statusCode: err.statusCode },
+        'Client error',
+      );
       return reply.status(err.statusCode).send({ error: err.message });
     }
 
