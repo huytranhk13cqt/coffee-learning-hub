@@ -82,8 +82,8 @@ test.describe('Smoke Tests', () => {
     // Navigate to exercises for Simple Present (lesson_id = 1)
     await page.goto('/lessons/1/exercises');
 
-    // Progress indicator should exist
-    const progressBar = page.getByRole('progressbar');
+    // Exercise progress indicator (not the daily-goal one in AppBar)
+    const progressBar = page.getByRole('progressbar', { name: /Tiến trình/ });
     await expect(progressBar).toBeVisible({ timeout: 10_000 });
 
     // Should show some exercise content (question area)
@@ -125,10 +125,10 @@ test.describe('Smoke Tests', () => {
     // Simple Present (lesson_id=1) starts with multiple_choice exercises
     await page.goto('/lessons/1/exercises');
 
-    // Wait for first exercise to render
-    await expect(page.getByRole('progressbar')).toBeVisible({
-      timeout: 10_000,
-    });
+    // Wait for first exercise to render (exercise progress, not daily-goal)
+    await expect(
+      page.getByRole('progressbar', { name: /Tiến trình/ }),
+    ).toBeVisible({ timeout: 10_000 });
 
     // Select first radio option (multiple_choice)
     const firstRadio = page.getByRole('radio').first();
