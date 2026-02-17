@@ -30,6 +30,7 @@ export default function TrueFalse({
         }}
         disabled={disabled}
         color="primary"
+        aria-label="Chọn True hoặc False"
       >
         <ToggleButton value="true" sx={{ px: 4 }}>
           True

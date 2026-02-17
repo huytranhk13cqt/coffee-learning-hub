@@ -13,6 +13,8 @@ export default function ErrorCorrection({
     <Box>
       <Paper
         variant="outlined"
+        role="region"
+        aria-label="Câu có lỗi cần sửa"
         sx={{ p: 2, mb: 2, bgcolor: 'error.50', borderColor: 'error.200' }}
       >
         <Typography

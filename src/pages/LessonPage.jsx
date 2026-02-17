@@ -15,6 +15,7 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -67,6 +68,7 @@ export default function LessonPage() {
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [actionError, setActionError] = useState(null);
 
   async function handleMarkTheoryComplete() {
     setTheoryMarking(true);
@@ -84,6 +86,8 @@ export default function LessonPage() {
               best_score: 0,
             },
       );
+    } catch {
+      setActionError('Không thể đánh dấu lý thuyết. Vui lòng thử lại.');
     } finally {
       setTheoryMarking(false);
     }
@@ -95,6 +99,8 @@ export default function LessonPage() {
       await resetProgress(lesson.id);
       setProgress(null);
       setResetDialogOpen(false);
+    } catch {
+      setActionError('Không thể đặt lại tiến trình. Vui lòng thử lại.');
     } finally {
       setResetting(false);
     }
@@ -287,6 +293,21 @@ export default function LessonPage() {
           onClose={() => setSnackbarOpen(false)}
           message="Bạn chưa đọc lý thuyết. Đọc lý thuyết giúp làm bài tốt hơn!"
         />
+
+        {/* Action Error Feedback */}
+        <Snackbar
+          open={!!actionError}
+          autoHideDuration={5000}
+          onClose={() => setActionError(null)}
+        >
+          <Alert
+            severity="error"
+            variant="filled"
+            onClose={() => setActionError(null)}
+          >
+            {actionError}
+          </Alert>
+        </Snackbar>
       </Box>
     </Fade>
   );

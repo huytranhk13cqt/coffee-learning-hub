@@ -35,13 +35,14 @@ export default function ExerciseWrapper({
   const isFeedback = phase === 'feedback';
   const disabled = isSubmitting || isFeedback;
 
-  // Auto-scroll to feedback when it appears
+  // Auto-scroll and focus feedback when it appears
   useEffect(() => {
     if (feedback && feedbackRef.current) {
       feedbackRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
       });
+      feedbackRef.current.focus();
     }
   }, [feedback]);
 
@@ -149,7 +150,7 @@ export default function ExerciseWrapper({
       )}
 
       {/* Feedback */}
-      <div ref={feedbackRef} aria-live="polite">
+      <div ref={feedbackRef} tabIndex={-1}>
         <FeedbackPanel feedback={feedback} />
       </div>
 
