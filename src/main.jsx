@@ -8,7 +8,7 @@ import router from './router.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <InitColorSchemeScript attribute="data-mui-color-scheme" />
+    <InitColorSchemeScript attribute="data-color-scheme" />
     <RouterProvider
       router={router}
       fallbackElement={
