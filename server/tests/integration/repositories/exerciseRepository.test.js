@@ -161,6 +161,56 @@ describe('ExerciseRepository (integration)', () => {
     });
   });
 
+  describe('findExplanationById', () => {
+    it('returns explanation for matching exercise', async () => {
+      const exercises = await repo.findByLesson(1);
+      const matchingExercise = exercises.find((e) => e.type === 'matching');
+      if (!matchingExercise) return;
+
+      const result = await repo.findExplanationById(matchingExercise.id);
+      expect(result).toHaveProperty('explanation');
+      expect(result).toHaveProperty('explanation_vi');
+      expect(result.explanation).toBeTruthy();
+    });
+
+    it('throws NotFoundError for non-existent exercise', async () => {
+      await expect(repo.findExplanationById(99999)).rejects.toThrow(
+        NotFoundError,
+      );
+    });
+  });
+
+  describe('matching exercise full validation flow', () => {
+    it('provides complete data for answer validation pipeline', async () => {
+      // 1. Find a matching exercise via findByLesson
+      const exercises = await repo.findByLesson(1);
+      const matchingExercise = exercises.find((e) => e.type === 'matching');
+      if (!matchingExercise) return;
+
+      // 2. Verify findTypeById returns correct type
+      const typeInfo = await repo.findTypeById(matchingExercise.id);
+      expect(typeInfo.type).toBe('matching');
+      expect(typeInfo.lesson_id).toBe(1);
+
+      // 3. Get validation data (pairs + explanation) — same as controller does
+      const [pairs, explanationData] = await Promise.all([
+        repo.findMatchingPairsForValidation(matchingExercise.id),
+        repo.findExplanationById(matchingExercise.id),
+      ]);
+
+      // 4. Verify pairs have the data needed for validation
+      expect(pairs.length).toBeGreaterThan(0);
+      for (const pair of pairs) {
+        expect(pair.id).toBeDefined();
+        expect(pair.left_content).toBeTruthy();
+        expect(pair.right_content).toBeTruthy();
+      }
+
+      // 5. Verify explanation is available for feedback
+      expect(explanationData.explanation).toBeTruthy();
+    });
+  });
+
   describe('findTypeById', () => {
     it('returns exercise type and lesson_id', async () => {
       const exercises = await repo.findByLesson(1);
