@@ -6,7 +6,7 @@ export function bookmarkController(repository) {
         return reply.status(400).send({ error: 'Missing Session ID' });
 
       const bookmarks = await repository.getBySession(sessionId);
-      return bookmarks;
+      return { data: bookmarks };
     },
 
     async add(request, reply) {
@@ -25,7 +25,7 @@ export function bookmarkController(repository) {
         sectionId,
         note,
       );
-      return reply.status(201).send(result[0]);
+      return reply.status(201).send({ data: result[0] });
     },
 
     async remove(request, reply) {
@@ -71,7 +71,7 @@ export function bookmarkController(repository) {
         sectionType || null,
         sectionId ? parseInt(sectionId) : null,
       );
-      return { isBookmarked };
+      return { data: { isBookmarked } };
     },
   };
 }
