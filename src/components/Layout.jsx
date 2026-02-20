@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import SchoolIcon from '@mui/icons-material/School';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import theme from '../theme/theme.js';
