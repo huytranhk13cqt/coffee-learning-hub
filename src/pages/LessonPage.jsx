@@ -6,6 +6,11 @@ import {
   markTheoryComplete,
   resetProgress,
 } from '../api/progress.js';
+import {
+  checkBookmark,
+  addBookmark,
+  removeBookmark,
+} from '../api/bookmarks.js';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -14,6 +19,8 @@ import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -21,6 +28,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import FormulaSection from '../components/lesson/FormulaSection.jsx';
 import UsageSection from '../components/lesson/UsageSection.jsx';
 import SignalWordSection from '../components/lesson/SignalWordSection.jsx';
@@ -39,10 +48,13 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export async function loader({ params, request }) {
   const lesson = await fetchLesson(params.slug, { signal: request.signal });
-  const progress = await fetchProgress(lesson.id, {
-    signal: request.signal,
-  }).catch(() => null);
-  return { lesson, progress };
+  const [progress, isBookmarked] = await Promise.all([
+    fetchProgress(lesson.id, { signal: request.signal }).catch(() => null),
+    checkBookmark({ lessonId: lesson.id }, { signal: request.signal }).catch(
+      () => false,
+    ),
+  ]);
+  return { lesson, progress, isBookmarked };
 }
 
 function getExerciseCTA(progress) {
@@ -56,21 +68,46 @@ function getExerciseCTA(progress) {
 }
 
 export default function LessonPage() {
-  const { lesson, progress: loaderProgress } = useLoaderData();
+  const {
+    lesson,
+    progress: loaderProgress,
+    isBookmarked: initialBookmarked,
+  } = useLoaderData();
   const navigate = useNavigate();
   useDocumentTitle(lesson.name_vi || lesson.name);
 
   // Local state for optimistic updates (theory complete, reset)
   // Sync with loader data when navigating between lessons
   const [progress, setProgress] = useState(loaderProgress);
+  const [isBookmarked, setIsBookmarked] = useState(initialBookmarked);
   useEffect(() => {
     setProgress(loaderProgress);
-  }, [loaderProgress]);
+    setIsBookmarked(initialBookmarked);
+  }, [loaderProgress, initialBookmarked]);
+
   const [theoryMarking, setTheoryMarking] = useState(false);
+  const [bookmarking, setBookmarking] = useState(false);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [actionError, setActionError] = useState(null);
+
+  async function handleToggleBookmark() {
+    setBookmarking(true);
+    try {
+      if (isBookmarked) {
+        await removeBookmark({ lessonId: lesson.id });
+        setIsBookmarked(false);
+      } else {
+        await addBookmark({ lessonId: lesson.id });
+        setIsBookmarked(true);
+      }
+    } catch {
+      setActionError('Không thể cập nhật bookmark. Vui lòng thử lại.');
+    } finally {
+      setBookmarking(false);
+    }
+  }
 
   async function handleMarkTheoryComplete() {
     setTheoryMarking(true);
@@ -131,14 +168,40 @@ export default function LessonPage() {
         </Breadcrumbs>
 
         {/* Lesson Header */}
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {lesson.name}
-          </Typography>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            {lesson.name_vi}
-          </Typography>
+        <Box
+          sx={{
+            mb: 4,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+          }}
+        >
+          <Box>
+            <Typography variant="h4" component="h1" gutterBottom>
+              {lesson.name}
+            </Typography>
+            <Typography variant="h6" color="text.secondary" gutterBottom>
+              {lesson.name_vi}
+            </Typography>
+          </Box>
 
+          <Tooltip title={isBookmarked ? 'Bỏ lưu bài học' : 'Lưu bài học'}>
+            <IconButton
+              onClick={handleToggleBookmark}
+              disabled={bookmarking}
+              color={isBookmarked ? 'primary' : 'default'}
+              sx={{ mt: 0.5 }}
+            >
+              {isBookmarked ? (
+                <BookmarkIcon fontSize="large" />
+              ) : (
+                <BookmarkBorderIcon fontSize="large" />
+              )}
+            </IconButton>
+          </Tooltip>
+        </Box>
+
+        <Box sx={{ mb: 4 }}>
           {lesson.description_vi && (
             <Typography variant="body1" sx={{ mb: 2 }}>
               {lesson.description_vi}

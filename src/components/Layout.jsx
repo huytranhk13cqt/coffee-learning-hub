@@ -157,6 +157,17 @@ function LayoutContent() {
                 <EmojiEventsIcon aria-hidden="true" />
               </IconButton>
             </Tooltip>
+            <Tooltip title="Bài học đã lưu">
+              <IconButton
+                color="inherit"
+                component={RouterLink}
+                to="/bookmarks"
+                aria-label="Bài học đã lưu"
+                sx={{ ml: 0.5 }}
+              >
+                <BookmarkIcon aria-hidden="true" />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Tổng quan">
               <IconButton
                 color="inherit"

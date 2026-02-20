@@ -17,6 +17,8 @@ import { GamificationRepository } from './repositories/gamificationRepository.js
 import { ExerciseController } from './controllers/exerciseController.js';
 import { ProgressController } from './controllers/progressController.js';
 import { GamificationController } from './controllers/gamificationController.js';
+import { bookmarkRepository } from './repositories/bookmarkRepository.js';
+import { bookmarkController as BookmarkController } from './controllers/bookmarkController.js';
 import { createApp } from './app.js';
 
 // --- Startup env validation (fail-fast) ---
@@ -60,6 +62,8 @@ const exerciseController = new ExerciseController(
 );
 const progressController = new ProgressController(progressRepo);
 const gamificationController = new GamificationController(gamificationRepo);
+const bookmarkRepo = bookmarkRepository(sql);
+const bookmarkControllerInstance = BookmarkController(bookmarkRepo);
 
 const app = await createApp({
   categoryController,
@@ -67,6 +71,7 @@ const app = await createApp({
   exerciseController,
   progressController,
   gamificationController,
+  bookmarkController: bookmarkControllerInstance,
   sql,
 });
 

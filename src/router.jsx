@@ -45,6 +45,15 @@ const router = createBrowserRouter([
         ErrorBoundary: ErrorPage,
       },
       {
+        path: 'bookmarks',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/BookmarksPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
         path: 'lessons/:slug',
         lazy: async () => {
           const { default: Component, loader } =
