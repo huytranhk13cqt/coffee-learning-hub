@@ -43,7 +43,8 @@ export function bookmarkRepository(sql) {
       return sql`
         INSERT INTO bookmark (session_id, lesson_id, section_type, section_id, note)
         VALUES (${sessionId}, ${lessonId}, ${sectionType}, ${sectionId}, ${note})
-        ON DUPLICATE KEY UPDATE note = VALUES(note)
+        ON CONFLICT (session_id, lesson_id, section_type, section_id) 
+        DO UPDATE SET note = EXCLUDED.note
         RETURNING id
       `;
     },
