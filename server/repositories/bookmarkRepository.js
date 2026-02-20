@@ -15,7 +15,7 @@ export function bookmarkRepository(sql) {
           g.color as group_color
         FROM bookmark b
         JOIN lesson l ON b.lesson_id = l.id
-        JOIN tense_group g ON l.group_id = g.id
+        JOIN category g ON l.group_id = g.id
         WHERE b.session_id = ${sessionId}
         ORDER BY b.created_at DESC
       `;
