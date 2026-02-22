@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Outlet,
   useNavigation,
@@ -31,6 +31,7 @@ import XPDisplay from './gamification/XPDisplay.jsx';
 import DailyGoalProgress from './gamification/DailyGoalProgress.jsx';
 import GamificationProvider from '../contexts/GamificationContext.jsx';
 import { useGamification } from '../hooks/useGamification.js';
+import DailyGoalDialog from './gamification/DailyGoalDialog.jsx';
 
 /**
  * Theme toggle button — must be rendered inside ThemeProvider
@@ -63,28 +64,37 @@ function ColorModeToggle() {
  */
 function GamificationBar() {
   const ctx = useGamification();
+  const [goalDialogOpen, setGoalDialogOpen] = useState(false);
+
   if (!ctx?.stats) return null;
 
   const { xp, streak, dailyGoal } = ctx.stats;
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: { xs: 1, sm: 1.5 },
-        mr: 1,
-      }}
-    >
-      <StreakDisplay streak={streak?.current} />
-      <XPDisplay totalXP={xp?.total} level={xp?.level} />
-      <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-        <DailyGoalProgress
-          completed={dailyGoal?.completed}
-          target={dailyGoal?.target}
-        />
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: { xs: 1, sm: 1.5 },
+          mr: 1,
+        }}
+      >
+        <StreakDisplay streak={streak?.current} />
+        <XPDisplay totalXP={xp?.total} level={xp?.level} />
+        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+          <DailyGoalProgress
+            completed={dailyGoal?.completed}
+            target={dailyGoal?.target}
+            onClick={() => setGoalDialogOpen(true)}
+          />
+        </Box>
       </Box>
-    </Box>
+      <DailyGoalDialog
+        open={goalDialogOpen}
+        onClose={() => setGoalDialogOpen(false)}
+      />
+    </>
   );
 }
 

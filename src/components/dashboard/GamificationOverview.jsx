@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -6,12 +7,17 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import Link from '@mui/material/Link';
+import Tooltip from '@mui/material/Tooltip';
 import BoltIcon from '@mui/icons-material/Bolt';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import FlagIcon from '@mui/icons-material/Flag';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import EditIcon from '@mui/icons-material/Edit';
+import DailyGoalDialog from '../gamification/DailyGoalDialog.jsx';
 
 export default function GamificationOverview({ stats }) {
+  const [goalDialogOpen, setGoalDialogOpen] = useState(false);
+
   if (!stats) return null;
 
   const { xp, streak, dailyGoal, achievementsEarned } = stats;
@@ -74,25 +80,50 @@ export default function GamificationOverview({ stats }) {
           </Card>
         </Grid>
 
-        {/* Daily Goal */}
+        {/* Daily Goal — clickable to edit */}
         <Grid size={{ xs: 6, sm: 3 }}>
-          <Card variant="outlined">
-            <CardContent sx={{ textAlign: 'center', py: 2 }}>
-              <FlagIcon sx={{ fontSize: 32, color: 'success.main', mb: 0.5 }} />
-              <Typography variant="h5" fontWeight={700}>
-                {dailyGoal?.completed ?? 0}/{dailyGoal?.target ?? 5}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                Mục tiêu hôm nay
-              </Typography>
-              <LinearProgress
-                variant="determinate"
-                value={goalProgress}
-                color="success"
-                sx={{ height: 6, borderRadius: 3 }}
-              />
-            </CardContent>
-          </Card>
+          <Tooltip title="Click để thay đổi mục tiêu">
+            <Card
+              variant="outlined"
+              onClick={() => setGoalDialogOpen(true)}
+              sx={{
+                cursor: 'pointer',
+                transition: 'border-color 0.2s',
+                '&:hover': { borderColor: 'success.main' },
+              }}
+            >
+              <CardContent sx={{ textAlign: 'center', py: 2 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 0.5,
+                    mb: 0.5,
+                  }}
+                >
+                  <FlagIcon sx={{ fontSize: 32, color: 'success.main' }} />
+                  <EditIcon sx={{ fontSize: 14, color: 'text.disabled' }} />
+                </Box>
+                <Typography variant="h5" fontWeight={700}>
+                  {dailyGoal?.completed ?? 0}/{dailyGoal?.target ?? 5}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 1 }}
+                >
+                  Mục tiêu hôm nay
+                </Typography>
+                <LinearProgress
+                  variant="determinate"
+                  value={goalProgress}
+                  color="success"
+                  sx={{ height: 6, borderRadius: 3 }}
+                />
+              </CardContent>
+            </Card>
+          </Tooltip>
         </Grid>
 
         {/* Achievements */}
@@ -120,6 +151,11 @@ export default function GamificationOverview({ stats }) {
           </Card>
         </Grid>
       </Grid>
+
+      <DailyGoalDialog
+        open={goalDialogOpen}
+        onClose={() => setGoalDialogOpen(false)}
+      />
     </Box>
   );
 }
