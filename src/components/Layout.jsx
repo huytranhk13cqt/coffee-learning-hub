@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   Outlet,
   useNavigation,
@@ -61,40 +61,48 @@ function ColorModeToggle() {
 /**
  * Gamification indicators in the AppBar — reads from GamificationContext.
  * Shows streak, XP, and daily goal progress as compact badges.
+ * DailyGoalDialog is rendered once at LayoutContent level (context-driven).
  */
 function GamificationBar() {
   const ctx = useGamification();
-  const [goalDialogOpen, setGoalDialogOpen] = useState(false);
-
   if (!ctx?.stats) return null;
 
   const { xp, streak, dailyGoal } = ctx.stats;
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: { xs: 1, sm: 1.5 },
-          mr: 1,
-        }}
-      >
-        <StreakDisplay streak={streak?.current} />
-        <XPDisplay totalXP={xp?.total} level={xp?.level} />
-        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-          <DailyGoalProgress
-            completed={dailyGoal?.completed}
-            target={dailyGoal?.target}
-            onClick={() => setGoalDialogOpen(true)}
-          />
-        </Box>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: { xs: 1, sm: 1.5 },
+        mr: 1,
+      }}
+    >
+      <StreakDisplay streak={streak?.current} />
+      <XPDisplay totalXP={xp?.total} level={xp?.level} />
+      <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+        <DailyGoalProgress
+          completed={dailyGoal?.completed}
+          target={dailyGoal?.target}
+          onClick={ctx.openDailyGoalDialog}
+        />
       </Box>
-      <DailyGoalDialog
-        open={goalDialogOpen}
-        onClose={() => setGoalDialogOpen(false)}
-      />
-    </>
+    </Box>
+  );
+}
+
+/**
+ * Renders the DailyGoalDialog driven by GamificationContext state.
+ * Single instance in the component tree — both AppBar and Dashboard
+ * trigger it via context.openDailyGoalDialog().
+ */
+function DailyGoalManager() {
+  const { isDailyGoalDialogOpen, closeDailyGoalDialog } = useGamification();
+  return (
+    <DailyGoalDialog
+      open={isDailyGoalDialogOpen}
+      onClose={closeDailyGoalDialog}
+    />
   );
 }
 
@@ -114,6 +122,7 @@ function LayoutContent() {
 
   return (
     <GamificationProvider initialStats={rootData?.gamification ?? null}>
+      <DailyGoalManager />
       <Box
         sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
       >

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link as RouterLink } from 'react-router';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -13,10 +12,10 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import FlagIcon from '@mui/icons-material/Flag';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import EditIcon from '@mui/icons-material/Edit';
-import DailyGoalDialog from '../gamification/DailyGoalDialog.jsx';
+import { useGamification } from '../../hooks/useGamification.js';
 
 export default function GamificationOverview({ stats }) {
-  const [goalDialogOpen, setGoalDialogOpen] = useState(false);
+  const { openDailyGoalDialog } = useGamification() ?? {};
 
   if (!stats) return null;
 
@@ -80,12 +79,12 @@ export default function GamificationOverview({ stats }) {
           </Card>
         </Grid>
 
-        {/* Daily Goal — clickable to edit */}
+        {/* Daily Goal — clickable to edit via context dialog */}
         <Grid size={{ xs: 6, sm: 3 }}>
-          <Tooltip title="Click để thay đổi mục tiêu">
+          <Tooltip title="Nhấn để thay đổi mục tiêu">
             <Card
               variant="outlined"
-              onClick={() => setGoalDialogOpen(true)}
+              onClick={openDailyGoalDialog}
               sx={{
                 cursor: 'pointer',
                 transition: 'border-color 0.2s',
@@ -151,11 +150,6 @@ export default function GamificationOverview({ stats }) {
           </Card>
         </Grid>
       </Grid>
-
-      <DailyGoalDialog
-        open={goalDialogOpen}
-        onClose={() => setGoalDialogOpen(false)}
-      />
     </Box>
   );
 }
