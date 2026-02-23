@@ -1,9 +1,12 @@
 import { randomUUID } from 'node:crypto';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import Fastify from 'fastify';
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
 import compress from '@fastify/compress';
 import rateLimit from '@fastify/rate-limit';
+import fastifyStatic from '@fastify/static';
 import { categoryRoutes, homeRoutes } from './routes/categoryRoutes.js';
 import { lessonRoutes, groupLessonRoutes } from './routes/lessonRoutes.js';
 import {
@@ -14,6 +17,13 @@ import { progressRoutes } from './routes/progressRoutes.js';
 import { gamificationRoutes } from './routes/gamificationRoutes.js';
 import { bookmarkRoutes } from './routes/bookmarkRoutes.js';
 import { AppError } from './errors/AppError.js';
+
+// __dirname equivalent for ES modules (app.js lives in server/, media/ is at project root)
+const MEDIA_ROOT = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  'media',
+);
 
 export async function createApp({
   categoryController,
@@ -32,11 +42,17 @@ export async function createApp({
 
   // --- Plugins ---
   await app.register(helmet, {
-    // API-only server: strictest CSP since responses are JSON, not HTML.
-    // If Fastify ever serves the SPA directly, this must be relaxed.
+    // Serves JSON API + static media files.
+    // mediaSrc 'self': allows <audio>/<video> tags to load from /media/*
+    // frameSrc: allows YouTube/Vimeo embeds in VideoSection
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'none'"],
+        mediaSrc: ["'self'"],
+        frameSrc: [
+          'https://www.youtube-nocookie.com',
+          'https://player.vimeo.com',
+        ],
         frameAncestors: ["'none'"],
       },
     },
@@ -53,6 +69,15 @@ export async function createApp({
   app.addHook('onSend', async (request, reply) => {
     reply.header('x-request-id', request.id);
   });
+  // Serve local media files (audio/video) from project-root/media/.
+  // decorateReply:false prevents conflicts with other plugins that also decorate reply.
+  // The directory is git-ignored; only .gitkeep files are committed.
+  await app.register(fastifyStatic, {
+    root: MEDIA_ROOT,
+    prefix: '/media/',
+    decorateReply: false,
+  });
+
   await app.register(compress, { threshold: 1024 });
   await app.register(rateLimit, {
     max: 100,

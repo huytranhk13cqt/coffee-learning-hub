@@ -39,3 +39,8 @@ playwright-report/
 
 # Claude Code
 .claude/
+
+# Local media files (audio/video/images — binary, not version-controlled)
+# Directory structure is preserved via .gitkeep files
+/media/**
+!/media/**/.gitkeep

@@ -4,6 +4,7 @@ import { LessonController } from '../controllers/lessonController.js';
 import { ExerciseController } from '../controllers/exerciseController.js';
 import { ProgressController } from '../controllers/progressController.js';
 import { GamificationController } from '../controllers/gamificationController.js';
+import { bookmarkController } from '../controllers/bookmarkController.js';
 
 function createMockCategoryRepo(overrides = {}) {
   return {
@@ -70,6 +71,17 @@ function createMockProgressRepo(overrides = {}) {
   };
 }
 
+function createMockBookmarkRepo(overrides = {}) {
+  return {
+    getBySession: async () => [],
+    add: async () => [{}],
+    remove: async () => {},
+    removeById: async () => {},
+    check: async () => false,
+    ...overrides,
+  };
+}
+
 function createMockGamificationRepo(overrides = {}) {
   return {
     recordXPEvent: async () => {},
@@ -109,6 +121,7 @@ export async function createTestApp({
   exerciseRepoOverrides,
   progressRepoOverrides,
   gamificationRepoOverrides,
+  bookmarkRepoOverrides,
 } = {}) {
   const categoryRepo = createMockCategoryRepo(categoryRepoOverrides);
   const lessonRepo = createMockLessonRepo(lessonRepoOverrides);
@@ -117,6 +130,7 @@ export async function createTestApp({
   const gamificationRepo = createMockGamificationRepo(
     gamificationRepoOverrides,
   );
+  const bookmarkRepo = createMockBookmarkRepo(bookmarkRepoOverrides);
   const sql = { begin: async (fn) => fn({}) };
 
   const categoryController = new CategoryController(categoryRepo);
@@ -129,6 +143,7 @@ export async function createTestApp({
   );
   const progressController = new ProgressController(progressRepo);
   const gamificationController = new GamificationController(gamificationRepo);
+  const bookmarkCtrl = bookmarkController(bookmarkRepo);
 
   return createApp({
     categoryController,
@@ -136,6 +151,7 @@ export async function createTestApp({
     exerciseController,
     progressController,
     gamificationController,
+    bookmarkController: bookmarkCtrl,
     logger: false,
   });
 }
