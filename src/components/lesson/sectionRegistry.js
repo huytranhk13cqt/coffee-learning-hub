@@ -13,9 +13,9 @@ import ImageSection from './sections/ImageSection.jsx';
  * Each component receives { section } with:
  *   { id, type, title, title_vi, content, content_vi, metadata, order_index }
  *
- * Heavy-dependency sections (chart, diagram) are lazy-loaded via React.lazy
- * to keep the initial LessonPage bundle small. SectionRenderer wraps all
- * entries in <Suspense> so lazy components load on demand.
+ * Heavy-dependency sections (chart, diagram, interactive_chart) are lazy-loaded
+ * via React.lazy to keep the initial LessonPage bundle small. SectionRenderer
+ * wraps all entries in <Suspense> so lazy components load on demand.
  *
  * To add a new section type:
  * 1. Create src/components/lesson/sections/NewType.jsx
@@ -31,6 +31,9 @@ const sectionRegistry = {
   image: ImageSection,
   chart: lazy(() => import('./sections/ChartSection.jsx')),
   diagram: lazy(() => import('./sections/DiagramSection.jsx')),
+  interactive_chart: lazy(
+    () => import('./sections/InteractiveChartSection.jsx'),
+  ),
 };
 
 export default sectionRegistry;
