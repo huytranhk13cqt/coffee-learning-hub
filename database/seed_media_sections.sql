@@ -8,9 +8,9 @@
 --   - UI/UX Design        → Design principles
 --
 -- AUDIO sections (order_index 20) added to FIRST lesson in:
---   - Music Theory        → /media/audio/music-theory/intro.mp3
---   - Psychology          → /media/audio/psychology/intro.mp3
---   - Present (English)   → /media/audio/english/simple-present.mp3
+--   - Music Theory        → /media/audios/audio_test_1.mp3
+--   - Psychology          → /media/audios/audio_test_1.mp3
+--   - Present (English)   → /media/audios/audio_test_1.mp3
 --
 -- Compatible with: schema.sql v7+
 -- Applied AFTER: all category seed files (categories 1–15)
@@ -71,7 +71,7 @@ SELECT l.id,
   'audio', 'Listen: Introduction', 'Nghe: Giới Thiệu',
   NULL, NULL,
   20,
-  '{"src": "/media/audio/music-theory/intro.mp3"}'::jsonb
+  '{"src": "/media/audios/audio_test_1.mp3"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
 WHERE c.name = 'Music Theory'
@@ -84,7 +84,7 @@ SELECT l.id,
   'audio', 'Listen: Introduction', 'Nghe: Giới Thiệu',
   NULL, NULL,
   20,
-  '{"src": "/media/audio/psychology/intro.mp3"}'::jsonb
+  '{"src": "/media/audios/audio_test_1.mp3"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
 WHERE c.name = 'Psychology'
@@ -97,7 +97,7 @@ SELECT l.id,
   'audio', 'Listen: Introduction', 'Nghe: Giới Thiệu',
   NULL, NULL,
   20,
-  '{"src": "/media/audio/english/simple-present.mp3"}'::jsonb
+  '{"src": "/media/audios/audio_test_1.mp3"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
 WHERE c.name = 'Present'

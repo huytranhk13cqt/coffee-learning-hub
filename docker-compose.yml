@@ -15,6 +15,8 @@ services:
       - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       # 01b: Migration 015 — makes lesson_section.content nullable (runs before seeds lexicographically)
       - ./database/migrations/015_nullable_lesson_section_content.sql:/docker-entrypoint-initdb.d/01b-migration-015.sql:ro
+      # 01c: Migration 016 — adds 'image' section type to lesson_section_type ENUM
+      - ./database/migrations/016_image_section_type.sql:/docker-entrypoint-initdb.d/01c-migration-016.sql:ro
       # 02–10: Original seed data (English grammar, Python, Math, Cyber, Psychology, Design, History, Music, Philosophy)
       - ./database/seed_data.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
       - ./database/seed_python.sql:/docker-entrypoint-initdb.d/03-seed-python.sql:ro
@@ -45,6 +47,8 @@ services:
       - ./database/seed_economics_extra.sql:/docker-entrypoint-initdb.d/24-seed-economics-extra.sql:ro
       - ./database/seed_physics_extra.sql:/docker-entrypoint-initdb.d/25-seed-physics-extra.sql:ro
       - ./database/seed_chemistry_extra.sql:/docker-entrypoint-initdb.d/26-seed-chemistry-extra.sql:ro
+      # 27: Phase 20 — Media content showcase (images, video, audio on lessons + exercises)
+      - ./database/seed_media_content.sql:/docker-entrypoint-initdb.d/27-seed-media-content.sql:ro
     healthcheck:
       test:
         [

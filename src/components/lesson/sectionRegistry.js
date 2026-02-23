@@ -4,6 +4,7 @@ import KeyPointsSection from './sections/KeyPointsSection.jsx';
 import InfoBoxSection from './sections/InfoBoxSection.jsx';
 import AudioSection from './sections/AudioSection.jsx';
 import VideoSection from './sections/VideoSection.jsx';
+import ImageSection from './sections/ImageSection.jsx';
 
 /**
  * Section Registry: maps lesson_section.type → React component.
@@ -27,6 +28,7 @@ const sectionRegistry = {
   info_box: InfoBoxSection,
   audio: AudioSection,
   video: VideoSection,
+  image: ImageSection,
   chart: lazy(() => import('./sections/ChartSection.jsx')),
   diagram: lazy(() => import('./sections/DiagramSection.jsx')),
 };

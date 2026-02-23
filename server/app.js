@@ -48,6 +48,7 @@ export async function createApp({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'none'"],
+        imgSrc: ["'self'"],
         mediaSrc: ["'self'"],
         frameSrc: [
           'https://www.youtube-nocookie.com',
