@@ -11,7 +11,11 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-relaxpass}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # 01: Schema (all tables, ENUMs, functions, triggers)
       - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      # 01b: Migration 015 — makes lesson_section.content nullable (runs before seeds lexicographically)
+      - ./database/migrations/015_nullable_lesson_section_content.sql:/docker-entrypoint-initdb.d/01b-migration-015.sql:ro
+      # 02–10: Original seed data (English grammar, Python, Math, Cyber, Psychology, Design, History, Music, Philosophy)
       - ./database/seed_data.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
       - ./database/seed_python.sql:/docker-entrypoint-initdb.d/03-seed-python.sql:ro
       - ./database/seed_math.sql:/docker-entrypoint-initdb.d/04-seed-math.sql:ro
@@ -21,6 +25,26 @@ services:
       - ./database/seed_history.sql:/docker-entrypoint-initdb.d/08-seed-history.sql:ro
       - ./database/seed_music.sql:/docker-entrypoint-initdb.d/09-seed-music.sql:ro
       - ./database/seed_philosophy.sql:/docker-entrypoint-initdb.d/10-seed-philosophy.sql:ro
+      # 11–13: Phase 22 additions (Physics, Economics, Chemistry) — previously missing from docker-compose
+      - ./database/seed_physics.sql:/docker-entrypoint-initdb.d/11-seed-physics.sql:ro
+      - ./database/seed_economics.sql:/docker-entrypoint-initdb.d/12-seed-economics.sql:ro
+      - ./database/seed_chemistry.sql:/docker-entrypoint-initdb.d/13-seed-chemistry.sql:ro
+      # 14: Phase 19B — Audio/Video sections added to existing lessons
+      - ./database/seed_media_sections.sql:/docker-entrypoint-initdb.d/14-seed-media.sql:ro
+      # 15–19: Phase 19C — 5 new topic categories
+      - ./database/seed_data_science.sql:/docker-entrypoint-initdb.d/15-seed-data-science.sql:ro
+      - ./database/seed_medicine.sql:/docker-entrypoint-initdb.d/16-seed-medicine.sql:ro
+      - ./database/seed_personal_finance.sql:/docker-entrypoint-initdb.d/17-seed-personal-finance.sql:ro
+      - ./database/seed_management.sql:/docker-entrypoint-initdb.d/18-seed-management.sql:ro
+      - ./database/seed_systems_thinking.sql:/docker-entrypoint-initdb.d/19-seed-systems-thinking.sql:ro
+      # 20–26: Phase 19D — Extra depth lessons for existing categories
+      - ./database/seed_design_extra.sql:/docker-entrypoint-initdb.d/20-seed-design-extra.sql:ro
+      - ./database/seed_history_extra.sql:/docker-entrypoint-initdb.d/21-seed-history-extra.sql:ro
+      - ./database/seed_music_extra.sql:/docker-entrypoint-initdb.d/22-seed-music-extra.sql:ro
+      - ./database/seed_philosophy_extra.sql:/docker-entrypoint-initdb.d/23-seed-philosophy-extra.sql:ro
+      - ./database/seed_economics_extra.sql:/docker-entrypoint-initdb.d/24-seed-economics-extra.sql:ro
+      - ./database/seed_physics_extra.sql:/docker-entrypoint-initdb.d/25-seed-physics-extra.sql:ro
+      - ./database/seed_chemistry_extra.sql:/docker-entrypoint-initdb.d/26-seed-chemistry-extra.sql:ro
     healthcheck:
       test:
         [
