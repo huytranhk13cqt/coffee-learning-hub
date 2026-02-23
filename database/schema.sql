@@ -36,7 +36,7 @@ CREATE TYPE exercise_difficulty  AS ENUM ('easy', 'medium', 'hard');
 CREATE TYPE option_label         AS ENUM ('A', 'B', 'C', 'D', 'E', 'F');
 CREATE TYPE progress_status      AS ENUM ('not_started', 'in_progress', 'completed');
 CREATE TYPE section_type         AS ENUM ('formula', 'usage', 'signal_word', 'tip', 'exercise', 'comparison');
-CREATE TYPE lesson_section_type  AS ENUM ('markdown', 'key_points', 'info_box', 'audio', 'video', 'chart', 'diagram', 'image');
+CREATE TYPE lesson_section_type  AS ENUM ('markdown', 'key_points', 'info_box', 'audio', 'video', 'chart', 'diagram', 'image', 'interactive_chart');
 
 
 -- ============================================================================
@@ -83,15 +83,48 @@ INSERT INTO schema_version (version, description) VALUES
 (13, 'Add bookmark table for session-based lesson bookmarking'),
 (14, 'Add gamification system: XP events, daily activity, achievements, streaks'),
 (15, 'Make lesson_section.content nullable for audio/video/image sections'),
-(16, 'Add image to lesson_section_type ENUM');
+(16, 'Add image to lesson_section_type ENUM'),
+(17, 'Add topic grouping for category organization'),
+(18, 'Add interactive_chart to lesson_section_type ENUM');
 
 
 -- ============================================================================
--- TABLE 1: category
+-- TABLE 1a: topic (meta-group for organizing categories)
+-- ============================================================================
+
+CREATE TABLE topic (
+    id              SERIAL          PRIMARY KEY,
+    name            VARCHAR(100)    NOT NULL,
+    name_vi         VARCHAR(100)    NOT NULL,
+    description     TEXT,
+    description_vi  TEXT,
+    icon            VARCHAR(50),
+    color           VARCHAR(7)      NOT NULL DEFAULT '#6366f1',
+    order_index     SMALLINT        NOT NULL DEFAULT 0,
+    created_at      TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
+    updated_at      TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT uq_topic_name  UNIQUE (name),
+    CONSTRAINT chk_topic_color CHECK (color ~ '^#[0-9A-Fa-f]{6}$'),
+    CONSTRAINT chk_topic_order CHECK (order_index >= 0 AND order_index <= 20)
+);
+
+COMMENT ON TABLE topic IS 'Meta-groups for organizing categories (e.g., STEM Sciences, Creative Arts)';
+
+CREATE INDEX idx_topic_order ON topic(order_index);
+
+CREATE TRIGGER trg_topic_updated_at
+  BEFORE UPDATE ON topic
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+
+-- ============================================================================
+-- TABLE 1b: category
 -- ============================================================================
 
 CREATE TABLE category (
     id              SERIAL          NOT NULL,
+    topic_id        INTEGER         NULL,
     name            VARCHAR(50)     NOT NULL,
     name_vi         VARCHAR(50)     NOT NULL,
     description     TEXT            NULL,
@@ -105,12 +138,16 @@ CREATE TABLE category (
     PRIMARY KEY (id),
     CONSTRAINT uq_category_name  UNIQUE (name),
     CONSTRAINT chk_category_color CHECK (color ~ '^#[0-9A-Fa-f]{6}$'),
-    CONSTRAINT chk_category_order CHECK (order_index >= 0 AND order_index <= 20)
+    CONSTRAINT chk_category_order CHECK (order_index >= 0 AND order_index <= 20),
+    CONSTRAINT fk_category_topic
+        FOREIGN KEY (topic_id) REFERENCES topic(id)
+        ON DELETE SET NULL
 );
 
 COMMENT ON COLUMN category.icon IS 'MUI icon name';
 
 CREATE INDEX idx_category_order ON category(order_index);
+CREATE INDEX idx_category_topic ON category(topic_id);
 
 CREATE TRIGGER trg_category_updated_at
   BEFORE UPDATE ON category
