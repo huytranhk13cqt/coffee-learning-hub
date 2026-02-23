@@ -2,9 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { loader } from './LessonPage.jsx';
 import { fetchLesson } from '../api/lessons.js';
 import { fetchProgress } from '../api/progress.js';
+import { checkBookmark } from '../api/bookmarks.js';
 
 vi.mock('../api/lessons.js');
 vi.mock('../api/progress.js');
+vi.mock('../api/bookmarks.js');
 
 function mockRequest() {
   return { signal: new AbortController().signal };
@@ -29,18 +31,24 @@ describe('LessonPage loader', () => {
     const progress = { status: 'in_progress', theory_completed: true };
     fetchLesson.mockResolvedValueOnce(mockLesson);
     fetchProgress.mockResolvedValueOnce(progress);
+    checkBookmark.mockResolvedValueOnce(true);
 
     const result = await loader({
       params: { slug: 'present-simple' },
       request: mockRequest(),
     });
 
-    expect(result).toEqual({ lesson: mockLesson, progress });
+    expect(result).toEqual({
+      lesson: mockLesson,
+      progress,
+      isBookmarked: true,
+    });
   });
 
   it('uses lesson.id from fetchLesson for fetchProgress call', async () => {
     fetchLesson.mockResolvedValueOnce(mockLesson);
     fetchProgress.mockResolvedValueOnce(null);
+    checkBookmark.mockResolvedValueOnce(false);
     const request = mockRequest();
 
     await loader({ params: { slug: 'present-simple' }, request });
@@ -56,17 +64,23 @@ describe('LessonPage loader', () => {
   it('returns null progress when fetchProgress fails', async () => {
     fetchLesson.mockResolvedValueOnce(mockLesson);
     fetchProgress.mockRejectedValueOnce(new Error('No session'));
+    checkBookmark.mockResolvedValueOnce(false);
 
     const result = await loader({
       params: { slug: 'present-simple' },
       request: mockRequest(),
     });
 
-    expect(result).toEqual({ lesson: mockLesson, progress: null });
+    expect(result).toEqual({
+      lesson: mockLesson,
+      progress: null,
+      isBookmarked: false,
+    });
   });
 
   it('propagates fetchLesson errors (does not catch)', async () => {
     fetchLesson.mockRejectedValueOnce(new Error('Not found'));
+    checkBookmark.mockResolvedValueOnce(false);
 
     await expect(
       loader({ params: { slug: 'nonexistent' }, request: mockRequest() }),
