@@ -45,6 +45,10 @@ services:
       - ./database/seed_chemistry_extra.sql:/docker-entrypoint-initdb.d/26-seed-chemistry-extra.sql:ro
       # 27: Phase 20 — Media content showcase (images, video, audio on lessons + exercises)
       - ./database/seed_media_content.sql:/docker-entrypoint-initdb.d/27-seed-media-content.sql:ro
+      # 28: Topic grouping — assigns categories into 6 knowledge domain topics
+      - ./database/seed_topics.sql:/docker-entrypoint-initdb.d/28-seed-topics.sql:ro
+      # 29: Interactive charts — explorable explanation sections for Math, Physics, Economics, Data Science
+      - ./database/seed_interactive_charts.sql:/docker-entrypoint-initdb.d/29-seed-interactive-charts.sql:ro
     healthcheck:
       test:
         [
