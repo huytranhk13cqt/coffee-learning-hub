@@ -53,8 +53,10 @@ test.describe('Smoke Tests', () => {
       page.getByText('Habits and routines', { exact: true }),
     ).toBeVisible();
 
-    // Exercise CTA button should exist
-    await expect(page.getByRole('button', { name: /bài tập/i })).toBeVisible();
+    // Exercise CTA button should exist (exact text to avoid matching DailyGoalProgress button)
+    await expect(
+      page.getByRole('button', { name: 'Bắt đầu làm bài tập' }),
+    ).toBeVisible();
   });
 
   test('Python lesson shows code with syntax highlighting', async ({
