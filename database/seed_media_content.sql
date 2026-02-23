@@ -34,7 +34,7 @@ SELECT l.id,
   '{"src": "/media/videos/video_test_1.mp4"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
-WHERE c.name = 'Physics'
+WHERE c.name = 'Physics Fundamentals'
 ORDER BY l.order_index
 LIMIT 1 OFFSET 1;
 
@@ -48,7 +48,7 @@ SELECT l.id,
   '{"src": "/media/videos/video_test_1.mp4"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
-WHERE c.name = 'Mathematics'
+WHERE c.name = 'Math Foundations'
 ORDER BY l.order_index
 LIMIT 1 OFFSET 1;
 
@@ -128,7 +128,7 @@ SELECT l.id,
   '{"src": "/media/images/image_test_1.jpg", "alt": "Design principle example"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
-WHERE c.name = 'UI/UX Design'
+WHERE c.name = 'UI/UX Design Basics'
 ORDER BY l.order_index
 LIMIT 1;
 
@@ -142,7 +142,7 @@ SELECT l.id,
   '{"src": "/media/images/image_test_2.jpg", "alt": "Psychology concept illustration"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
-WHERE c.name = 'Psychology'
+WHERE c.name = 'Psychology 101'
 ORDER BY l.order_index
 LIMIT 1 OFFSET 1;
 
@@ -171,7 +171,7 @@ WHERE id = (
   SELECT e.id FROM exercise e
   JOIN lesson l ON e.lesson_id = l.id
   JOIN category c ON l.group_id = c.id
-  WHERE c.name = 'UI/UX Design'
+  WHERE c.name = 'UI/UX Design Basics'
   ORDER BY l.order_index, e.order_index
   LIMIT 1
 );
@@ -181,7 +181,7 @@ WHERE id = (
   SELECT e.id FROM exercise e
   JOIN lesson l ON e.lesson_id = l.id
   JOIN category c ON l.group_id = c.id
-  WHERE c.name = 'UI/UX Design'
+  WHERE c.name = 'UI/UX Design Basics'
   ORDER BY l.order_index, e.order_index
   LIMIT 1 OFFSET 1
 );
@@ -192,7 +192,7 @@ WHERE id = (
   SELECT e.id FROM exercise e
   JOIN lesson l ON e.lesson_id = l.id
   JOIN category c ON l.group_id = c.id
-  WHERE c.name = 'Mathematics'
+  WHERE c.name = 'Math Foundations'
   ORDER BY l.order_index, e.order_index
   LIMIT 1
 );
@@ -203,7 +203,7 @@ WHERE id = (
   SELECT e.id FROM exercise e
   JOIN lesson l ON e.lesson_id = l.id
   JOIN category c ON l.group_id = c.id
-  WHERE c.name = 'Physics'
+  WHERE c.name = 'Physics Fundamentals'
   ORDER BY l.order_index, e.order_index
   LIMIT 1
 );
@@ -235,7 +235,7 @@ WHERE id = (
   SELECT e.id FROM exercise e
   JOIN lesson l ON e.lesson_id = l.id
   JOIN category c ON l.group_id = c.id
-  WHERE c.name = 'Psychology'
+  WHERE c.name = 'Psychology 101'
   ORDER BY l.order_index, e.order_index
   LIMIT 1
 );
@@ -247,7 +247,7 @@ WHERE id = (
 -- ============================================================================
 
 -- 5A: Create the lesson
-INSERT INTO lesson (group_id, title, title_vi, slug, description, description_vi, difficulty, order_index)
+INSERT INTO lesson (group_id, name, name_vi, slug, short_desc, short_desc_vi, difficulty, order_index)
 SELECT c.id,
   'Visual Design Analysis',
   'Phân Tích Thiết Kế Thị Giác',
@@ -257,7 +257,7 @@ SELECT c.id,
   'beginner',
   20
 FROM category c
-WHERE c.name = 'UI/UX Design';
+WHERE c.name = 'UI/UX Design Basics';
 
 
 -- 5B: Lesson sections (image + video + audio — all 3 media types in one lesson)

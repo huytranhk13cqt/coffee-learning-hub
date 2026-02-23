@@ -56,7 +56,7 @@ SELECT l.id,
   '{"provider": "youtube", "videoId": "_W0bSen8Qjg"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
-WHERE c.name = 'UI/UX Design'
+WHERE c.name = 'UI/UX Design Basics'
 ORDER BY l.order_index
 LIMIT 1;
 
@@ -87,7 +87,7 @@ SELECT l.id,
   '{"src": "/media/audios/audio_test_1.mp3"}'::jsonb
 FROM lesson l
 JOIN category c ON l.group_id = c.id
-WHERE c.name = 'Psychology'
+WHERE c.name = 'Psychology 101'
 ORDER BY l.order_index
 LIMIT 1;
 

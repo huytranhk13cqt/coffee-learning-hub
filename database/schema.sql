@@ -36,7 +36,7 @@ CREATE TYPE exercise_difficulty  AS ENUM ('easy', 'medium', 'hard');
 CREATE TYPE option_label         AS ENUM ('A', 'B', 'C', 'D', 'E', 'F');
 CREATE TYPE progress_status      AS ENUM ('not_started', 'in_progress', 'completed');
 CREATE TYPE section_type         AS ENUM ('formula', 'usage', 'signal_word', 'tip', 'exercise', 'comparison');
-CREATE TYPE lesson_section_type  AS ENUM ('markdown', 'key_points', 'info_box', 'audio', 'video', 'chart', 'diagram');
+CREATE TYPE lesson_section_type  AS ENUM ('markdown', 'key_points', 'info_box', 'audio', 'video', 'chart', 'diagram', 'image');
 
 
 -- ============================================================================
@@ -74,7 +74,16 @@ INSERT INTO schema_version (version, description) VALUES
 (4, 'Add missing indexes and unique constraint for exercise_attempt'),
 (5, 'Remove exercises_total cached column, compute dynamically'),
 (6, 'Add lesson_section table for data-driven content rendering'),
-(7, 'Add partial exercise index and composite lesson index for production performance');
+(7, 'Add partial exercise index and composite lesson index for production performance'),
+(8, 'Expand category order_index constraint to 0-20 for multi-topic support'),
+(9, 'Add audio and video to lesson_section_type ENUM'),
+(10, 'Add exercise media columns (image_url, audio_url) and code_output exercise type'),
+(11, 'Add composite B-tree indexes for formula and signal_word lookups'),
+(12, 'Optimize completion trigger with WHEN clause to skip irrelevant updates'),
+(13, 'Add bookmark table for session-based lesson bookmarking'),
+(14, 'Add gamification system: XP events, daily activity, achievements, streaks'),
+(15, 'Make lesson_section.content nullable for audio/video/image sections'),
+(16, 'Add image to lesson_section_type ENUM');
 
 
 -- ============================================================================
@@ -353,7 +362,7 @@ CREATE TABLE lesson_section (
     type        lesson_section_type NOT NULL,
     title       VARCHAR(255),
     title_vi    VARCHAR(255),
-    content     TEXT                NOT NULL,
+    content     TEXT,
     content_vi  TEXT,
     metadata    JSONB               NOT NULL DEFAULT '{}',
     order_index SMALLINT            NOT NULL DEFAULT 0,
@@ -363,8 +372,8 @@ CREATE TABLE lesson_section (
 CREATE INDEX idx_lesson_section_lesson ON lesson_section(lesson_id, order_index);
 
 COMMENT ON TABLE lesson_section IS 'Generic ordered content sections for data-driven lesson rendering';
-COMMENT ON COLUMN lesson_section.type IS 'Rendering type: markdown, key_points, info_box';
-COMMENT ON COLUMN lesson_section.content IS 'Markdown content (rendered client-side)';
+COMMENT ON COLUMN lesson_section.type IS 'Rendering type: markdown, key_points, info_box, audio, video, chart, diagram, image';
+COMMENT ON COLUMN lesson_section.content IS 'Markdown content (rendered client-side). Nullable for audio/video/image sections that use metadata.';
 COMMENT ON COLUMN lesson_section.metadata IS 'Extra hints: {variant} for info_box';
 
 
@@ -749,6 +758,39 @@ COMMENT ON TABLE user_streak IS 'Cached streak data + daily goal setting per ses
 CREATE TRIGGER update_user_streak_updated_at
     BEFORE UPDATE ON user_streak
     FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+
+-- ============================================================================
+-- SEED: Achievement definitions (18 badges across 6 categories)
+-- These are system definitions, not user data — seeded with schema.
+-- ============================================================================
+
+INSERT INTO achievement (code, name, name_vi, description, description_vi, icon, category, condition_type, condition_value, xp_reward, sort_order) VALUES
+-- Milestones
+('first_exercise',  'First Steps',       'Bước đầu tiên',           'Complete your first exercise',              'Hoàn thành bài tập đầu tiên',              'EmojiEvents',          'milestone', 'exercises_completed', 1,    10,  1),
+('first_lesson',    'Scholar',           'Học giả',                  'Complete your first lesson',                'Hoàn thành bài học đầu tiên',              'School',               'milestone', 'lessons_completed',   1,    25,  2),
+-- Streaks
+('streak_3',        'Getting Started',   'Khởi đầu tốt',            'Maintain a 3-day streak',                  'Duy trì chuỗi 3 ngày liên tiếp',          'LocalFireDepartment',  'streak',    'streak_days',         3,    15,  10),
+('streak_7',        'Week Warrior',      'Chiến binh tuần',          'Maintain a 7-day streak',                  'Duy trì chuỗi 7 ngày liên tiếp',          'LocalFireDepartment',  'streak',    'streak_days',         7,    30,  11),
+('streak_14',       'Dedicated',         'Tận tâm',                  'Maintain a 14-day streak',                 'Duy trì chuỗi 14 ngày liên tiếp',         'LocalFireDepartment',  'streak',    'streak_days',         14,   50,  12),
+('streak_30',       'Unstoppable',       'Không thể cản',            'Maintain a 30-day streak',                 'Duy trì chuỗi 30 ngày liên tiếp',         'Whatshot',             'streak',    'streak_days',         30,   100, 13),
+-- XP milestones
+('xp_100',          'Rising Star',       'Ngôi sao mới',             'Earn 100 XP',                              'Đạt 100 XP',                               'Star',                 'xp',        'total_xp',            100,  10,  20),
+('xp_500',          'Knowledge Seeker',  'Người tìm tri thức',       'Earn 500 XP',                              'Đạt 500 XP',                               'StarBorder',           'xp',        'total_xp',            500,  25,  21),
+('xp_1000',         'Expert',            'Chuyên gia',               'Earn 1,000 XP',                            'Đạt 1.000 XP',                             'StarRate',             'xp',        'total_xp',            1000, 50,  22),
+('xp_5000',         'Master',            'Bậc thầy',                 'Earn 5,000 XP',                            'Đạt 5.000 XP',                             'AutoAwesome',          'xp',        'total_xp',            5000, 100, 23),
+-- Lesson completion
+('lessons_5',       'Curious Mind',      'Trí tò mò',                'Complete 5 lessons',                       'Hoàn thành 5 bài học',                     'MenuBook',             'lesson',    'lessons_completed',   5,    30,  30),
+('lessons_10',      'Knowledge Builder', 'Xây dựng tri thức',        'Complete 10 lessons',                      'Hoàn thành 10 bài học',                    'AutoStories',          'lesson',    'lessons_completed',   10,   50,  31),
+('lessons_20',      'Lifelong Learner',  'Học tập suốt đời',         'Complete 20 lessons',                      'Hoàn thành 20 bài học',                    'EmojiObjects',         'lesson',    'lessons_completed',   20,   100, 32),
+-- Mastery
+('perfect_score',   'Perfectionist',     'Người cầu toàn',           'Score 100% on any lesson',                 'Đạt điểm tuyệt đối trong bất kỳ bài nào', 'MilitaryTech',         'mastery',   'perfect_score',       1,    25,  40),
+-- Explorer
+('explorer_3',      'Explorer',          'Nhà thám hiểm',            'Study lessons from 3 different categories','Học bài từ 3 chủ đề khác nhau',            'Explore',              'explorer',  'categories_explored', 3,    30,  50),
+('explorer_6',      'Polymath',          'Đa tài',                   'Study lessons from 6 different categories','Học bài từ 6 chủ đề khác nhau',            'Public',               'explorer',  'categories_explored', 6,    60,  51),
+('explorer_10',     'Renaissance',       'Phục Hưng',                'Study lessons from 10 different categories','Học bài từ 10 chủ đề khác nhau',           'TravelExplore',        'explorer',  'categories_explored', 10,   100, 52),
+-- Exercise volume
+('exercises_50',    'Practice Makes Perfect', 'Luyện tập hoàn hảo',  'Complete 50 exercises correctly',          'Hoàn thành đúng 50 bài tập',              'FitnessCenter',        'milestone', 'exercises_completed', 50,   40,  3);
 
 
 -- ============================================================================

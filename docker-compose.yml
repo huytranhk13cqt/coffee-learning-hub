@@ -11,12 +11,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-relaxpass}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # 01: Schema (all tables, ENUMs, functions, triggers)
+      # 01: Schema (all tables, ENUMs, functions, triggers — consolidated through migration 016)
       - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
-      # 01b: Migration 015 — makes lesson_section.content nullable (runs before seeds lexicographically)
-      - ./database/migrations/015_nullable_lesson_section_content.sql:/docker-entrypoint-initdb.d/01b-migration-015.sql:ro
-      # 01c: Migration 016 — adds 'image' section type to lesson_section_type ENUM
-      - ./database/migrations/016_image_section_type.sql:/docker-entrypoint-initdb.d/01c-migration-016.sql:ro
       # 02–10: Original seed data (English grammar, Python, Math, Cyber, Psychology, Design, History, Music, Philosophy)
       - ./database/seed_data.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
       - ./database/seed_python.sql:/docker-entrypoint-initdb.d/03-seed-python.sql:ro
