@@ -214,7 +214,8 @@ describe('Session Validation', () => {
 // 5. Happy Paths
 // ---------------------------------------------------------------------------
 describe('Happy Paths', () => {
-  it('GET /api/home returns grouped lessons with progress (BFF)', async () => {
+  it('GET /api/home returns topics → groups → lessons (BFF)', async () => {
+    // Rows without topic_id are grouped under a synthetic "Other" topic
     const mockRows = [
       {
         group_id: 1,
@@ -250,13 +251,14 @@ describe('Happy Paths', () => {
     });
     const res = await app.inject({ method: 'GET', url: '/api/home' });
     expect(res.statusCode).toBe(200);
-    const body = res.json();
-    expect(body.data.groups).toHaveLength(1);
-    expect(body.data.groups[0].name).toBe('Present Tenses');
-    expect(body.data.groups[0].lessons).toHaveLength(2);
-    expect(body.data.groups[0].lessons[0].status).toBe('completed');
-    expect(body.data.groups[0].lessons[0].best_score).toBe(90);
-    expect(body.data.groups[0].lessons[1].status).toBe('not_started');
+    const { topics } = res.json().data;
+    expect(topics).toHaveLength(1); // one synthetic "Other" topic
+    const group = topics[0].groups[0];
+    expect(group.name).toBe('Present Tenses');
+    expect(group.lessons).toHaveLength(2);
+    expect(group.lessons[0].status).toBe('completed');
+    expect(group.lessons[0].best_score).toBe(90);
+    expect(group.lessons[1].status).toBe('not_started');
     await app.close();
   });
 
@@ -268,7 +270,7 @@ describe('Happy Paths', () => {
     });
     const res = await app.inject({ method: 'GET', url: '/api/home' });
     expect(res.statusCode).toBe(200);
-    expect(res.json().data.groups).toEqual([]);
+    expect(res.json().data.topics).toEqual([]);
     await app.close();
   });
 
@@ -295,10 +297,11 @@ describe('Happy Paths', () => {
     });
     const res = await app.inject({ method: 'GET', url: '/api/home' });
     expect(res.statusCode).toBe(200);
-    const groups = res.json().data.groups;
-    expect(groups).toHaveLength(1);
-    expect(groups[0].name).toBe('Empty Category');
-    expect(groups[0].lessons).toHaveLength(0);
+    const { topics } = res.json().data;
+    expect(topics).toHaveLength(1);
+    expect(topics[0].groups).toHaveLength(1);
+    expect(topics[0].groups[0].name).toBe('Empty Category');
+    expect(topics[0].groups[0].lessons).toHaveLength(0);
     await app.close();
   });
 
