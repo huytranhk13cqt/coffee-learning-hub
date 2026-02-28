@@ -85,7 +85,8 @@ INSERT INTO schema_version (version, description) VALUES
 (15, 'Make lesson_section.content nullable for audio/video/image sections'),
 (16, 'Add image to lesson_section_type ENUM'),
 (17, 'Add topic grouping for category organization'),
-(18, 'Add interactive_chart to lesson_section_type ENUM');
+(18, 'Add interactive_chart to lesson_section_type ENUM'),
+(19, 'Expand order_index limits and category name length for large curriculum');
 
 
 -- ============================================================================
@@ -106,7 +107,7 @@ CREATE TABLE topic (
 
     CONSTRAINT uq_topic_name  UNIQUE (name),
     CONSTRAINT chk_topic_color CHECK (color ~ '^#[0-9A-Fa-f]{6}$'),
-    CONSTRAINT chk_topic_order CHECK (order_index >= 0 AND order_index <= 20)
+    CONSTRAINT chk_topic_order CHECK (order_index >= 0 AND order_index <= 100)
 );
 
 COMMENT ON TABLE topic IS 'Meta-groups for organizing categories (e.g., STEM Sciences, Creative Arts)';
@@ -125,8 +126,8 @@ CREATE TRIGGER trg_topic_updated_at
 CREATE TABLE category (
     id              SERIAL          NOT NULL,
     topic_id        INTEGER         NULL,
-    name            VARCHAR(50)     NOT NULL,
-    name_vi         VARCHAR(50)     NOT NULL,
+    name            VARCHAR(100)    NOT NULL,
+    name_vi         VARCHAR(100)    NOT NULL,
     description     TEXT            NULL,
     description_vi  TEXT            NULL,
     icon            VARCHAR(50)     NULL,
@@ -138,7 +139,7 @@ CREATE TABLE category (
     PRIMARY KEY (id),
     CONSTRAINT uq_category_name  UNIQUE (name),
     CONSTRAINT chk_category_color CHECK (color ~ '^#[0-9A-Fa-f]{6}$'),
-    CONSTRAINT chk_category_order CHECK (order_index >= 0 AND order_index <= 20),
+    CONSTRAINT chk_category_order CHECK (order_index >= 0 AND order_index <= 100),
     CONSTRAINT fk_category_topic
         FOREIGN KEY (topic_id) REFERENCES topic(id)
         ON DELETE SET NULL

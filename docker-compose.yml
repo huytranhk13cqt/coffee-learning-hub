@@ -45,10 +45,17 @@ services:
       - ./database/seed_chemistry_extra.sql:/docker-entrypoint-initdb.d/26-seed-chemistry-extra.sql:ro
       # 27: Phase 20 — Media content showcase (images, video, audio on lessons + exercises)
       - ./database/seed_media_content.sql:/docker-entrypoint-initdb.d/27-seed-media-content.sql:ro
-      # 28: Topic grouping — assigns categories into 6 knowledge domain topics
+      # 28: Topic grouping — 44 topics + 28 new categories + assignments
       - ./database/seed_topics.sql:/docker-entrypoint-initdb.d/28-seed-topics.sql:ro
       # 29: Interactive charts — explorable explanation sections for Math, Physics, Economics, Data Science
       - ./database/seed_interactive_charts.sql:/docker-entrypoint-initdb.d/29-seed-interactive-charts.sql:ro
+      # 30–35: New curriculum content (28 new subjects across 6 batch files)
+      - ./database/seed_social_new.sql:/docker-entrypoint-initdb.d/30-seed-social-new.sql:ro
+      - ./database/seed_business_new.sql:/docker-entrypoint-initdb.d/31-seed-business-new.sql:ro
+      - ./database/seed_arts_humanities_new.sql:/docker-entrypoint-initdb.d/32-seed-arts-humanities-new.sql:ro
+      - ./database/seed_science_nature_new.sql:/docker-entrypoint-initdb.d/33-seed-science-nature-new.sql:ro
+      - ./database/seed_health_lifestyle_new.sql:/docker-entrypoint-initdb.d/34-seed-health-lifestyle-new.sql:ro
+      - ./database/seed_tech_engineering_new.sql:/docker-entrypoint-initdb.d/35-seed-tech-engineering-new.sql:ro
     healthcheck:
       test:
         [

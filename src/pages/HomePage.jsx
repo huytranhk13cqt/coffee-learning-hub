@@ -1,9 +1,11 @@
+import { useState, useMemo } from 'react';
 import { useLoaderData, Link as RouterLink } from 'react-router';
 import { fetchHomePage } from '../api/groups.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -13,26 +15,111 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import Fade from '@mui/material/Fade';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+
+// Icons — topic icons (static imports for tree-shaking)
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import TranslateIcon from '@mui/icons-material/Translate';
-import ComputerIcon from '@mui/icons-material/Computer';
+import CodeIcon from '@mui/icons-material/Code';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import SecurityIcon from '@mui/icons-material/Security';
+import RouterIcon from '@mui/icons-material/Router';
+import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
+import DevicesIcon from '@mui/icons-material/Devices';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import ScienceIcon from '@mui/icons-material/Science';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import ParkIcon from '@mui/icons-material/Park';
+import GrassIcon from '@mui/icons-material/Grass';
+import NatureIcon from '@mui/icons-material/Nature';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
+import NightsStayIcon from '@mui/icons-material/NightsStay';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import GroupsIcon from '@mui/icons-material/Groups';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import PolicyIcon from '@mui/icons-material/Policy';
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
-import PaletteIcon from '@mui/icons-material/Palette';
+import PublicIcon from '@mui/icons-material/Public';
+import LanguageIcon from '@mui/icons-material/Language';
+import GavelIcon from '@mui/icons-material/Gavel';
+import TranslateIcon from '@mui/icons-material/Translate';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import SavingsIcon from '@mui/icons-material/Savings';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import BrushIcon from '@mui/icons-material/Brush';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import BuildIcon from '@mui/icons-material/Build';
+import ShieldIcon from '@mui/icons-material/Shield';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import SchoolIcon from '@mui/icons-material/School';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SearchIcon from '@mui/icons-material/Search';
+
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';
-import Fade from '@mui/material/Fade';
 import { DIFFICULTY_LABELS } from '../constants/difficulty.js';
 
-// Icon mapping for topic icons (avoids dynamic imports)
+// Icon mapping: topic.icon (DB string) → MUI component
 const TOPIC_ICONS = {
-  Translate: TranslateIcon,
-  Computer: ComputerIcon,
+  Code: CodeIcon,
+  BarChart: BarChartIcon,
+  Security: SecurityIcon,
+  Router: RouterIcon,
+  DeveloperBoard: DeveloperBoardIcon,
+  Devices: DevicesIcon,
+  SportsEsports: SportsEsportsIcon,
   Science: ScienceIcon,
+  RocketLaunch: RocketLaunchIcon,
+  Park: ParkIcon,
+  Grass: GrassIcon,
+  Nature: NatureIcon,
+  LocalHospital: LocalHospitalIcon,
+  FitnessCenter: FitnessCenterIcon,
+  SportsMartialArts: SportsMartialArtsIcon,
+  NightsStay: NightsStayIcon,
+  Restaurant: RestaurantIcon,
+  Psychology: PsychologyIcon,
+  Groups: GroupsIcon,
+  Diversity3: Diversity3Icon,
+  Policy: PolicyIcon,
+  CastForEducation: CastForEducationIcon,
+  AutoStories: AutoStoriesIcon,
   HistoryEdu: HistoryEduIcon,
-  Palette: PaletteIcon,
+  Public: PublicIcon,
+  Language: LanguageIcon,
+  Gavel: GavelIcon,
+  Translate: TranslateIcon,
   TrendingUp: TrendingUpIcon,
+  Savings: SavingsIcon,
+  Campaign: CampaignIcon,
+  BusinessCenter: BusinessCenterIcon,
+  Handshake: HandshakeIcon,
+  LocalShipping: LocalShippingIcon,
+  Extension: ExtensionIcon,
+  DesignServices: DesignServicesIcon,
+  MusicNote: MusicNoteIcon,
+  Brush: BrushIcon,
+  CameraAlt: CameraAltIcon,
+  Build: BuildIcon,
+  Shield: ShieldIcon,
+  AccountTree: AccountTreeIcon,
+  School: SchoolIcon,
+  MenuBook: MenuBookIcon,
 };
 
 function getTopicLessonCount(topic) {
@@ -46,72 +133,224 @@ export async function loader({ request }) {
 
 export default function HomePage() {
   const { topics } = useLoaderData();
+  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [search, setSearch] = useState('');
   useDocumentTitle(null);
+
+  // Filter topics by search query (matches name or name_vi)
+  const filteredTopics = useMemo(() => {
+    if (!search.trim()) return topics;
+    const q = search.trim().toLowerCase();
+    return topics.filter(
+      (t) =>
+        t.name.toLowerCase().includes(q) || t.name_vi.toLowerCase().includes(q),
+    );
+  }, [topics, search]);
+
+  function handleSelectTopic(topic) {
+    setSelectedTopic(topic);
+    setSearch('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleBackToOverview() {
+    setSelectedTopic(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   return (
     <Fade in timeout={300}>
       <div>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Learning Hub
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
-          Chọn chủ đề để bắt đầu học
-        </Typography>
-
-        {/* Topic Navigation Chips */}
-        <Stack
-          direction="row"
-          spacing={1}
-          flexWrap="wrap"
-          useFlexGap
-          sx={{ mb: 4 }}
-        >
-          {topics.map((topic) => {
-            const count = getTopicLessonCount(topic);
-            return (
-              <Chip
-                key={topic.id ?? 'other'}
-                label={`${topic.name_vi} (${count})`}
-                onClick={() => {
-                  const el = document.getElementById(
-                    `topic-${topic.id ?? 'other'}`,
-                  );
-                  el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                sx={{
-                  bgcolor: topic.color + '18',
-                  color: topic.color,
-                  fontWeight: 600,
-                  '&:hover': { bgcolor: topic.color + '30' },
-                }}
-              />
-            );
-          })}
-        </Stack>
-
-        {/* Topic Sections */}
-        <Stack spacing={5}>
-          {topics.map((topic) => (
-            <TopicSection key={topic.id ?? 'other'} topic={topic} />
-          ))}
-        </Stack>
+        {selectedTopic ? (
+          <TopicDetailView
+            topic={selectedTopic}
+            onBack={handleBackToOverview}
+          />
+        ) : (
+          <TopicOverview
+            topics={filteredTopics}
+            totalCount={topics.length}
+            search={search}
+            onSearchChange={setSearch}
+            onSelectTopic={handleSelectTopic}
+          />
+        )}
       </div>
     </Fade>
   );
 }
 
-function TopicSection({ topic }) {
+// ─────────────────────────────────────────────────
+// Overview: Grid of all topic cards with search
+// ─────────────────────────────────────────────────
+
+function TopicOverview({
+  topics,
+  totalCount,
+  search,
+  onSearchChange,
+  onSelectTopic,
+}) {
+  const totalLessons = topics.reduce(
+    (sum, t) => sum + getTopicLessonCount(t),
+    0,
+  );
+
+  return (
+    <>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Learning Hub
+      </Typography>
+      <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
+        {totalCount} chủ đề · {totalLessons} bài học — Chọn chủ đề để bắt đầu
+      </Typography>
+
+      {/* Search bar */}
+      <TextField
+        size="small"
+        placeholder="Tìm chủ đề..."
+        value={search}
+        onChange={(e) => onSearchChange(e.target.value)}
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="small" color="action" />
+              </InputAdornment>
+            ),
+          },
+        }}
+        sx={{ mb: 3, maxWidth: 360, width: '100%' }}
+      />
+
+      {/* Topic cards grid */}
+      <Grid container spacing={2}>
+        {topics.map((topic) => (
+          <Grid key={topic.id ?? 'other'} size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
+            <TopicCard topic={topic} onClick={() => onSelectTopic(topic)} />
+          </Grid>
+        ))}
+      </Grid>
+
+      {topics.length === 0 && search && (
+        <Typography color="text.secondary" sx={{ mt: 4, textAlign: 'center' }}>
+          Không tìm thấy chủ đề phù hợp với &quot;{search}&quot;
+        </Typography>
+      )}
+    </>
+  );
+}
+
+function TopicCard({ topic, onClick }) {
   const TopicIcon = TOPIC_ICONS[topic.icon] || MenuBookIcon;
   const lessonCount = getTopicLessonCount(topic);
 
   return (
-    <Box id={`topic-${topic.id ?? 'other'}`} sx={{ scrollMarginTop: 80 }}>
-      {/* Topic Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2.5 }}>
+    <Card
+      sx={{
+        height: '100%',
+        transition: 'transform 0.15s, box-shadow 0.15s',
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: 4,
+        },
+      }}
+    >
+      <CardActionArea
+        onClick={onClick}
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          p: 2,
+          textAlign: 'center',
+        }}
+      >
         <Box
           sx={{
-            width: 44,
-            height: 44,
+            width: 52,
+            height: 52,
+            borderRadius: 2,
+            bgcolor: topic.color + '18',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mb: 1.5,
+          }}
+        >
+          <TopicIcon sx={{ color: topic.color, fontSize: 28 }} />
+        </Box>
+        <Typography
+          variant="subtitle2"
+          sx={{
+            fontWeight: 600,
+            lineHeight: 1.3,
+            mb: 0.5,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
+          {topic.name_vi}
+        </Typography>
+        <Chip
+          label={`${lessonCount} bài học`}
+          size="small"
+          sx={{
+            height: 22,
+            fontSize: '0.7rem',
+            bgcolor: topic.color + '18',
+            color: topic.color,
+            fontWeight: 600,
+          }}
+        />
+      </CardActionArea>
+    </Card>
+  );
+}
+
+// ─────────────────────────────────────────────────
+// Detail: Selected topic's categories + lessons
+// ─────────────────────────────────────────────────
+
+function TopicDetailView({ topic, onBack }) {
+  const TopicIcon = TOPIC_ICONS[topic.icon] || MenuBookIcon;
+  const lessonCount = getTopicLessonCount(topic);
+
+  return (
+    <>
+      {/* Breadcrumb navigation */}
+      <Breadcrumbs sx={{ mb: 2 }}>
+        <Link
+          component="button"
+          variant="body2"
+          underline="hover"
+          onClick={onBack}
+          sx={{
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.5,
+          }}
+        >
+          <ArrowBackIcon sx={{ fontSize: 16 }} />
+          Tất cả chủ đề
+        </Link>
+        <Typography variant="body2" color="text.primary" fontWeight={600}>
+          {topic.name_vi}
+        </Typography>
+      </Breadcrumbs>
+
+      {/* Topic header */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+        <Box
+          sx={{
+            width: 56,
+            height: 56,
             borderRadius: 2,
             bgcolor: topic.color + '18',
             display: 'flex',
@@ -120,21 +359,28 @@ function TopicSection({ topic }) {
             flexShrink: 0,
           }}
         >
-          <TopicIcon sx={{ color: topic.color, fontSize: 26 }} />
+          <TopicIcon sx={{ color: topic.color, fontSize: 32 }} />
         </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="h5" component="h2" sx={{ lineHeight: 1.3 }}>
+          <Typography variant="h4" component="h1" sx={{ lineHeight: 1.3 }}>
             {topic.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {topic.name_vi} · {lessonCount} bài học
+          <Typography variant="body1" color="text.secondary">
+            {topic.name_vi} · {lessonCount} bài học · {topic.groups.length} nhóm
           </Typography>
         </Box>
+        <IconButton
+          onClick={onBack}
+          aria-label="Quay lại"
+          sx={{ display: { xs: 'flex', sm: 'none' } }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
       </Box>
 
-      <Divider sx={{ mb: 2.5 }} />
+      <Divider sx={{ mb: 3 }} />
 
-      {/* Category Cards Grid */}
+      {/* Category cards */}
       <Grid container spacing={3}>
         {topic.groups.map((group) => (
           <Grid key={group.id} size={{ xs: 12, sm: 6, md: 4 }}>
@@ -142,7 +388,20 @@ function TopicSection({ topic }) {
           </Grid>
         ))}
       </Grid>
-    </Box>
+
+      {/* Back button at bottom for long lists */}
+      {topic.groups.length > 2 && (
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Chip
+            icon={<ArrowBackIcon />}
+            label="Quay lại tất cả chủ đề"
+            onClick={onBack}
+            variant="outlined"
+            sx={{ cursor: 'pointer' }}
+          />
+        </Box>
+      )}
+    </>
   );
 }
 
