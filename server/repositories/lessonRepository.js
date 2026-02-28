@@ -7,14 +7,18 @@ export class LessonRepository {
 
   // F1: Search lessons by keyword
   //
-  // Three-tier matching strategy (best → fallback):
-  //   1. Full-text (tsvector @@): lesson metadata — fast via GIN index
+  // Four-tier matching strategy (best → fallback):
+  //   1. Full-text (tsvector @@): lesson metadata — fast via GIN index (migration 022)
   //   2. ILIKE substring: catches partial words FTS misses (e.g. "pyth" → "Python")
   //   3. Section + exercise content EXISTS: searches actual lesson body text
   //   4. pg_trgm fuzzy: catches typos and phonetic variants
   //
   // Ranking: ts_rank (primary) + word_similarity (secondary) combined so
   // exact matches always outrank fuzzy matches.
+  //
+  // NOTE: inline to_tsvector() expression intentionally mirrors migration 022 GIN index
+  // definition — PostgreSQL will use idx_lesson_fts automatically when expressions match.
+  // Works via sequential scan before migration, uses index after.
   async search(keyword) {
     const escaped = keyword.replace(/[%_\\]/g, '\\$&');
     const pattern = `%${escaped}%`;
@@ -26,7 +30,14 @@ export class LessonRepository {
         l.difficulty,
         g.name_vi  AS group_name_vi,
         g.color    AS group_color,
-        COALESCE(ts_rank(l.search_vector, plainto_tsquery('simple', ${keyword})), 0)
+        COALESCE(
+          ts_rank(
+            to_tsvector('simple',
+              coalesce(l.name, '') || ' ' || coalesce(l.name_vi, '') || ' ' ||
+              coalesce(l.short_desc, '') || ' ' || coalesce(l.short_desc_vi, '')
+            ),
+            plainto_tsquery('simple', ${keyword})
+          ), 0)
           + GREATEST(
               word_similarity(${lowerKeyword}, lower(l.name)),
               word_similarity(${lowerKeyword}, lower(l.name_vi))
@@ -35,12 +46,15 @@ export class LessonRepository {
       JOIN category g ON l.group_id = g.id
       WHERE l.is_published = TRUE
         AND (
-          -- FTS match on lesson metadata (uses GIN index)
-          l.search_vector @@ plainto_tsquery('simple', ${keyword})
+          -- FTS match on lesson metadata (uses GIN index idx_lesson_fts after migration 022)
+          to_tsvector('simple',
+            coalesce(l.name, '') || ' ' || coalesce(l.name_vi, '') || ' ' ||
+            coalesce(l.short_desc, '') || ' ' || coalesce(l.short_desc_vi, '')
+          ) @@ plainto_tsquery('simple', ${keyword})
           -- Substring match (catches partial words like "Pyth" → "Python")
-          OR l.name       ILIKE ${pattern}
-          OR l.name_vi    ILIKE ${pattern}
-          OR l.short_desc ILIKE ${pattern}
+          OR l.name          ILIKE ${pattern}
+          OR l.name_vi       ILIKE ${pattern}
+          OR l.short_desc    ILIKE ${pattern}
           OR l.short_desc_vi ILIKE ${pattern}
           -- Fuzzy match (handles typos, e.g. "marketng" → "marketing")
           OR word_similarity(${lowerKeyword}, lower(l.name))    > 0.3

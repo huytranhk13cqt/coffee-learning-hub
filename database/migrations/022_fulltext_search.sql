@@ -1,35 +1,41 @@
--- Migration 022: Full-text search (tsvector computed column + GIN index)
+-- Migration 022: Full-text search GIN expression indexes
 --
--- 'simple' config: no stemming, no stop words — works for any language
--- (English, Vietnamese, technical terms all treated equally as tokens).
--- GENERATED ALWAYS AS STORED: auto-updated on INSERT/UPDATE, zero maintenance.
+-- 'simple' config: no stemming, no stop words — works for Vietnamese + English + technical terms.
+-- Expression-based indexes (NOT stored columns) so:
+--   • No schema change to the lesson table
+--   • Search query works before this migration (sequential scan)
+--   • After migration, PostgreSQL auto-uses the GIN index when query expression matches exactly
 -- ============================================================================
 
-ALTER TABLE lesson
-  ADD COLUMN search_vector tsvector GENERATED ALWAYS AS (
+-- Lesson: search across name, name_vi, short_desc, short_desc_vi
+CREATE INDEX idx_lesson_fts
+  ON lesson
+  USING GIN (
     to_tsvector('simple',
-      coalesce(name, '')          || ' ' ||
-      coalesce(name_vi, '')       || ' ' ||
-      coalesce(short_desc, '')    || ' ' ||
+      coalesce(name, '') || ' ' ||
+      coalesce(name_vi, '') || ' ' ||
+      coalesce(short_desc, '') || ' ' ||
       coalesce(short_desc_vi, '')
     )
-  ) STORED;
+  );
 
--- GIN index for fast @@ operator on lesson full-text search
-CREATE INDEX idx_lesson_fts ON lesson USING GIN (search_vector);
-
--- Expression index on lesson_section so section-content search is also fast.
--- Not a stored column because content is mutable JSON/markdown text.
+-- Lesson section content (markdown/JSON body text)
 CREATE INDEX idx_lesson_section_fts
   ON lesson_section
-  USING GIN (to_tsvector('simple',
-    coalesce(content, '') || ' ' || coalesce(content_vi, '')
-  ));
+  USING GIN (
+    to_tsvector('simple',
+      coalesce(content, '') || ' ' || coalesce(content_vi, '')
+    )
+  );
 
--- Expression index on exercise question search
+-- Exercise questions
 CREATE INDEX idx_exercise_question_fts
   ON exercise
-  USING GIN (to_tsvector('simple', coalesce(question, '') || ' ' || coalesce(question_vi, '')));
+  USING GIN (
+    to_tsvector('simple',
+      coalesce(question, '') || ' ' || coalesce(question_vi, '')
+    )
+  );
 
 INSERT INTO schema_version (version, description)
-VALUES (22, 'Add tsvector column and GIN indexes for full-text search on lesson, section, exercise');
+VALUES (22, 'Add GIN expression indexes for full-text search on lesson, section, exercise');
