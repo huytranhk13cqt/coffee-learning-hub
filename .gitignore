@@ -37,8 +37,9 @@ postgres_data/
 test-results/
 playwright-report/
 
-# Claude Code
-.claude/
+# Claude Code — ignore machine-specific and ephemeral files only
+.claude/plans/
+.claude/settings.local.json
 
 # Local media files (audio/video/images — binary, not version-controlled)
 # Directory structure is preserved via .gitkeep files
