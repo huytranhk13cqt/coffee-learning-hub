@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useLoaderData, Link as RouterLink } from 'react-router';
 import { fetchHomePage } from '../api/groups.js';
+import { fetchPaths } from '../api/paths.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -21,6 +22,10 @@ import TextField from '@mui/material/TextField';
 import Fade from '@mui/material/Fade';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import LinearProgress from '@mui/material/LinearProgress';
+import RouteIcon from '@mui/icons-material/Route';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 // Icons — topic icons (static imports for tree-shaking)
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -127,12 +132,17 @@ function getTopicLessonCount(topic) {
 }
 
 export async function loader({ request }) {
-  const { topics } = await fetchHomePage({ signal: request.signal });
-  return { topics };
+  const [{ topics }, featuredPaths] = await Promise.all([
+    fetchHomePage({ signal: request.signal }),
+    fetchPaths({ signal: request.signal })
+      .then((paths) => paths.filter((p) => p.is_featured).slice(0, 4))
+      .catch(() => []),
+  ]);
+  return { topics, featuredPaths };
 }
 
 export default function HomePage() {
-  const { topics } = useLoaderData();
+  const { topics, featuredPaths } = useLoaderData();
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [search, setSearch] = useState('');
   useDocumentTitle(null);
@@ -161,6 +171,11 @@ export default function HomePage() {
   return (
     <Fade in timeout={300}>
       <div>
+        {/* Featured Learning Paths (shown when not drilling into a topic) */}
+        {!selectedTopic && featuredPaths.length > 0 && (
+          <FeaturedPaths paths={featuredPaths} />
+        )}
+
         {selectedTopic ? (
           <TopicDetailView
             topic={selectedTopic}
@@ -402,6 +417,104 @@ function TopicDetailView({ topic, onBack }) {
         </Box>
       )}
     </>
+  );
+}
+
+// ─────────────────────────────────────────────────
+// Featured Learning Paths strip
+// ─────────────────────────────────────────────────
+
+function FeaturedPaths({ paths }) {
+  return (
+    <Box sx={{ mb: 4 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          mb: 1.5,
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RouteIcon sx={{ color: 'primary.main' }} />
+          <Typography variant="h6" fontWeight={700}>
+            Lộ trình học tập
+          </Typography>
+        </Box>
+        <Link
+          component={RouterLink}
+          to="/paths"
+          underline="hover"
+          variant="body2"
+          sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+        >
+          Xem tất cả <ArrowForwardIcon sx={{ fontSize: 16 }} />
+        </Link>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2,
+          overflowX: 'auto',
+          pb: 1,
+          '&::-webkit-scrollbar': { height: 4 },
+          '&::-webkit-scrollbar-thumb': {
+            borderRadius: 2,
+            bgcolor: 'action.hover',
+          },
+        }}
+      >
+        {paths.map((path) => (
+          <Paper
+            key={path.id}
+            variant="outlined"
+            component={RouterLink}
+            to={`/paths/${path.slug}`}
+            sx={{
+              p: 2,
+              minWidth: 200,
+              maxWidth: 240,
+              flexShrink: 0,
+              textDecoration: 'none',
+              color: 'inherit',
+              borderTop: 3,
+              borderColor: path.color,
+              transition: 'box-shadow 0.15s',
+              '&:hover': { boxShadow: 3 },
+            }}
+          >
+            <Typography
+              variant="subtitle2"
+              fontWeight={700}
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                mb: 0.5,
+              }}
+            >
+              {path.name_vi}
+            </Typography>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              display="block"
+              sx={{ mb: 1 }}
+            >
+              {path.total_steps} bài · {path.estimated_days} ngày
+            </Typography>
+            {path.progress_percent > 0 && (
+              <LinearProgress
+                variant="determinate"
+                value={path.progress_percent}
+                sx={{ height: 4, borderRadius: 2 }}
+              />
+            )}
+          </Paper>
+        ))}
+      </Box>
+    </Box>
   );
 }
 

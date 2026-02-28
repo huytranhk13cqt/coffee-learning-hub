@@ -19,6 +19,10 @@ import { ProgressController } from './controllers/progressController.js';
 import { GamificationController } from './controllers/gamificationController.js';
 import { bookmarkRepository } from './repositories/bookmarkRepository.js';
 import { bookmarkController as BookmarkController } from './controllers/bookmarkController.js';
+import { ReviewRepository } from './repositories/reviewRepository.js';
+import { ReviewController } from './controllers/reviewController.js';
+import { LearningPathRepository } from './repositories/learningPathRepository.js';
+import { LearningPathController } from './controllers/learningPathController.js';
 import { createApp } from './app.js';
 
 // --- Startup env validation (fail-fast) ---
@@ -54,11 +58,23 @@ const exerciseRepo = new ExerciseRepository(sql);
 const progressRepo = new ProgressRepository(sql);
 const gamificationRepo = new GamificationRepository(sql);
 
+const reviewRepo = new ReviewRepository(sql);
+const reviewController = new ReviewController(
+  reviewRepo,
+  exerciseRepo,
+  gamificationRepo,
+  sql,
+);
+
+const learningPathRepo = new LearningPathRepository(sql);
+const learningPathController = new LearningPathController(learningPathRepo);
+
 const exerciseController = new ExerciseController(
   exerciseRepo,
   progressRepo,
   gamificationRepo,
   sql,
+  reviewRepo, // enables auto-enroll on lesson completion
 );
 const progressController = new ProgressController(progressRepo);
 const gamificationController = new GamificationController(gamificationRepo);
@@ -72,6 +88,8 @@ const app = await createApp({
   progressController,
   gamificationController,
   bookmarkController: bookmarkControllerInstance,
+  reviewController,
+  learningPathController,
   sql,
 });
 

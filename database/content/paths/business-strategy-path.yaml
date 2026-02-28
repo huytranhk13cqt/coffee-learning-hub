@@ -1,0 +1,18 @@
+type: learning_path
+slug: business-strategy-path
+name: Business Strategy Essentials
+name_vi: Chiến lược kinh doanh thiết yếu
+description: Master marketing, negotiation, supply chain, and advanced persuasion techniques.
+description_vi: Thành thạo marketing, đàm phán, quản lý chuỗi cung ứng và kỹ thuật thuyết phục nâng cao.
+icon: BusinessCenterOutlined
+color: '#06b6d4'
+estimated_days: 6
+is_featured: false
+order_index: 6
+steps:
+  - lesson: marketing-fundamentals
+  - lesson: digital-marketing-strategy
+  - lesson: principles-of-negotiation
+  - lesson: advanced-persuasion-techniques
+  - lesson: inventory-warehouse-management
+  - lesson: principles-of-strategy

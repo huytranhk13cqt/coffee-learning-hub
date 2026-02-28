@@ -1,0 +1,18 @@
+type: learning_path
+slug: creative-design-path
+name: Creative Design Journey
+name_vi: Hành trình thiết kế sáng tạo
+description: From color theory and UI/UX design to music theory and creative writing.
+description_vi: Từ lý thuyết màu sắc và thiết kế UI/UX đến lý thuyết âm nhạc và viết sáng tạo.
+icon: BrushOutlined
+color: '#ec4899'
+estimated_days: 8
+is_featured: false
+order_index: 5
+steps:
+  - lesson: design-color-theory
+  - lesson: film-language-cinematography
+  - lesson: creative-writing-craft
+  - lesson: music-major-scales
+  - lesson: architecture-through-ages
+  - lesson: game-design-principles

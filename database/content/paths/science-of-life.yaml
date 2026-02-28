@@ -1,0 +1,19 @@
+type: learning_path
+slug: science-of-life
+name: The Science of Life
+name_vi: Khoa học của cuộc sống
+description: Explore sleep science, nutrition, cooking, exercise physiology, and ecology.
+description_vi: Khám phá khoa học về giấc ngủ, dinh dưỡng, nấu ăn, thể chất và sinh thái học.
+icon: ScienceOutlined
+color: '#8b5cf6'
+estimated_days: 8
+is_featured: true
+order_index: 3
+steps:
+  - lesson: science-of-sleep
+  - lesson: sleep-optimization-strategies
+  - lesson: science-of-cooking
+  - lesson: exercise-physiology-basics
+  - lesson: plant-biology-basics
+  - lesson: ecology-biodiversity
+  - lesson: climate-change-science

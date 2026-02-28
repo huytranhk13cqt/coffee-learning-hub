@@ -39,3 +39,13 @@ function reportMetric({ name, value, rating }) {
 onCLS(reportMetric);
 onINP(reportMetric);
 onLCP(reportMetric);
+
+// Register PWA service worker (vite-plugin-pwa virtual module, no-op in dev)
+// Use .then() to avoid top-level await incompatibility with es2020/safari13 target
+import('virtual:pwa-register')
+  .then(({ registerSW }) => {
+    registerSW({ onNeedRefresh() {}, onOfflineReady() {} });
+  })
+  .catch(() => {
+    // PWA plugin not active in dev mode — silently ignore
+  });

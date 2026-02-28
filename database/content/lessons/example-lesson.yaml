@@ -1,0 +1,189 @@
+# ============================================================================
+# Example Lesson YAML — Template & Documentation
+# ============================================================================
+#
+# Usage:
+#   node scripts/import-lesson.js database/content/lessons/example-lesson.yaml
+#   node scripts/import-lesson.js database/content/lessons/example-lesson.yaml --dry-run
+#   node scripts/import-lesson.js database/content/lessons/              # import whole dir
+#
+# This file imports into the "Learning Methods" category (must exist in DB).
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Lesson metadata (all required)
+# ---------------------------------------------------------------------------
+slug: effective-note-taking             # unique, kebab-case
+category: Learning Methods              # must match category.name in DB exactly
+name: Effective Note-Taking Strategies
+name_vi: Chiến lược ghi chú hiệu quả
+difficulty: beginner                    # beginner | intermediate | advanced
+estimated_time: 25                      # minutes (positive integer)
+order_index: 5                          # display order within category (0+)
+
+# ---------------------------------------------------------------------------
+# Usages — practical applications of this lesson (optional, max 5)
+# ---------------------------------------------------------------------------
+usages:
+  - title: Academic Lectures
+    title_vi: Bài giảng học thuật
+    description: Capture key ideas during fast-paced university lectures using structured methods.
+    description_vi: Ghi lại ý chính trong các bài giảng đại học có nhịp độ nhanh.
+
+  - title: Meeting Minutes
+    title_vi: Biên bản cuộc họp
+    description: Organize action items, decisions, and discussion points in professional meetings.
+    description_vi: Tổ chức các hạng mục hành động, quyết định và điểm thảo luận trong cuộc họp.
+
+  - title: Self-Study & Reading
+    title_vi: Tự học và đọc sách
+    description: Summarize books and articles for long-term retention using active recall techniques.
+    description_vi: Tóm tắt sách và bài viết để ghi nhớ lâu dài bằng kỹ thuật nhớ chủ động.
+
+# ---------------------------------------------------------------------------
+# Sections — theory content blocks (optional, max 10)
+# ---------------------------------------------------------------------------
+sections:
+  - type: markdown
+    title: Why Note-Taking Matters
+    title_vi: Tại sao ghi chú quan trọng
+    content: |
+      Research shows that **handwriting notes** improves retention by 30% compared
+      to passive reading. The act of rephrasing information forces your brain to
+      process it more deeply — this is called the *generation effect*.
+
+      Key benefits:
+      - Forces active engagement with material
+      - Creates a personal reference for review
+      - Identifies gaps in understanding immediately
+    content_vi: |
+      Nghiên cứu cho thấy **ghi chú bằng tay** cải thiện khả năng ghi nhớ 30%
+      so với đọc thụ động. Hành động diễn đạt lại thông tin buộc não bạn xử lý
+      sâu hơn — đây gọi là *hiệu ứng tạo sinh*.
+
+  - type: key_points
+    title: The Cornell Method
+    title_vi: Phương pháp Cornell
+    content: |
+      - Divide your page into 3 sections: **Cue Column** (left), **Notes** (right), **Summary** (bottom)
+      - Write notes on the right during the lecture
+      - Add keywords and questions in the left column after class
+      - Write a brief summary at the bottom within 24 hours
+    content_vi: |
+      - Chia trang thành 3 phần: **Cột gợi ý** (trái), **Ghi chú** (phải), **Tóm tắt** (dưới)
+      - Ghi chú bên phải trong bài giảng
+      - Thêm từ khóa và câu hỏi ở cột trái sau giờ học
+      - Viết tóm tắt ngắn ở dưới cùng trong vòng 24 giờ
+
+  - type: info_box
+    title: Pro Tip
+    title_vi: Mẹo hay
+    content: |
+      Use **abbreviations** and **symbols** to keep up with fast speakers:
+      `→` (leads to), `∴` (therefore), `≈` (approximately), `↑` (increase)
+    content_vi: |
+      Dùng **viết tắt** và **ký hiệu** để theo kịp người nói nhanh:
+      `→` (dẫn đến), `∴` (do đó), `≈` (xấp xỉ), `↑` (tăng)
+    metadata:
+      variant: tip                      # info_box variants: tip, warning, note
+
+# ---------------------------------------------------------------------------
+# Exercises — practice questions (optional, max 20)
+# ---------------------------------------------------------------------------
+exercises:
+  # --- Multiple choice: uses options[], NO correct_answer field ---
+  - type: multiple_choice
+    difficulty: easy
+    question: Which note-taking method divides the page into three sections?
+    question_vi: Phương pháp ghi chú nào chia trang thành ba phần?
+    explanation: The Cornell Method uses Cue Column (left), Notes (right), and Summary (bottom).
+    explanation_vi: Phương pháp Cornell sử dụng Cột gợi ý (trái), Ghi chú (phải), và Tóm tắt (dưới).
+    options:
+      - label: A
+        content: Mind Mapping
+        content_vi: Sơ đồ tư duy
+        is_correct: false
+      - label: B
+        content: Cornell Method
+        content_vi: Phương pháp Cornell
+        is_correct: true
+      - label: C
+        content: Outlining
+        content_vi: Phương pháp dàn ý
+        is_correct: false
+      - label: D
+        content: Charting Method
+        content_vi: Phương pháp biểu đồ
+        is_correct: false
+
+  # --- Fill in the blank: uses correct_answer ---
+  - type: fill_blank
+    difficulty: medium
+    question: "The act of rephrasing information to improve retention is called the _____ effect."
+    question_vi: "Hành động diễn đạt lại thông tin để cải thiện ghi nhớ được gọi là hiệu ứng _____."
+    correct_answer: generation
+    explanation: The generation effect means actively creating your own version of information improves memory.
+    explanation_vi: Hiệu ứng tạo sinh nghĩa là việc chủ động tạo ra phiên bản thông tin của riêng bạn cải thiện trí nhớ.
+
+  # --- True/False: correct_answer is "true" or "false" ---
+  - type: true_false
+    difficulty: easy
+    question: Handwriting notes is proven to improve retention compared to passive reading.
+    question_vi: Ghi chú bằng tay được chứng minh là cải thiện khả năng ghi nhớ so với đọc thụ động.
+    correct_answer: "true"
+    explanation: Research confirms a ~30% improvement in retention when taking handwritten notes.
+    explanation_vi: Nghiên cứu xác nhận cải thiện ~30% khả năng ghi nhớ khi ghi chú bằng tay.
+
+  # --- Arrange words: uses word_bank + correct_answer (the correct sentence) ---
+  - type: arrange_words
+    difficulty: medium
+    question: Arrange the Cornell Method steps in the correct order.
+    question_vi: Sắp xếp các bước của phương pháp Cornell theo đúng thứ tự.
+    correct_answer: Take notes during lecture, Add cue words after class, Write summary within 24 hours
+    word_bank:
+      - Write summary within 24 hours
+      - Take notes during lecture
+      - Add cue words after class
+    explanation: The Cornell Method follows a specific sequence to maximize retention.
+    explanation_vi: Phương pháp Cornell tuân theo trình tự cụ thể để tối đa hóa khả năng ghi nhớ.
+
+  # --- Error correction: correct_answer is the corrected text ---
+  - type: error_correction
+    difficulty: hard
+    question: "Find and correct the error: 'The Cornell Method divides the page into four sections.'"
+    question_vi: "Tìm và sửa lỗi: 'Phương pháp Cornell chia trang thành bốn phần.'"
+    correct_answer: The Cornell Method divides the page into three sections.
+    explanation: The Cornell Method has exactly three sections, not four.
+    explanation_vi: Phương pháp Cornell có chính xác ba phần, không phải bốn.
+
+  # --- Sentence transform ---
+  - type: sentence_transform
+    difficulty: hard
+    question: "Rewrite using passive voice: 'Students write notes during lectures.'"
+    question_vi: "Viết lại dùng bị động: 'Sinh viên ghi chú trong bài giảng.'"
+    correct_answer: Notes are written during lectures by students.
+    explanation: Passive voice moves the object to subject position.
+    explanation_vi: Câu bị động chuyển tân ngữ thành chủ ngữ.
+
+
+# ============================================================================
+# Learning Path YAML — separate file type (uses type: learning_path)
+# ============================================================================
+#
+# Example (save as a separate .yaml file):
+#
+# type: learning_path
+# slug: study-skills-101
+# name: Study Skills 101
+# name_vi: Kỹ năng học tập 101
+# description: Master the fundamentals of effective learning.
+# description_vi: Nắm vững nền tảng của việc học hiệu quả.
+# icon: SchoolOutlined
+# color: '#6366f1'
+# estimated_days: 7
+# is_featured: true
+# order_index: 0
+# steps:
+#   - lesson: effective-note-taking
+#   - lesson: spaced-repetition-basics
+#   - lesson: active-recall-techniques

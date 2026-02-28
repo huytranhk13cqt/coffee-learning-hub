@@ -7,11 +7,18 @@ import { extractSessionId } from '../utils/session.js';
 import { groupBy, shuffle } from '../utils/collections.js';
 
 export class ExerciseController {
-  constructor(exerciseRepo, progressRepo, gamificationRepo, sql) {
+  constructor(
+    exerciseRepo,
+    progressRepo,
+    gamificationRepo,
+    sql,
+    reviewRepo = null,
+  ) {
     this.exerciseRepo = exerciseRepo;
     this.progressRepo = progressRepo;
     this.gamificationRepo = gamificationRepo;
     this.sql = sql;
+    this.reviewRepo = reviewRepo; // optional: when set, exercises are enrolled for spaced repetition on lesson completion
   }
 
   // GET /api/lessons/:lessonId/exercises
@@ -132,7 +139,25 @@ export class ExerciseController {
       await this.progressRepo.updateScores(tx, sessionId, lessonId);
     });
 
-    // 5. Award XP + update gamification (separate transaction — non-critical)
+    // 5. Auto-enroll exercises into spaced repetition queue when lesson is completed (non-critical)
+    if (this.reviewRepo) {
+      try {
+        const progress = await this.progressRepo.findBySessionAndLesson(
+          sessionId,
+          lessonId,
+        );
+        if (progress?.status === 'completed') {
+          await this.reviewRepo.enrollLesson(sessionId, lessonId);
+        }
+      } catch (err) {
+        request.log.warn(
+          { err: err.message },
+          'Review enrollment failed (non-critical)',
+        );
+      }
+    }
+
+    // 6. Award XP + update gamification (separate transaction — non-critical)
     let gamification = null;
     try {
       gamification = await this.sql.begin(async (tx) => {

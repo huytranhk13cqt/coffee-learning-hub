@@ -1,5 +1,6 @@
 import { useLoaderData, Link as RouterLink } from 'react-router';
-import { fetchDashboard } from '../api/progress.js';
+import { fetchDashboard, fetchWeakSpots } from '../api/progress.js';
+import { fetchReviewStats } from '../api/review.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -23,10 +24,17 @@ import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import Fade from '@mui/material/Fade';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';
 import GamificationOverview from '../components/dashboard/GamificationOverview.jsx';
+import WeakSpotPanel from '../components/progress/WeakSpotPanel.jsx';
 import { useGamification } from '../hooks/useGamification.js';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 export async function loader({ request }) {
-  return fetchDashboard({ signal: request.signal });
+  const [dashboard, reviewStats, weakSpots] = await Promise.all([
+    fetchDashboard({ signal: request.signal }),
+    fetchReviewStats({ signal: request.signal }).catch(() => null),
+    fetchWeakSpots({ signal: request.signal }).catch(() => []),
+  ]);
+  return { ...dashboard, reviewStats, weakSpots };
 }
 
 function formatTime(seconds) {
@@ -91,7 +99,7 @@ function getStatValue(key, stats) {
 }
 
 export default function DashboardPage() {
-  const { stats, lessons } = useLoaderData();
+  const { stats, lessons, reviewStats, weakSpots } = useLoaderData();
   const gamification = useGamification();
   useDocumentTitle('Tổng quan học tập');
   const grouped = groupBy(lessons, (l) => l.group_id);
@@ -140,6 +148,44 @@ export default function DashboardPage() {
           ))}
         </Grid>
 
+        {/* Review Card — shown only when there are exercises due */}
+        {reviewStats?.due_today > 0 && (
+          <Card
+            variant="outlined"
+            sx={{ mb: 3, borderColor: 'primary.main', borderWidth: 2 }}
+          >
+            <CardContent
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: 2,
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <AutorenewIcon sx={{ color: 'primary.main', fontSize: 32 }} />
+                <Box>
+                  <Typography variant="h6" fontWeight={700}>
+                    Ôn tập hôm nay
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {reviewStats.due_today} bài đến hạn ôn tập
+                  </Typography>
+                </Box>
+              </Box>
+              <Button
+                variant="contained"
+                component={RouterLink}
+                to="/review"
+                startIcon={<AutorenewIcon />}
+              >
+                Bắt đầu ôn tập
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Gamification Overview */}
         <GamificationOverview stats={gamification?.stats} />
 
@@ -158,6 +204,9 @@ export default function DashboardPage() {
             </Button>
           </Paper>
         )}
+
+        {/* Weak Spots — exercises the learner struggles with most */}
+        <WeakSpotPanel weakSpots={weakSpots} />
 
         {/* Per-group lesson progress */}
         <Stack spacing={3}>

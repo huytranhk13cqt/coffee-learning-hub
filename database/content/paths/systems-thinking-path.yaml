@@ -1,0 +1,18 @@
+type: learning_path
+slug: systems-thinking-path
+name: Systems Thinking & Critical Mind
+name_vi: Tư duy hệ thống & Tư duy phản biện
+description: Develop deep analytical thinking through philosophy, psychology, and systems thinking.
+description_vi: Rèn tư duy phân tích sâu qua triết học, tâm lý học nhận thức và tư duy hệ thống.
+icon: AccountTreeOutlined
+color: '#f59e0b'
+estimated_days: 7
+is_featured: false
+order_index: 4
+steps:
+  - lesson: philosophy-logic-critical-thinking
+  - lesson: psych-cognitive-biases
+  - lesson: psych-memory
+  - lesson: psych-motivation
+  - lesson: psych-emotional-intelligence
+  - lesson: principles-of-strategy

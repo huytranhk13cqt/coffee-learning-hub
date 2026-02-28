@@ -1,0 +1,18 @@
+type: learning_path
+slug: economics-in-7-days
+name: Economics in 7 Days
+name_vi: Kinh tế học trong 7 ngày
+description: A curated path through economics, game theory, negotiation, and personal finance.
+description_vi: Hành trình từ kinh tế học cơ bản đến lý thuyết trò chơi, đàm phán và tài chính cá nhân.
+icon: TrendingUpOutlined
+color: '#10b981'
+estimated_days: 7
+is_featured: true
+order_index: 2
+steps:
+  - lesson: marketing-fundamentals
+  - lesson: intro-to-game-theory
+  - lesson: nash-equilibrium-strategy
+  - lesson: principles-of-negotiation
+  - lesson: digital-marketing-strategy
+  - lesson: inventory-warehouse-management

@@ -1,0 +1,20 @@
+type: learning_path
+slug: python-zero-to-hero
+name: Python from Zero to Hero
+name_vi: Python từ Zero đến Hero
+description: A structured path from digital literacy basics through Python programming to cybersecurity fundamentals.
+description_vi: Lộ trình từ nền tảng công nghệ, Python lập trình đến bảo mật cơ bản — đầy đủ cho người mới bắt đầu.
+icon: CodeOutlined
+color: '#3b82f6'
+estimated_days: 10
+is_featured: true
+order_index: 1
+steps:
+  - lesson: digital-literacy-basics
+  - lesson: ai-ml-overview
+  - lesson: python-variables
+  - lesson: python-control-flow
+  - lesson: python-functions
+  - lesson: python-lists-loops
+  - lesson: cyber-network-security
+  - lesson: cyber-cryptography

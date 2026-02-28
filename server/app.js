@@ -16,6 +16,8 @@ import {
 import { progressRoutes } from './routes/progressRoutes.js';
 import { gamificationRoutes } from './routes/gamificationRoutes.js';
 import { bookmarkRoutes } from './routes/bookmarkRoutes.js';
+import { reviewRoutes } from './routes/reviewRoutes.js';
+import { learningPathRoutes } from './routes/learningPathRoutes.js';
 import { AppError } from './errors/AppError.js';
 
 // __dirname equivalent for ES modules (app.js lives in server/, media/ is at project root)
@@ -32,6 +34,8 @@ export async function createApp({
   progressController,
   gamificationController,
   bookmarkController,
+  reviewController,
+  learningPathController,
   sql,
   logger = true,
 }) {
@@ -121,6 +125,14 @@ export async function createApp({
   app.register(bookmarkRoutes(bookmarkController), {
     prefix: '/api/bookmarks',
   });
+  if (reviewController) {
+    app.register(reviewRoutes(reviewController), { prefix: '/api/review' });
+  }
+  if (learningPathController) {
+    app.register(learningPathRoutes(learningPathController), {
+      prefix: '/api/paths',
+    });
+  }
 
   // --- 404 handler ---
   app.setNotFoundHandler((request, reply) => {

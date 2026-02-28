@@ -1,5 +1,6 @@
 import { useReducer, useCallback } from 'react';
 import { submitAnswer } from '../api/exercises.js';
+// Default submit function; can be overridden via submitFn option (e.g., submitReview for review mode)
 
 // --- States ---
 // idle:       initial, no data loaded
@@ -99,7 +100,7 @@ function reducer(state, action) {
   }
 }
 
-export function useExerciseFlow({ onGamificationUpdate } = {}) {
+export function useExerciseFlow({ onGamificationUpdate, submitFn } = {}) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const loadExercises = useCallback((exercises) => {
@@ -123,7 +124,8 @@ export function useExerciseFlow({ onGamificationUpdate } = {}) {
     const timeTaken = Math.round((Date.now() - state.startTime) / 1000);
 
     try {
-      const result = await submitAnswer(exercise.id, {
+      const handler = submitFn ?? submitAnswer;
+      const result = await handler(exercise.id, {
         answer: state.currentAnswer,
         timeTaken,
       });
@@ -144,6 +146,7 @@ export function useExerciseFlow({ onGamificationUpdate } = {}) {
     state.currentAnswer,
     state.startTime,
     onGamificationUpdate,
+    submitFn,
   ]);
 
   const next = useCallback(() => {
