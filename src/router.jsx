@@ -54,6 +54,42 @@ const router = createBrowserRouter([
         ErrorBoundary: ErrorPage,
       },
       {
+        path: 'review',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/ReviewPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'settings',
+        lazy: async () => {
+          const { default: Component } =
+            await import('./pages/SettingsPage.jsx');
+          return { Component };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'paths',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/LearningPathsPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'paths/:slug',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/PathDetailPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
         path: 'lessons/:slug',
         lazy: async () => {
           const { default: Component, loader } =

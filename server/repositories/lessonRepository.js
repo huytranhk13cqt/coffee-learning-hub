@@ -5,9 +5,17 @@ export class LessonRepository {
     this.sql = sql;
   }
 
-  // F1: Search lessons by keyword (ILIKE substring + pg_trgm fuzzy matching)
+  // F1: Search lessons by keyword
+  //
+  // Three-tier matching strategy (best → fallback):
+  //   1. Full-text (tsvector @@): lesson metadata — fast via GIN index
+  //   2. ILIKE substring: catches partial words FTS misses (e.g. "pyth" → "Python")
+  //   3. Section + exercise content EXISTS: searches actual lesson body text
+  //   4. pg_trgm fuzzy: catches typos and phonetic variants
+  //
+  // Ranking: ts_rank (primary) + word_similarity (secondary) combined so
+  // exact matches always outrank fuzzy matches.
   async search(keyword) {
-    // Escape ILIKE metacharacters (% and _) so they match literally
     const escaped = keyword.replace(/[%_\\]/g, '\\$&');
     const pattern = `%${escaped}%`;
     const lowerKeyword = keyword.toLowerCase();
@@ -16,25 +24,43 @@ export class LessonRepository {
         l.id, l.name, l.name_vi, l.slug,
         l.short_desc, l.short_desc_vi,
         l.difficulty,
-        g.name_vi   AS group_name_vi,
-        g.color      AS group_color
+        g.name_vi  AS group_name_vi,
+        g.color    AS group_color,
+        COALESCE(ts_rank(l.search_vector, plainto_tsquery('simple', ${keyword})), 0)
+          + GREATEST(
+              word_similarity(${lowerKeyword}, lower(l.name)),
+              word_similarity(${lowerKeyword}, lower(l.name_vi))
+            ) AS rank
       FROM lesson l
       JOIN category g ON l.group_id = g.id
       WHERE l.is_published = TRUE
         AND (
-          l.name ILIKE ${pattern}
-          OR l.name_vi ILIKE ${pattern}
+          -- FTS match on lesson metadata (uses GIN index)
+          l.search_vector @@ plainto_tsquery('simple', ${keyword})
+          -- Substring match (catches partial words like "Pyth" → "Python")
+          OR l.name       ILIKE ${pattern}
+          OR l.name_vi    ILIKE ${pattern}
           OR l.short_desc ILIKE ${pattern}
           OR l.short_desc_vi ILIKE ${pattern}
-          OR word_similarity(${lowerKeyword}, lower(l.name)) > 0.3
+          -- Fuzzy match (handles typos, e.g. "marketng" → "marketing")
+          OR word_similarity(${lowerKeyword}, lower(l.name))    > 0.3
           OR word_similarity(${lowerKeyword}, lower(l.name_vi)) > 0.3
+          -- Section content match (searches actual lesson body text)
+          OR EXISTS (
+            SELECT 1 FROM lesson_section ls
+            WHERE ls.lesson_id = l.id
+              AND (ls.content ILIKE ${pattern} OR ls.content_vi ILIKE ${pattern})
+            LIMIT 1
+          )
+          -- Exercise question match (searches practice questions)
+          OR EXISTS (
+            SELECT 1 FROM exercise e
+            WHERE e.lesson_id = l.id AND e.is_active = TRUE
+              AND (e.question ILIKE ${pattern} OR e.question_vi ILIKE ${pattern})
+            LIMIT 1
+          )
         )
-      ORDER BY
-        GREATEST(
-          word_similarity(${lowerKeyword}, lower(l.name)),
-          word_similarity(${lowerKeyword}, lower(l.name_vi))
-        ) DESC,
-        g.order_index, l.order_index
+      ORDER BY rank DESC, g.order_index, l.order_index
       LIMIT 50
     `;
   }

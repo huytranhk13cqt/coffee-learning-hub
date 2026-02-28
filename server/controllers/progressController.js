@@ -55,6 +55,39 @@ export class ProgressController {
     return { data: { success: true } };
   };
 
+  // GET /api/progress/session/weak-spots
+  getWeakSpots = async (request) => {
+    const sessionId = extractSessionId(request);
+    const weakSpots = await this.progressRepo.findWeakSpots(sessionId);
+    return { data: weakSpots };
+  };
+
+  // GET /api/progress/session/export
+  exportSession = async (request) => {
+    const sessionId = extractSessionId(request);
+    const data = await this.progressRepo.exportSession(sessionId);
+    return { data };
+  };
+
+  // POST /api/progress/session/import
+  importSession = async (request) => {
+    const sessionId = extractSessionId(request);
+    const importData = request.body;
+
+    if (
+      !importData ||
+      typeof importData !== 'object' ||
+      importData.version !== 1
+    ) {
+      throw new ValidationError(
+        'Invalid export file — expected { version: 1, ... }',
+      );
+    }
+
+    await this.progressRepo.importSession(sessionId, importData);
+    return { data: { success: true } };
+  };
+
   // POST /api/progress/:lessonId/reset
   resetProgress = async (request) => {
     const sessionId = extractSessionId(request);

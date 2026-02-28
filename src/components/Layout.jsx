@@ -20,6 +20,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import SettingsIcon from '@mui/icons-material/Settings';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import theme from '../theme/theme.js';
@@ -197,6 +198,17 @@ function LayoutContent() {
                 sx={{ ml: 0.5 }}
               >
                 <BarChartIcon aria-hidden="true" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Cài đặt">
+              <IconButton
+                color="inherit"
+                component={RouterLink}
+                to="/settings"
+                aria-label="Cài đặt"
+                sx={{ ml: 0.5 }}
+              >
+                <SettingsIcon aria-hidden="true" />
               </IconButton>
             </Tooltip>
           </Toolbar>

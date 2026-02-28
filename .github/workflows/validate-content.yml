@@ -1,0 +1,89 @@
+name: Validate Content
+
+# Triggered only when YAML content files or the import script itself changes.
+# --dry-run mode validates schema without a database connection, so no
+# postgres service container is needed → fast (typically < 30s).
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'database/content/**/*.yaml'
+      - 'scripts/import-lesson.js'
+      - 'scripts/lesson-schema.js'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'database/content/**/*.yaml'
+      - 'scripts/import-lesson.js'
+      - 'scripts/lesson-schema.js'
+
+jobs:
+  validate:
+    name: Validate YAML Content
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            server/package-lock.json
+
+      # Root deps (js-yaml), server deps (postgres — loaded at module init)
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd server && npm ci
+
+      - name: Validate all YAML content files
+        id: validate
+        run: |
+          PASS=0
+          FAIL=0
+          FAILED_FILES=""
+
+          # -print0 + read -d '' handles filenames with spaces safely
+          while IFS= read -r -d '' file; do
+            echo "→ Validating $file"
+            if node scripts/import-lesson.js "$file" --dry-run; then
+              PASS=$((PASS + 1))
+            else
+              FAIL=$((FAIL + 1))
+              FAILED_FILES="${FAILED_FILES}\n❌ ${file}"
+            fi
+          done < <(find database/content -name "*.yaml" -print0 | sort -z)
+
+          echo ""
+          echo "────────────────────────────"
+          echo "Results: ✅ $PASS passed  ❌ $FAIL failed"
+
+          # Write GitHub Step Summary (markdown)
+          {
+            echo "## Content Validation Results"
+            echo ""
+            echo "| Status | Count |"
+            echo "|--------|-------|"
+            echo "| ✅ Passed | $PASS |"
+            echo "| ❌ Failed | $FAIL |"
+            if [ -n "$FAILED_FILES" ]; then
+              echo ""
+              echo "### Failed files"
+              echo -e "$FAILED_FILES"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # Fail the job if any file failed validation
+          if [ "$FAIL" -gt 0 ]; then
+            echo "::error::${FAIL} YAML file(s) failed validation. See details above."
+            exit 1
+          fi
+
+          # Warn (but don't fail) if no YAML files were found
+          if [ "$PASS" -eq 0 ]; then
+            echo "::warning::No YAML files found in database/content/"
+          fi

@@ -32,3 +32,20 @@ export async function fetchDashboard({ signal } = {}) {
   const { data } = await api.get('/progress/session/dashboard', { signal });
   return data;
 }
+
+export async function fetchWeakSpots({ signal } = {}) {
+  const { data } = await api.get('/progress/session/weak-spots', { signal });
+  return data;
+}
+
+export async function exportSession({ signal } = {}) {
+  const { data } = await api.get('/progress/session/export', { signal });
+  return data;
+}
+
+export async function importSession(importData, { signal } = {}) {
+  const { data } = await api.post('/progress/session/import', importData, {
+    signal,
+  });
+  return data;
+}

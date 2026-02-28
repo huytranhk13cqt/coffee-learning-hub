@@ -18,6 +18,15 @@ export function progressRoutes(controller) {
   return async function (fastify) {
     fastify.get('/session/dashboard', controller.getDashboard);
     fastify.get('/session/overview', controller.getSessionOverview);
+    fastify.get('/session/weak-spots', controller.getWeakSpots);
+    fastify.get('/session/export', controller.exportSession);
+    fastify.post(
+      '/session/import',
+      {
+        config: { rateLimit: { max: 5, timeWindow: '1 minute' } },
+      },
+      controller.importSession,
+    );
     fastify.get(
       '/:lessonId',
       { schema: { params: lessonIdParams } },
