@@ -1,8 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Run formatting check + unit tests before every push.
-# Integration tests require a live DB and run in CI only.
 npx prettier --check .
 npx vitest run
 cd server && npx vitest run
