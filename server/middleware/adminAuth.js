@@ -6,7 +6,7 @@ import { UnauthorizedError } from '../errors/AppError.js';
  *
  * @param {import('fastify').FastifyInstance} fastify — needed for fastify.jwt.verify
  */
-export function createAdminAuth(fastify) {
+export function createAdminAuth(_fastify) {
   return async function adminAuth(request) {
     const token = request.cookies?.admin_token;
     if (!token) throw new UnauthorizedError();
