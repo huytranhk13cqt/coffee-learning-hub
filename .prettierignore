@@ -5,3 +5,4 @@ server/node_modules
 database/
 package-lock.json
 server/package-lock.json
+docs/documentations/

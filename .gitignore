@@ -41,6 +41,9 @@ playwright-report/
 .claude/plans/
 .claude/settings.local.json
 
+# Reference documentation (local-only, not version-controlled)
+docs/documentations/
+
 # Local media files (audio/video/images — binary, not version-controlled)
 # Directory structure is preserved via .gitkeep files
 # Note: must un-ignore directories before un-ignoring files inside them
