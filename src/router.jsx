@@ -118,6 +118,37 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  // Admin routes — separate route tree, own layout, own theme
+  {
+    path: '/admin/login',
+    lazy: async () => {
+      const { default: Component, loader } =
+        await import('./pages/admin/AdminLoginPage.jsx');
+      return { Component, loader };
+    },
+    ErrorBoundary: ErrorPage,
+  },
+  {
+    path: '/admin',
+    lazy: async () => {
+      const { default: Component, loader } =
+        await import('./components/admin/AdminLayout.jsx');
+      return { Component, loader };
+    },
+    ErrorBoundary: ErrorPage,
+    children: [
+      {
+        index: true,
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminDashboardPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+    ],
+  },
 ]);
 
 export default router;

@@ -23,6 +23,9 @@ import { ReviewRepository } from './repositories/reviewRepository.js';
 import { ReviewController } from './controllers/reviewController.js';
 import { LearningPathRepository } from './repositories/learningPathRepository.js';
 import { LearningPathController } from './controllers/learningPathController.js';
+import { AdminRepository } from './repositories/adminRepository.js';
+import { AdminController } from './controllers/adminController.js';
+import { AdminAuthController } from './controllers/adminAuthController.js';
 import { createApp } from './app.js';
 
 // --- Startup env validation (fail-fast) ---
@@ -81,6 +84,13 @@ const gamificationController = new GamificationController(gamificationRepo);
 const bookmarkRepo = bookmarkRepository(sql);
 const bookmarkControllerInstance = BookmarkController(bookmarkRepo);
 
+const adminRepo = new AdminRepository(sql);
+const adminController = new AdminController(adminRepo);
+const adminAuthController = new AdminAuthController(
+  process.env.ADMIN_PASSWORD,
+  adminRepo,
+);
+
 const app = await createApp({
   categoryController,
   lessonController,
@@ -90,6 +100,8 @@ const app = await createApp({
   bookmarkController: bookmarkControllerInstance,
   reviewController,
   learningPathController,
+  adminController,
+  adminAuthController,
   sql,
 });
 

@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import Fastify from 'fastify';
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
+import cookie from '@fastify/cookie';
+import jwt from '@fastify/jwt';
 import compress from '@fastify/compress';
 import rateLimit from '@fastify/rate-limit';
 import fastifyStatic from '@fastify/static';
@@ -18,6 +20,9 @@ import { gamificationRoutes } from './routes/gamificationRoutes.js';
 import { bookmarkRoutes } from './routes/bookmarkRoutes.js';
 import { reviewRoutes } from './routes/reviewRoutes.js';
 import { learningPathRoutes } from './routes/learningPathRoutes.js';
+import { createAdminAuth } from './middleware/adminAuth.js';
+import { adminAuthRoutes } from './routes/adminAuthRoutes.js';
+import { adminRoutes } from './routes/adminRoutes.js';
 import { AppError } from './errors/AppError.js';
 
 // __dirname equivalent for ES modules (app.js lives in server/, media/ is at project root)
@@ -36,6 +41,8 @@ export async function createApp({
   bookmarkController,
   reviewController,
   learningPathController,
+  adminController,
+  adminAuthController,
   sql,
   logger = true,
 }) {
@@ -64,6 +71,7 @@ export async function createApp({
   });
   await app.register(cors, {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    credentials: true,
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'X-Session-Id', 'X-Request-Id'],
     exposedHeaders: ['X-Request-Id'],
@@ -88,6 +96,18 @@ export async function createApp({
     max: 100,
     timeWindow: '1 minute',
   });
+
+  // --- Cookie + JWT for admin auth ---
+  await app.register(cookie);
+  await app.register(jwt, {
+    secret: process.env.JWT_SECRET || 'dev-secret-change-in-production',
+    cookie: {
+      cookieName: 'admin_token',
+      signed: false,
+    },
+  });
+
+  const adminAuth = createAdminAuth(app);
 
   // --- Health check (includes DB ping) ---
   app.get('/api/health', async (_request, reply) => {
@@ -131,6 +151,18 @@ export async function createApp({
   if (learningPathController) {
     app.register(learningPathRoutes(learningPathController), {
       prefix: '/api/paths',
+    });
+  }
+
+  // --- Admin routes ---
+  if (adminAuthController) {
+    app.register(adminAuthRoutes(adminAuthController), {
+      prefix: '/api/admin',
+    });
+  }
+  if (adminController) {
+    app.register(adminRoutes(adminController, adminAuth), {
+      prefix: '/api/admin',
     });
   }
 
