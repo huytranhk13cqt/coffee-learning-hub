@@ -11,7 +11,7 @@ test.beforeEach(async ({ context }) => {
 });
 
 test.describe('Smoke Tests', () => {
-  test('homepage loads and shows categories', async ({ page }) => {
+  test('homepage loads and shows topics', async ({ page }) => {
     await page.goto('/');
 
     // Main heading
@@ -19,22 +19,13 @@ test.describe('Smoke Tests', () => {
       page.getByRole('heading', { name: 'Learning Hub', exact: true }),
     ).toBeVisible();
 
-    // Should show category headings (h5)
-    await expect(
-      page.getByRole('heading', { name: 'Present', exact: true }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: 'Past', exact: true }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: 'Future', exact: true }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: 'Learning Methods', exact: true }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: 'Python Basics', exact: true }),
-    ).toBeVisible();
+    // Subtitle with topic/lesson counts (topic-first layout since Phase 18)
+    await expect(page.getByText(/chủ đề/)).toBeVisible();
+
+    // Should have at least one clickable topic card
+    await expect(page.locator('.MuiCardActionArea-root').first()).toBeVisible({
+      timeout: 5_000,
+    });
   });
 
   test('lesson page loads theory content', async ({ page }) => {
@@ -110,10 +101,10 @@ test.describe('Smoke Tests', () => {
   test('dashboard loads with stats', async ({ page }) => {
     await page.goto('/dashboard');
 
-    // Dashboard should have heading content
-    await expect(page.locator('h4, h5').first()).toBeVisible({
-      timeout: 5_000,
-    });
+    // Dashboard main heading (Typography variant="h4" component="h1")
+    await expect(
+      page.getByRole('heading', { name: 'Tổng quan học tập' }),
+    ).toBeVisible({ timeout: 10_000 });
 
     // Should show lesson count (0/N pattern — N varies with seed data)
     await expect(page.getByText(/\d+\/\d+/).first()).toBeVisible({

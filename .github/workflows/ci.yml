@@ -152,6 +152,7 @@ jobs:
       - name: Seed database
         run: |
           PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/schema.sql
+          PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/migrations/023_admin_action_log.sql
           PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/seed_data.sql
           for f in \
             database/seed_python.sql \
@@ -164,6 +165,7 @@ jobs:
             database/seed_philosophy.sql; do
             PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f "$f"
           done
+          PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/seed_topics.sql
 
       - name: Run E2E tests
         run: npx playwright test
