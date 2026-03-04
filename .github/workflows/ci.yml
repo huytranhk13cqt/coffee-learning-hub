@@ -153,6 +153,7 @@ jobs:
         run: |
           PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/schema.sql
           PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/migrations/023_admin_action_log.sql
+          PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/migrations/024_widen_order_index_for_reorder.sql
           PGPASSWORD=relaxpass psql -h localhost -U relax_user -d knowledge_learning -v ON_ERROR_STOP=1 -f database/seed_data.sql
           for f in \
             database/seed_python.sql \

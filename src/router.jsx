@@ -147,6 +147,60 @@ const router = createBrowserRouter([
         },
         ErrorBoundary: ErrorPage,
       },
+      {
+        path: 'topics',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminTopicsPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'categories',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminCategoriesPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'lessons',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminLessonsPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'lessons/new',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminLessonFormPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'lessons/:id/edit',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminLessonFormPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'lessons/:id/sections',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminSectionsPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
     ],
   },
 ]);

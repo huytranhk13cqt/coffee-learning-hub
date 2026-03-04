@@ -26,6 +26,8 @@ import { LearningPathController } from './controllers/learningPathController.js'
 import { AdminRepository } from './repositories/adminRepository.js';
 import { AdminController } from './controllers/adminController.js';
 import { AdminAuthController } from './controllers/adminAuthController.js';
+import { AdminCrudRepository } from './repositories/adminCrudRepository.js';
+import { AdminCrudController } from './controllers/adminCrudController.js';
 import { createApp } from './app.js';
 
 // --- Startup env validation (fail-fast) ---
@@ -90,6 +92,8 @@ const adminAuthController = new AdminAuthController(
   process.env.ADMIN_PASSWORD,
   adminRepo,
 );
+const adminCrudRepo = new AdminCrudRepository(sql);
+const adminCrudController = new AdminCrudController(adminCrudRepo, adminRepo);
 
 const app = await createApp({
   categoryController,
@@ -102,6 +106,7 @@ const app = await createApp({
   learningPathController,
   adminController,
   adminAuthController,
+  adminCrudController,
   sql,
 });
 

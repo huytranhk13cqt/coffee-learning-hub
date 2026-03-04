@@ -23,6 +23,7 @@ import { learningPathRoutes } from './routes/learningPathRoutes.js';
 import { createAdminAuth } from './middleware/adminAuth.js';
 import { adminAuthRoutes } from './routes/adminAuthRoutes.js';
 import { adminRoutes } from './routes/adminRoutes.js';
+import { adminCrudRoutes } from './routes/adminCrudRoutes.js';
 import { AppError } from './errors/AppError.js';
 
 // __dirname equivalent for ES modules (app.js lives in server/, media/ is at project root)
@@ -43,6 +44,7 @@ export async function createApp({
   learningPathController,
   adminController,
   adminAuthController,
+  adminCrudController,
   sql,
   logger = true,
 }) {
@@ -72,7 +74,7 @@ export async function createApp({
   await app.register(cors, {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
     credentials: true,
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'X-Session-Id', 'X-Request-Id'],
     exposedHeaders: ['X-Request-Id'],
     maxAge: 86400,
@@ -162,6 +164,11 @@ export async function createApp({
   }
   if (adminController) {
     app.register(adminRoutes(adminController, adminAuth), {
+      prefix: '/api/admin',
+    });
+  }
+  if (adminCrudController) {
+    app.register(adminCrudRoutes(adminCrudController, adminAuth), {
       prefix: '/api/admin',
     });
   }
