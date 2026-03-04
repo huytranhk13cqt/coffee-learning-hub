@@ -86,16 +86,16 @@ test.describe('Smoke Tests', () => {
   test('search finds a lesson', async ({ page }) => {
     await page.goto('/');
 
-    // Type in search bar
+    // Type in search bar (Vietnamese term for deterministic first result)
     const searchInput = page.getByRole('combobox');
-    await searchInput.fill('python');
+    await searchInput.fill('Thì Hiện Tại Đơn');
 
     // Wait for autocomplete results
     const option = page.getByRole('option').first();
     await expect(option).toBeVisible({ timeout: 5_000 });
 
-    // Should contain a Python lesson
-    await expect(option).toContainText(/python/i);
+    // First result should match (UI displays Vietnamese names)
+    await expect(option).toContainText(/Hiện Tại Đơn/);
   });
 
   test('dashboard loads with stats', async ({ page }) => {
