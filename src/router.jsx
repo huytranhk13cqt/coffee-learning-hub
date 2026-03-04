@@ -201,6 +201,33 @@ const router = createBrowserRouter([
         },
         ErrorBoundary: ErrorPage,
       },
+      {
+        path: 'exercises',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminExercisesPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'exercises/new',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminExerciseFormPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'exercises/:id/edit',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminExerciseFormPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
     ],
   },
 ]);

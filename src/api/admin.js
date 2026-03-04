@@ -197,3 +197,49 @@ export function reorderAdminSections(lessonId, orderedIds) {
     body: JSON.stringify({ orderedIds }),
   });
 }
+
+// ─── EXERCISES CRUD ─────────────────────────────────────────
+
+export function fetchAdminExercises({
+  lessonId,
+  type,
+  difficulty,
+  search,
+} = {}) {
+  const params = new URLSearchParams();
+  if (lessonId) params.set('lessonId', lessonId);
+  if (type) params.set('type', type);
+  if (difficulty) params.set('difficulty', difficulty);
+  if (search) params.set('search', search);
+  const qs = params.toString();
+  return adminRequest(`/exercises${qs ? `?${qs}` : ''}`);
+}
+
+export function fetchAdminExercise(id) {
+  return adminRequest(`/exercises/${id}`);
+}
+
+export function createAdminExercise(data) {
+  return adminRequest('/exercises', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export function updateAdminExercise(id, data) {
+  return adminRequest(`/exercises/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export function deleteAdminExercise(id) {
+  return adminRequest(`/exercises/${id}`, { method: 'DELETE' });
+}
+
+export function reorderAdminExercises(lessonId, orderedIds) {
+  return adminRequest(`/lessons/${lessonId}/exercises/reorder`, {
+    method: 'POST',
+    body: JSON.stringify({ orderedIds }),
+  });
+}

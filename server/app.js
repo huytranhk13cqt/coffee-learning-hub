@@ -24,6 +24,7 @@ import { createAdminAuth } from './middleware/adminAuth.js';
 import { adminAuthRoutes } from './routes/adminAuthRoutes.js';
 import { adminRoutes } from './routes/adminRoutes.js';
 import { adminCrudRoutes } from './routes/adminCrudRoutes.js';
+import { adminExerciseRoutes } from './routes/adminExerciseRoutes.js';
 import { AppError } from './errors/AppError.js';
 
 // __dirname equivalent for ES modules (app.js lives in server/, media/ is at project root)
@@ -45,6 +46,7 @@ export async function createApp({
   adminController,
   adminAuthController,
   adminCrudController,
+  adminExerciseController,
   sql,
   logger = true,
 }) {
@@ -169,6 +171,11 @@ export async function createApp({
   }
   if (adminCrudController) {
     app.register(adminCrudRoutes(adminCrudController, adminAuth), {
+      prefix: '/api/admin',
+    });
+  }
+  if (adminExerciseController) {
+    app.register(adminExerciseRoutes(adminExerciseController, adminAuth), {
       prefix: '/api/admin',
     });
   }
