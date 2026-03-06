@@ -3,7 +3,7 @@ import { writeFile, unlink, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ValidationError } from '../errors/AppError.js';
-import { GEMINI_MODELS } from '../services/geminiService.js';
+import { IMAGE_MODELS } from '../services/imageProviderRegistry.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SPRITES_DIR = path.join(__dirname, '..', 'uploads', 'sprites');
@@ -19,38 +19,40 @@ const MIME_EXT = {
 };
 
 export class AssetController {
-  constructor(assetRepo, geminiService, adminRepo) {
+  constructor(assetRepo, providerRegistry, adminRepo) {
     this.assetRepo = assetRepo;
-    this.geminiService = geminiService;
+    this.registry = providerRegistry;
     this.adminRepo = adminRepo;
   }
 
   /**
    * POST /api/admin/assets/generate
-   * Generate image via Gemini AI and save as asset.
+   * Generate image via any provider and save as asset.
    */
   generate = async (request) => {
-    if (!this.geminiService.isConfigured()) {
-      throw new ValidationError(
-        'Gemini API key not configured. Set it in Settings.',
-      );
-    }
-
     const { model, prompt, name, config } = request.body;
 
-    if (!GEMINI_MODELS[model]) {
+    const modelInfo = IMAGE_MODELS[model];
+    if (!modelInfo) {
       throw new ValidationError(
-        `Invalid model. Must be one of: ${Object.keys(GEMINI_MODELS).join(', ')}`,
+        `Unknown model: ${model}. Valid: ${Object.keys(IMAGE_MODELS).join(', ')}`,
       );
     }
+
+    const provider = this.registry.getProvider(modelInfo.provider);
+    if (!provider) {
+      throw new ValidationError(`Provider ${modelInfo.provider} not available`);
+    }
+    if (!provider.isConfigured()) {
+      throw new ValidationError(
+        `${modelInfo.provider} API key not configured. Set it in Settings.`,
+      );
+    }
+
     if (!prompt?.trim()) throw new ValidationError('prompt is required');
     if (!name?.trim()) throw new ValidationError('name is required');
 
-    const result = await this.geminiService.generate(
-      model,
-      prompt.trim(),
-      config || {},
-    );
+    const result = await provider.generate(model, prompt.trim(), config || {});
 
     if (!result.images.length) {
       throw new ValidationError('No images generated. Try a different prompt.');
@@ -224,48 +226,81 @@ export class AssetController {
     return { success: true };
   };
 
+  // ─── Provider API key management (parameterized) ──────────
+
   /**
-   * POST /api/admin/assets/gemini/api-key
+   * GET /api/admin/assets/providers
+   * Returns status of all registered providers.
    */
-  setApiKey = async (request) => {
+  getProviders = async () => {
+    return { providers: this.registry.getAllStatus() };
+  };
+
+  /**
+   * POST /api/admin/assets/providers/:provider/api-key
+   */
+  setProviderApiKey = async (request) => {
+    const { provider: providerName } = request.params;
     const { apiKey } = request.body || {};
     if (!apiKey?.trim()) throw new ValidationError('apiKey is required');
 
-    this.geminiService.setApiKey(apiKey.trim());
+    const provider = this.registry.getProvider(providerName);
+    if (!provider) {
+      throw new ValidationError(`Unknown provider: ${providerName}`);
+    }
+
+    provider.setApiKey(apiKey.trim());
 
     this.adminRepo.logAction({
       action: 'update',
       entityType: 'admin',
-      metadata: { action: 'gemini_api_key_set' },
+      metadata: { action: `${providerName}_api_key_set` },
       ipAddress: request.ip,
     });
 
-    return { success: true, message: 'Gemini API key configured' };
-  };
-
-  /**
-   * DELETE /api/admin/assets/gemini/api-key
-   */
-  removeApiKey = async (request) => {
-    this.geminiService.removeApiKey();
-
-    this.adminRepo.logAction({
-      action: 'update',
-      entityType: 'admin',
-      metadata: { action: 'gemini_api_key_removed' },
-      ipAddress: request.ip,
-    });
-
-    return { success: true, message: 'Gemini API key removed' };
-  };
-
-  /**
-   * GET /api/admin/assets/gemini/api-key
-   */
-  getApiKeyStatus = async () => {
     return {
-      configured: this.geminiService.isConfigured(),
-      maskedKey: this.geminiService.getMaskedKey(),
+      configured: true,
+      maskedKey: provider.getMaskedKey(),
+    };
+  };
+
+  /**
+   * DELETE /api/admin/assets/providers/:provider/api-key
+   */
+  removeProviderApiKey = async (request) => {
+    const { provider: providerName } = request.params;
+
+    const provider = this.registry.getProvider(providerName);
+    if (!provider) {
+      throw new ValidationError(`Unknown provider: ${providerName}`);
+    }
+
+    provider.removeApiKey();
+
+    this.adminRepo.logAction({
+      action: 'update',
+      entityType: 'admin',
+      metadata: { action: `${providerName}_api_key_removed` },
+      ipAddress: request.ip,
+    });
+
+    return { configured: false, maskedKey: null };
+  };
+
+  /**
+   * GET /api/admin/assets/providers/:provider/api-key
+   */
+  getProviderApiKeyStatus = async (request) => {
+    const { provider: providerName } = request.params;
+
+    const provider = this.registry.getProvider(providerName);
+    if (!provider) {
+      throw new ValidationError(`Unknown provider: ${providerName}`);
+    }
+
+    return {
+      configured: provider.isConfigured(),
+      maskedKey: provider.getMaskedKey(),
     };
   };
 }

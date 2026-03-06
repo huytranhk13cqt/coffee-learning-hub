@@ -35,6 +35,9 @@ import { AdminLearningPathController } from './controllers/adminLearningPathCont
 import { ClaudeService } from './services/claudeService.js';
 import { ClaudeController } from './controllers/claudeController.js';
 import { GeminiService } from './services/geminiService.js';
+import { OpenAIImageService } from './services/openaiImageService.js';
+import { StabilityImageService } from './services/stabilityImageService.js';
+import { ImageProviderRegistry } from './services/imageProviderRegistry.js';
 import { AssetRepository } from './repositories/assetRepository.js';
 import { AssetController } from './controllers/assetController.js';
 import { YamlImportController } from './controllers/yamlImportController.js';
@@ -118,10 +121,16 @@ const adminLearningPathController = new AdminLearningPathController(
 );
 const claudeController = new ClaudeController(claudeService, adminRepo);
 const geminiService = new GeminiService();
+const openaiImageService = new OpenAIImageService();
+const stabilityImageService = new StabilityImageService();
+const providerRegistry = new ImageProviderRegistry();
+providerRegistry.register('gemini', geminiService);
+providerRegistry.register('openai', openaiImageService);
+providerRegistry.register('stability', stabilityImageService);
 const assetRepo = new AssetRepository(sql);
 const assetController = new AssetController(
   assetRepo,
-  geminiService,
+  providerRegistry,
   adminRepo,
 );
 const yamlImportController = new YamlImportController(sql, adminRepo);

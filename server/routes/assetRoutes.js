@@ -9,6 +9,17 @@ export function assetRoutes(controller, adminAuth) {
       properties: { id: { type: 'string', pattern: '^\\d+$' } },
     };
 
+    const providerParams = {
+      type: 'object',
+      required: ['provider'],
+      properties: {
+        provider: {
+          type: 'string',
+          enum: ['gemini', 'openai', 'stability'],
+        },
+      },
+    };
+
     // ─── Image generation ────────────────────────────────────
 
     fastify.post('/generate', {
@@ -29,6 +40,9 @@ export function assetRoutes(controller, adminAuth) {
                   minimum: 1,
                   maximum: 4,
                 },
+                size: { type: 'string' },
+                quality: { type: 'string' },
+                negativePrompt: { type: 'string' },
               },
               additionalProperties: false,
             },
@@ -69,10 +83,13 @@ export function assetRoutes(controller, adminAuth) {
       handler: controller.remove,
     });
 
-    // ─── Gemini API key management ───────────────────────────
+    // ─── Provider API key management ─────────────────────────
 
-    fastify.post('/gemini/api-key', {
+    fastify.get('/providers', controller.getProviders);
+
+    fastify.post('/providers/:provider/api-key', {
       schema: {
+        params: providerParams,
         body: {
           type: 'object',
           required: ['apiKey'],
@@ -81,11 +98,17 @@ export function assetRoutes(controller, adminAuth) {
           },
         },
       },
-      handler: controller.setApiKey,
+      handler: controller.setProviderApiKey,
     });
 
-    fastify.delete('/gemini/api-key', controller.removeApiKey);
+    fastify.delete('/providers/:provider/api-key', {
+      schema: { params: providerParams },
+      handler: controller.removeProviderApiKey,
+    });
 
-    fastify.get('/gemini/api-key', controller.getApiKeyStatus);
+    fastify.get('/providers/:provider/api-key', {
+      schema: { params: providerParams },
+      handler: controller.getProviderApiKeyStatus,
+    });
   };
 }

@@ -15,10 +15,16 @@ import {
   fetchApiKeyStatus,
   setAdminApiKey,
   removeAdminApiKey,
-  getGeminiApiKeyStatus,
-  setGeminiApiKey,
-  removeGeminiApiKey,
+  getAllProviderStatus,
+  setProviderApiKey,
+  removeProviderApiKey,
 } from '../../api/admin.js';
+
+const IMAGE_PROVIDERS = [
+  { id: 'gemini', label: 'Google Gemini', placeholder: 'AIza...' },
+  { id: 'openai', label: 'OpenAI', placeholder: 'sk-...' },
+  { id: 'stability', label: 'Stability AI', placeholder: 'sk-...' },
+];
 
 export default function AdminSettingsPage() {
   // Password form
@@ -32,18 +38,18 @@ export default function AdminSettingsPage() {
   const [newApiKey, setNewApiKey] = useState('');
   const [apiKeySaving, setApiKeySaving] = useState(false);
 
-  // Gemini API Key state
-  const [geminiKeyStatus, setGeminiKeyStatus] = useState(null);
-  const [newGeminiKey, setNewGeminiKey] = useState('');
-  const [geminiKeySaving, setGeminiKeySaving] = useState(false);
+  // Image provider keys state — keyed by provider id
+  const [providerStatus, setProviderStatus] = useState({});
+  const [providerKeys, setProviderKeys] = useState({});
+  const [providerSaving, setProviderSaving] = useState({});
 
   useEffect(() => {
     fetchApiKeyStatus()
       .then(setApiKeyStatus)
       .catch(() => setApiKeyStatus(null));
-    getGeminiApiKeyStatus()
-      .then(setGeminiKeyStatus)
-      .catch(() => setGeminiKeyStatus(null));
+    getAllProviderStatus()
+      .then((res) => setProviderStatus(res.providers || {}))
+      .catch(() => setProviderStatus({}));
   }, []);
 
   // ─── Password handlers ──────────────────────────────
@@ -87,7 +93,7 @@ export default function AdminSettingsPage() {
     }
   }
 
-  // ─── API Key handlers ───────────────────────────────
+  // ─── Claude API Key handlers ──────────────────────────
 
   async function handleSaveApiKey() {
     if (!newApiKey.trim()) return;
@@ -117,33 +123,40 @@ export default function AdminSettingsPage() {
     }
   }
 
-  // ─── Gemini API Key handlers ──────────────────────────
+  // ─── Image provider key handlers ──────────────────────
 
-  async function handleSaveGeminiKey() {
-    if (!newGeminiKey.trim()) return;
-    setGeminiKeySaving(true);
+  async function handleSaveProviderKey(providerId) {
+    const key = providerKeys[providerId]?.trim();
+    if (!key) return;
+    setProviderSaving((s) => ({ ...s, [providerId]: true }));
     try {
-      const res = await setGeminiApiKey(newGeminiKey.trim());
-      setGeminiKeyStatus(res);
-      setNewGeminiKey('');
-      setSnackbar({ severity: 'success', text: 'Gemini API key saved' });
+      const res = await setProviderApiKey(providerId, key);
+      setProviderStatus((s) => ({ ...s, [providerId]: res }));
+      setProviderKeys((k) => ({ ...k, [providerId]: '' }));
+      setSnackbar({ severity: 'success', text: `${providerId} API key saved` });
     } catch (err) {
       setSnackbar({ severity: 'error', text: err.message });
     } finally {
-      setGeminiKeySaving(false);
+      setProviderSaving((s) => ({ ...s, [providerId]: false }));
     }
   }
 
-  async function handleRemoveGeminiKey() {
-    setGeminiKeySaving(true);
+  async function handleRemoveProviderKey(providerId) {
+    setProviderSaving((s) => ({ ...s, [providerId]: true }));
     try {
-      await removeGeminiApiKey();
-      setGeminiKeyStatus({ configured: false, maskedKey: null });
-      setSnackbar({ severity: 'success', text: 'Gemini API key removed' });
+      await removeProviderApiKey(providerId);
+      setProviderStatus((s) => ({
+        ...s,
+        [providerId]: { configured: false, maskedKey: null },
+      }));
+      setSnackbar({
+        severity: 'success',
+        text: `${providerId} API key removed`,
+      });
     } catch (err) {
       setSnackbar({ severity: 'error', text: err.message });
     } finally {
-      setGeminiKeySaving(false);
+      setProviderSaving((s) => ({ ...s, [providerId]: false }));
     }
   }
 
@@ -210,71 +223,86 @@ export default function AdminSettingsPage() {
           color="text.secondary"
           sx={{ display: 'block', mt: 1.5 }}
         >
-          Key is stored in server memory only. Resets when server restarts. Set
-          ANTHROPIC_API_KEY env var for persistence.
+          Used by Content Generation. Key is stored in server memory only.
         </Typography>
       </Paper>
 
-      {/* Gemini API Key */}
+      {/* Image Generation Provider Keys */}
       <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
-          Gemini API Key
+          Image Generation API Keys
         </Typography>
 
-        <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            Status:
-          </Typography>
-          {geminiKeyStatus?.configured ? (
-            <Chip
-              label={`Configured (${geminiKeyStatus.maskedKey})`}
-              color="success"
-              size="small"
-            />
-          ) : (
-            <Chip label="Not configured" size="small" />
-          )}
-        </Stack>
-
-        <AdminFormField
-          label="API Key"
-          type="password"
-          value={newGeminiKey}
-          onChange={(e) => setNewGeminiKey(e.target.value)}
-          placeholder="AIza..."
-          autoComplete="off"
-        />
-
-        <Stack direction="row" spacing={1}>
-          <Button
-            variant="contained"
-            startIcon={<SaveIcon />}
-            onClick={handleSaveGeminiKey}
-            loading={geminiKeySaving}
-            disabled={!newGeminiKey.trim()}
-          >
-            Save Key
-          </Button>
-          {geminiKeyStatus?.configured && (
-            <Button
-              color="error"
-              startIcon={<DeleteIcon />}
-              onClick={handleRemoveGeminiKey}
-              loading={geminiKeySaving}
-            >
-              Remove Key
-            </Button>
-          )}
-        </Stack>
-
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: 'block', mt: 1.5 }}
-        >
-          Used by Asset Studio for AI image generation. Key is stored in server
-          memory only. Set GEMINI_API_KEY env var for persistence.
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          Used by Asset Studio. Keys are stored in server memory only and reset
+          when server restarts.
         </Typography>
+
+        {IMAGE_PROVIDERS.map((p) => {
+          const status = providerStatus[p.id];
+          const isSaving = !!providerSaving[p.id];
+          const keyValue = providerKeys[p.id] || '';
+
+          return (
+            <Box key={p.id} sx={{ mb: 2.5 }}>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={{ mb: 1 }}
+              >
+                <Typography variant="subtitle2">{p.label}</Typography>
+                {status?.configured ? (
+                  <Chip
+                    label={`Configured (${status.maskedKey})`}
+                    color="success"
+                    size="small"
+                  />
+                ) : (
+                  <Chip label="Not configured" size="small" />
+                )}
+              </Stack>
+
+              <AdminFormField
+                label="API Key"
+                type="password"
+                value={keyValue}
+                onChange={(e) =>
+                  setProviderKeys((k) => ({
+                    ...k,
+                    [p.id]: e.target.value,
+                  }))
+                }
+                placeholder={p.placeholder}
+                autoComplete="off"
+              />
+
+              <Stack direction="row" spacing={1}>
+                <Button
+                  size="small"
+                  variant="contained"
+                  startIcon={<SaveIcon />}
+                  onClick={() => handleSaveProviderKey(p.id)}
+                  loading={isSaving}
+                  disabled={!keyValue.trim()}
+                >
+                  Save
+                </Button>
+                {status?.configured && (
+                  <Button
+                    size="small"
+                    color="error"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleRemoveProviderKey(p.id)}
+                    loading={isSaving}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </Stack>
+            </Box>
+          );
+        })}
       </Paper>
 
       {/* Change Password */}
@@ -327,7 +355,7 @@ export default function AdminSettingsPage() {
           App Info
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-          Version: <strong>Phase 4 (dev)</strong>
+          Version: <strong>Phase 5 (dev)</strong>
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
           Schema: <strong>v25</strong>

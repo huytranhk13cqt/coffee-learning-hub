@@ -1,34 +1,13 @@
 import { GoogleGenAI } from '@google/genai';
 
-const GEMINI_MODELS = {
-  'gemini-2.5-flash-image': {
-    name: 'Nano Banana (Free)',
-    type: 'gemini',
-    free: true,
-  },
-  'gemini-3.1-flash-image-preview': {
-    name: 'Nano Banana 2',
-    type: 'gemini',
-    free: false,
-  },
-  'imagen-4.0-fast-generate-001': {
-    name: 'Imagen 4 Fast',
-    type: 'imagen',
-    free: false,
-  },
-  'imagen-4.0-generate-001': {
-    name: 'Imagen 4 Standard',
-    type: 'imagen',
-    free: false,
-  },
-  'imagen-4.0-ultra-generate-001': {
-    name: 'Imagen 4 Ultra',
-    type: 'imagen',
-    free: false,
-  },
+// Internal routing map: which Gemini sub-API to use per model
+const GEMINI_TYPE = {
+  'gemini-2.5-flash-image': 'gemini',
+  'gemini-3.1-flash-image-preview': 'gemini',
+  'imagen-4.0-fast-generate-001': 'imagen',
+  'imagen-4.0-generate-001': 'imagen',
+  'imagen-4.0-ultra-generate-001': 'imagen',
 };
-
-export { GEMINI_MODELS };
 
 export class GeminiService {
   #apiKey = null;
@@ -120,10 +99,10 @@ export class GeminiService {
    * Unified generate method — routes to the correct API based on model name.
    */
   async generate(model, prompt, config = {}) {
-    const modelInfo = GEMINI_MODELS[model];
-    if (!modelInfo) throw new Error(`Unknown model: ${model}`);
+    const type = GEMINI_TYPE[model];
+    if (!type) throw new Error(`Unknown Gemini model: ${model}`);
 
-    if (modelInfo.type === 'imagen') {
+    if (type === 'imagen') {
       return this.generateWithImagen(model, prompt, config);
     }
     return this.generateWithGemini(model, prompt, config);

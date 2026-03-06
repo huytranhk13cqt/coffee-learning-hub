@@ -436,21 +436,27 @@ export function streamGenerate(
   return controller;
 }
 
-// ─── GEMINI API KEY MANAGEMENT ───────────────────────────────
+// ─── IMAGE PROVIDER API KEY MANAGEMENT ──────────────────────
 
-export function setGeminiApiKey(apiKey) {
-  return adminRequest('/assets/gemini/api-key', {
+export function getAllProviderStatus() {
+  return adminRequest('/assets/providers');
+}
+
+export function setProviderApiKey(provider, apiKey) {
+  return adminRequest(`/assets/providers/${provider}/api-key`, {
     method: 'POST',
     body: JSON.stringify({ apiKey }),
   });
 }
 
-export function removeGeminiApiKey() {
-  return adminRequest('/assets/gemini/api-key', { method: 'DELETE' });
+export function removeProviderApiKey(provider) {
+  return adminRequest(`/assets/providers/${provider}/api-key`, {
+    method: 'DELETE',
+  });
 }
 
-export function getGeminiApiKeyStatus() {
-  return adminRequest('/assets/gemini/api-key');
+export function getProviderApiKeyStatus(provider) {
+  return adminRequest(`/assets/providers/${provider}/api-key`);
 }
 
 // ─── ASSET CRUD ─────────────────────────────────────────────

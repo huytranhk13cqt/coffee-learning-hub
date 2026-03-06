@@ -44,43 +44,93 @@ import {
   uploadAsset,
   listAssets,
   deleteAsset,
-  getGeminiApiKeyStatus,
+  getAllProviderStatus,
 } from '../../api/admin.js';
 
 // ─── Constants ──────────────────────────────────────────────
 
-const MODELS = [
+const PROVIDER_GROUPS = [
   {
-    value: 'gemini-2.5-flash-image',
-    label: 'Nano Banana (Free)',
-    price: 'FREE',
-    priceColor: 'success',
+    id: 'gemini',
+    label: 'Google Gemini',
+    models: [
+      {
+        value: 'gemini-2.5-flash-image',
+        label: 'Nano Banana (Free)',
+        price: 'FREE',
+        priceColor: 'success',
+      },
+      {
+        value: 'gemini-3.1-flash-image-preview',
+        label: 'Nano Banana 2',
+        price: '$0.067/img',
+        priceColor: 'default',
+      },
+      {
+        value: 'imagen-4.0-fast-generate-001',
+        label: 'Imagen 4 Fast',
+        price: '$0.02/img',
+        priceColor: 'default',
+      },
+      {
+        value: 'imagen-4.0-generate-001',
+        label: 'Imagen 4 Standard',
+        price: '$0.04/img',
+        priceColor: 'default',
+      },
+      {
+        value: 'imagen-4.0-ultra-generate-001',
+        label: 'Imagen 4 Ultra',
+        price: '$0.06/img',
+        priceColor: 'default',
+      },
+    ],
   },
   {
-    value: 'gemini-3.1-flash-image-preview',
-    label: 'Nano Banana 2',
-    price: '$0.067/img',
-    priceColor: 'default',
+    id: 'openai',
+    label: 'OpenAI',
+    models: [
+      {
+        value: 'gpt-image-1',
+        label: 'GPT Image 1',
+        price: '$0.02-0.19/img',
+        priceColor: 'default',
+      },
+      {
+        value: 'dall-e-3',
+        label: 'DALL-E 3',
+        price: '$0.04-0.12/img',
+        priceColor: 'default',
+      },
+    ],
   },
   {
-    value: 'imagen-4.0-fast-generate-001',
-    label: 'Imagen 4 Fast',
-    price: '$0.02/img',
-    priceColor: 'default',
-  },
-  {
-    value: 'imagen-4.0-generate-001',
-    label: 'Imagen 4 Standard',
-    price: '$0.04/img',
-    priceColor: 'default',
-  },
-  {
-    value: 'imagen-4.0-ultra-generate-001',
-    label: 'Imagen 4 Ultra',
-    price: '$0.06/img',
-    priceColor: 'default',
+    id: 'stability',
+    label: 'Stability AI',
+    models: [
+      {
+        value: 'sd3.5-large',
+        label: 'SD 3.5 Large',
+        price: '$0.065/img',
+        priceColor: 'default',
+      },
+      {
+        value: 'sd3.5-medium',
+        label: 'SD 3.5 Medium',
+        price: '$0.035/img',
+        priceColor: 'default',
+      },
+    ],
   },
 ];
+
+// Flat lookup: model value → provider id
+const MODEL_PROVIDER = {};
+for (const group of PROVIDER_GROUPS) {
+  for (const m of group.models) {
+    MODEL_PROVIDER[m.value] = group.id;
+  }
+}
 
 const PRESET_PROMPTS = [
   'Pixel art Bulbasaur idle sprite, 32x32, GBA style, transparent background',
@@ -129,22 +179,19 @@ function genReducer(state, action) {
 // ─── Loader ─────────────────────────────────────────────────
 
 export async function loader() {
-  const [keyStatus, assetsRes] = await Promise.all([
-    getGeminiApiKeyStatus().catch(() => ({ configured: false })),
+  const [providersRes, assetsRes] = await Promise.all([
+    getAllProviderStatus().catch(() => ({ providers: {} })),
     listAssets({ limit: 20 }).catch(() => ({ assets: [], total: 0 })),
   ]);
-  return { keyStatus, initialAssets: assetsRes };
+  return { providers: providersRes.providers || {}, initialAssets: assetsRes };
 }
 
 // ─── Component ──────────────────────────────────────────────
 
 export default function AdminAssetStudioPage() {
-  const { keyStatus, initialAssets } = useLoaderData();
+  const { providers, initialAssets } = useLoaderData();
   const [tab, setTab] = useState(0);
   const [snackbar, setSnackbar] = useState(null);
-  const [apiKeyReady, setApiKeyReady] = useState(
-    keyStatus?.configured ?? false,
-  );
 
   return (
     <Box>
@@ -163,11 +210,7 @@ export default function AdminAssetStudioPage() {
       </Tabs>
 
       {tab === 0 && (
-        <GenerateTab
-          apiKeyReady={apiKeyReady}
-          setApiKeyReady={setApiKeyReady}
-          setSnackbar={setSnackbar}
-        />
+        <GenerateTab providers={providers} setSnackbar={setSnackbar} />
       )}
       {tab === 1 && <UploadTab setSnackbar={setSnackbar} />}
       {tab === 2 && (
@@ -196,8 +239,8 @@ export default function AdminAssetStudioPage() {
 
 // ─── Generate Tab ───────────────────────────────────────────
 
-function GenerateTab({ apiKeyReady, setSnackbar }) {
-  const [model, setModel] = useState(MODELS[0].value);
+function GenerateTab({ providers, setSnackbar }) {
+  const [model, setModel] = useState(PROVIDER_GROUPS[0].models[0].value);
   const [prompt, setPrompt] = useState('');
   const [assetName, setAssetName] = useState('');
   const [assetType, setAssetType] = useState('sprite');
@@ -208,9 +251,11 @@ function GenerateTab({ apiKeyReady, setSnackbar }) {
 
   const [state, dispatch] = useReducer(genReducer, GEN_INITIAL);
 
+  const selectedProvider = MODEL_PROVIDER[model];
+  const providerConfigured = providers[selectedProvider]?.configured;
   const isImagen = model.startsWith('imagen-');
   const isGenerating = state.status === 'generating';
-  const canGenerate = apiKeyReady && prompt.trim() && !isGenerating;
+  const canGenerate = providerConfigured && prompt.trim() && !isGenerating;
 
   const handleGenerate = useCallback(async () => {
     dispatch({ type: 'START' });
@@ -257,40 +302,75 @@ function GenerateTab({ apiKeyReady, setSnackbar }) {
 
   return (
     <Box>
-      {!apiKeyReady && (
+      {!providerConfigured && (
         <Alert severity="warning" sx={{ mb: 3 }}>
-          Gemini API key not configured. Go to Settings to set it up.
+          {selectedProvider} API key not configured. Go to Settings to set it
+          up.
         </Alert>
       )}
 
-      {/* Model selector */}
+      {/* Model selector — grouped by provider */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Model
         </Typography>
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          {MODELS.map((m) => (
-            <Chip
-              key={m.value}
-              label={
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <span>{m.label}</span>
+        {PROVIDER_GROUPS.map((group) => {
+          const configured = providers[group.id]?.configured;
+          return (
+            <Box key={group.id} sx={{ mb: 2 }}>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={{ mb: 1 }}
+              >
+                <Typography variant="subtitle2" color="text.secondary">
+                  {group.label}
+                </Typography>
+                {configured ? (
                   <Chip
-                    label={m.price}
+                    label="Ready"
                     size="small"
-                    color={m.priceColor}
+                    color="success"
                     variant="outlined"
-                    sx={{ height: 20, fontSize: '0.65rem' }}
+                    sx={{ height: 20, fontSize: '0.6rem' }}
                   />
-                </Stack>
-              }
-              onClick={() => setModel(m.value)}
-              variant={model === m.value ? 'filled' : 'outlined'}
-              color={model === m.value ? 'primary' : 'default'}
-              sx={{ py: 2.5 }}
-            />
-          ))}
-        </Stack>
+                ) : (
+                  <Chip
+                    label="No key"
+                    size="small"
+                    variant="outlined"
+                    sx={{ height: 20, fontSize: '0.6rem' }}
+                  />
+                )}
+              </Stack>
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                {group.models.map((m) => (
+                  <Chip
+                    key={m.value}
+                    label={
+                      <Stack direction="row" spacing={0.5} alignItems="center">
+                        <span>{m.label}</span>
+                        <Chip
+                          label={m.price}
+                          size="small"
+                          color={m.priceColor}
+                          variant="outlined"
+                          sx={{ height: 20, fontSize: '0.65rem' }}
+                        />
+                      </Stack>
+                    }
+                    onClick={() => setModel(m.value)}
+                    variant={model === m.value ? 'filled' : 'outlined'}
+                    color={model === m.value ? 'primary' : 'default'}
+                    disabled={!configured}
+                    sx={{ py: 2.5 }}
+                  />
+                ))}
+              </Stack>
+            </Box>
+          );
+        })}
       </Paper>
 
       {/* Prompt */}
