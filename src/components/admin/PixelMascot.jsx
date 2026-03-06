@@ -41,13 +41,16 @@ function renderSpriteSheetFrame(ctx, img, sheet, frameIndex) {
     frameHeight,
   );
 
-  // Chroma key: replace magenta (#FF00FF) pixels with transparent
+  // Chroma key: remove pixels close to magenta (#FF00FF) via color distance
   if (sheet.chromaKey) {
     const imageData = ctx.getImageData(0, 0, frameWidth, frameHeight);
     const d = imageData.data;
     for (let i = 0; i < d.length; i += 4) {
-      if (d[i] >= 240 && d[i + 1] <= 30 && d[i + 2] >= 240) {
-        d[i + 3] = 0; // set alpha to 0
+      const dr = d[i] - 255;
+      const dg = d[i + 1];
+      const db = d[i + 2] - 255;
+      if (dr * dr + dg * dg + db * db < 12000) {
+        d[i + 3] = 0;
       }
     }
     ctx.putImageData(imageData, 0, 0);
