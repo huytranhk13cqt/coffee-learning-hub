@@ -466,7 +466,18 @@ function AdminLayoutContent() {
         </Container>
       </Box>
 
-      <PixelMascot />
+      <PixelMascot
+        spriteSheet={{
+          src: '/sprites/1772830000149-71ca58ef.png',
+          frameWidth: 256,
+          frameHeight: 256,
+          frameCount: 16,
+          cols: 4,
+          fps: 6,
+          chromaKey: true,
+        }}
+        scale={0.5}
+      />
     </Box>
   );
 }

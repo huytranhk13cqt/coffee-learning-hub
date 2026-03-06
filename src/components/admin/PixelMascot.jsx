@@ -21,13 +21,18 @@ function renderFrame(ctx, sprite, frameIndex) {
 }
 
 function renderSpriteSheetFrame(ctx, img, sheet, frameIndex) {
-  const { frameWidth, frameHeight } = sheet;
+  const { frameWidth, frameHeight, cols } = sheet;
   ctx.clearRect(0, 0, frameWidth, frameHeight);
-  const sx = frameIndex * frameWidth;
+
+  // Grid support: cols defined → 2D grid, otherwise horizontal strip
+  const c = cols || sheet.frameCount;
+  const sx = (frameIndex % c) * frameWidth;
+  const sy = Math.floor(frameIndex / c) * frameHeight;
+
   ctx.drawImage(
     img,
     sx,
-    0,
+    sy,
     frameWidth,
     frameHeight,
     0,
@@ -35,6 +40,18 @@ function renderSpriteSheetFrame(ctx, img, sheet, frameIndex) {
     frameWidth,
     frameHeight,
   );
+
+  // Chroma key: replace magenta (#FF00FF) pixels with transparent
+  if (sheet.chromaKey) {
+    const imageData = ctx.getImageData(0, 0, frameWidth, frameHeight);
+    const d = imageData.data;
+    for (let i = 0; i < d.length; i += 4) {
+      if (d[i] >= 240 && d[i + 1] <= 30 && d[i + 2] >= 240) {
+        d[i + 3] = 0; // set alpha to 0
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
 }
 
 export default function PixelMascot({
