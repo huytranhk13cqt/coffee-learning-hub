@@ -40,16 +40,33 @@ export default function AdminStatsCards({ stats }) {
           <Card
             sx={{
               minHeight: 100,
+              borderTop: `3px solid ${color}`,
+              position: 'relative',
+              overflow: 'hidden',
               '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 3,
+                transform: 'translateY(-3px) scale(1.02)',
+                boxShadow: `0 6px 20px ${color}22, 0 3px 8px rgba(29,43,83,0.10)`,
               },
-              transition: 'transform 0.15s ease-out, box-shadow 0.15s ease-out',
+              transition: 'transform 0.2s ease-out, box-shadow 0.2s ease-out',
             }}
           >
             <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Icon sx={{ fontSize: '2rem', color }} />
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: `${color}18`,
+                    border: `1px solid ${color}30`,
+                    flexShrink: 0,
+                  }}
+                >
+                  <Icon sx={{ fontSize: '1.4rem', color }} />
+                </Box>
                 <Box>
                   <Typography variant="h3">{stats[key] ?? 0}</Typography>
                   <Typography variant="caption" color="text.secondary">

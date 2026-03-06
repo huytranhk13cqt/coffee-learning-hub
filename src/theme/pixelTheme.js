@@ -23,20 +23,21 @@ const PICO = {
 };
 
 // ────────────────────────────────────────────────────────
-// 64-bit shadow system — soft elevation instead of pixel borders
+// 128-bit shadow system — color-tinted, layered depth
 // ────────────────────────────────────────────────────────
 const shadows = [
   'none',
-  '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)',
-  '0 2px 6px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.10)',
-  '0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.10)',
-  '0 6px 16px rgba(0,0,0,0.18), 0 3px 6px rgba(0,0,0,0.10)',
-  '0 8px 24px rgba(0,0,0,0.20), 0 4px 8px rgba(0,0,0,0.10)',
-  ...Array(19).fill('0 8px 24px rgba(0,0,0,0.20), 0 4px 8px rgba(0,0,0,0.10)'),
+  '0 1px 3px rgba(29,43,83,0.10), 0 1px 2px rgba(0,0,0,0.06)',
+  '0 2px 6px rgba(29,43,83,0.12), 0 1px 3px rgba(0,0,0,0.08)',
+  '0 4px 12px rgba(29,43,83,0.14), 0 2px 4px rgba(0,0,0,0.08)',
+  '0 6px 16px rgba(29,43,83,0.16), 0 3px 6px rgba(0,0,0,0.08)',
+  '0 8px 24px rgba(29,43,83,0.18), 0 4px 8px rgba(0,0,0,0.08)',
+  ...Array(19).fill(
+    '0 8px 24px rgba(29,43,83,0.18), 0 4px 8px rgba(0,0,0,0.08)',
+  ),
 ];
 
 // Legacy pixel border helpers — kept for backward compatibility
-// but no longer used in component overrides
 const pixelBorder = (color) => `
   2px 0 0 0 ${color},
   -2px 0 0 0 ${color},
@@ -52,7 +53,15 @@ const pixelBorderThick = (color) => `
 `;
 
 // ────────────────────────────────────────────────────────
-// 64-bit Pixel Art Theme — PS1/N64 era refinement
+// CSS custom properties for pixel-art textures
+// ────────────────────────────────────────────────────────
+const PIXEL_PATTERN_LIGHT =
+  'radial-gradient(circle, rgba(29,43,83,0.035) 1px, transparent 1px)';
+const PIXEL_PATTERN_DARK =
+  'radial-gradient(circle, rgba(255,241,232,0.025) 1px, transparent 1px)';
+
+// ────────────────────────────────────────────────────────
+// 128-bit Pixel Art Theme — PS2/GameCube era refinement
 // ────────────────────────────────────────────────────────
 const pixelTheme = createTheme({
   cssVariables: { colorSchemeSelector: 'data-color-scheme' },
@@ -106,7 +115,6 @@ const pixelTheme = createTheme({
   typography: {
     fontFamily: '"VT323", "Courier New", monospace',
     fontSize: 16,
-    // Headings: Silkscreen for the pixel identity (readable, clean)
     h1: {
       fontFamily: '"Silkscreen", cursive',
       fontSize: '1.75rem',
@@ -154,6 +162,20 @@ const pixelTheme = createTheme({
       styleOverrides: {
         body: {
           imageRendering: 'pixelated',
+          // Subtle pixel dot overlay — the "128-bit texture"
+          '&::after': {
+            content: '""',
+            position: 'fixed',
+            inset: 0,
+            backgroundImage: PIXEL_PATTERN_LIGHT,
+            backgroundSize: '4px 4px',
+            pointerEvents: 'none',
+            zIndex: 9999,
+          },
+          // Dark mode swap via data attribute
+          '[data-color-scheme="dark"] &::after': {
+            backgroundImage: PIXEL_PATTERN_DARK,
+          },
         },
       },
     },
@@ -164,20 +186,20 @@ const pixelTheme = createTheme({
           borderRadius: 3,
           textTransform: 'none',
           border: '1px solid transparent',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
+          boxShadow: '0 1px 3px rgba(29,43,83,0.10)',
           '&:hover': {
             transform: 'translateY(-1px)',
-            boxShadow: '0 3px 8px rgba(0,0,0,0.18)',
+            boxShadow: '0 3px 8px rgba(29,43,83,0.18)',
           },
           '&:active': {
             transform: 'translateY(0)',
-            boxShadow: '0 1px 2px rgba(0,0,0,0.10)',
+            boxShadow: '0 1px 2px rgba(29,43,83,0.10)',
           },
           transition: 'transform 0.15s ease-out, box-shadow 0.15s ease-out',
         },
         containedPrimary: {
           '&:hover': {
-            boxShadow: '0 3px 10px rgba(41,173,255,0.3)',
+            boxShadow: '0 3px 12px rgba(41,173,255,0.35)',
           },
         },
       },
@@ -189,8 +211,12 @@ const pixelTheme = createTheme({
           borderRadius: 6,
           border: '1px solid var(--mui-palette-divider)',
           backgroundImage: 'none',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
-          transition: 'box-shadow 0.15s ease-out, transform 0.15s ease-out',
+          boxShadow: '0 2px 8px rgba(29,43,83,0.08)',
+          transition: 'box-shadow 0.2s ease-out, transform 0.2s ease-out',
+          '&:hover': {
+            boxShadow:
+              '0 4px 16px rgba(41,173,255,0.12), 0 2px 6px rgba(29,43,83,0.08)',
+          },
         },
       },
     },
@@ -255,10 +281,32 @@ const pixelTheme = createTheme({
         root: {
           borderRadius: 4,
           margin: '1px 4px',
+          position: 'relative',
           '&.Mui-selected': {
+            background:
+              'linear-gradient(90deg, rgba(41,173,255,0.15) 0%, rgba(41,173,255,0.05) 70%, transparent 100%)',
             borderLeft: '3px solid var(--mui-palette-primary-main)',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              left: 0,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 3,
+              height: '60%',
+              background: 'var(--mui-palette-primary-main)',
+              boxShadow: '0 0 8px rgba(41,173,255,0.5)',
+              borderRadius: 1,
+            },
+            '&:hover': {
+              background:
+                'linear-gradient(90deg, rgba(41,173,255,0.20) 0%, rgba(41,173,255,0.08) 70%, transparent 100%)',
+            },
           },
-          transition: 'background-color 0.12s ease-out',
+          '&:hover': {
+            background: 'rgba(41,173,255,0.06)',
+          },
+          transition: 'background 0.15s ease-out',
         },
       },
     },

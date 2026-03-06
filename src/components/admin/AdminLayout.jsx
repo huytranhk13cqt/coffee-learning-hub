@@ -52,10 +52,17 @@ import pixelTheme from '../../theme/pixelTheme.js';
 import { adminVerify } from '../../api/admin.js';
 import { useAdminAuth } from '../../hooks/useAdminAuth.js';
 import PageSkeleton from '../skeletons/PageSkeleton.jsx';
+import PixelMascot from './PixelMascot.jsx';
 
 const SIDEBAR_WIDTH = 240;
 const SIDEBAR_COLLAPSED = 64;
 const COLLAPSE_KEY = 'admin_sidebar_collapsed';
+
+// Subtle pixel dot pattern for sidebar background texture
+const SIDEBAR_PATTERN_LIGHT =
+  'radial-gradient(circle, rgba(29,43,83,0.04) 1px, transparent 1px)';
+const SIDEBAR_PATTERN_DARK =
+  'radial-gradient(circle, rgba(255,241,232,0.02) 1px, transparent 1px)';
 
 export async function loader() {
   const { authenticated } = await adminVerify();
@@ -138,7 +145,7 @@ function ColorModeToggle({ collapsed }) {
 function SidebarContent({ collapsed, onToggle, onLogout, location }) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {/* Logo area */}
+      {/* Logo area — pixel art styled header */}
       <Box
         sx={{
           display: 'flex',
@@ -147,25 +154,67 @@ function SidebarContent({ collapsed, onToggle, onLogout, location }) {
           px: collapsed ? 1 : 2,
           py: 2,
           minHeight: 64,
+          borderBottom: '2px solid',
+          borderColor: 'divider',
+          position: 'relative',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: -1,
+            left: 0,
+            right: 0,
+            height: 1,
+            background:
+              'linear-gradient(90deg, transparent, var(--mui-palette-primary-main), transparent)',
+            opacity: 0.4,
+          },
         }}
       >
         {!collapsed && (
-          <Typography
-            variant="h3"
-            sx={{ color: 'primary.main', whiteSpace: 'nowrap' }}
-          >
-            LH Admin
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            {/* Pixel diamond logo mark */}
+            <Box
+              sx={{
+                width: 28,
+                height: 28,
+                position: 'relative',
+                flexShrink: 0,
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  inset: 4,
+                  bgcolor: 'primary.main',
+                  transform: 'rotate(45deg)',
+                  boxShadow: '0 0 10px rgba(41,173,255,0.4)',
+                },
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  inset: 8,
+                  bgcolor: 'background.paper',
+                  transform: 'rotate(45deg)',
+                },
+              }}
+            />
+            <Typography
+              variant="h3"
+              sx={{
+                color: 'primary.main',
+                whiteSpace: 'nowrap',
+                textShadow: '0 0 12px rgba(41,173,255,0.25)',
+              }}
+            >
+              LH Admin
+            </Typography>
+          </Box>
         )}
         <IconButton onClick={onToggle} size="small">
           {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
       </Box>
 
-      <Divider />
-
       {/* Nav groups */}
-      <Box sx={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', py: 0.5 }}>
         {NAV_GROUPS.map((group, gi) => (
           <Box key={gi}>
             {group.title && !collapsed && (
@@ -177,6 +226,7 @@ function SidebarContent({ collapsed, onToggle, onLogout, location }) {
                   pb: 0.5,
                   display: 'block',
                   color: 'text.secondary',
+                  letterSpacing: '0.12em',
                 }}
               >
                 {group.title}
@@ -210,9 +260,19 @@ function SidebarContent({ collapsed, onToggle, onLogout, location }) {
                             minWidth: collapsed ? 0 : 40,
                             justifyContent: 'center',
                             color: isActive ? 'primary.main' : 'inherit',
+                            transition: 'color 0.15s ease-out',
                           }}
                         >
-                          <Icon />
+                          <Icon
+                            sx={
+                              isActive
+                                ? {
+                                    filter:
+                                      'drop-shadow(0 0 4px rgba(41,173,255,0.5))',
+                                  }
+                                : undefined
+                            }
+                          />
                         </ListItemIcon>
                         {!collapsed && <ListItemText primary={item.label} />}
                       </ListItemButton>
@@ -314,6 +374,25 @@ function AdminLayoutContent() {
     />
   );
 
+  // Shared sidebar paper styles — pixel dot texture + subtle gradient
+  const sidebarPaperSx = {
+    bgcolor: 'background.paper',
+    backgroundImage: SIDEBAR_PATTERN_LIGHT,
+    backgroundSize: '4px 4px',
+    '[data-color-scheme="dark"] &': {
+      backgroundImage: SIDEBAR_PATTERN_DARK,
+    },
+    // Subtle vertical gradient overlay for depth
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      background:
+        'linear-gradient(180deg, transparent 0%, rgba(29,43,83,0.03) 100%)',
+      pointerEvents: 'none',
+    },
+  };
+
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       {/* Mobile drawer */}
@@ -334,7 +413,7 @@ function AdminLayoutContent() {
             sx={{
               '& .MuiDrawer-paper': {
                 width: SIDEBAR_WIDTH,
-                bgcolor: 'background.paper',
+                ...sidebarPaperSx,
               },
             }}
           >
@@ -350,10 +429,10 @@ function AdminLayoutContent() {
             '& .MuiDrawer-paper': {
               width: drawerWidth,
               boxSizing: 'border-box',
-              bgcolor: 'background.paper',
               borderRight: '2px solid',
               borderColor: 'divider',
               transition: 'width 0.2s ease-out',
+              ...sidebarPaperSx,
             },
           }}
         >
@@ -386,6 +465,8 @@ function AdminLayoutContent() {
           {isLoading ? <PageSkeleton /> : <Outlet />}
         </Container>
       </Box>
+
+      <PixelMascot />
     </Box>
   );
 }
