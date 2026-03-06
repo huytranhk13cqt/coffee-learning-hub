@@ -1,19 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
-import { changeAdminPassword } from '../../api/admin.js';
+import {
+  changeAdminPassword,
+  fetchApiKeyStatus,
+  setAdminApiKey,
+  removeAdminApiKey,
+} from '../../api/admin.js';
 
 export default function AdminSettingsPage() {
+  // Password form
   const [form, setForm] = useState({ current: '', newPw: '', confirm: '' });
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const [snackbar, setSnackbar] = useState(null);
+
+  // API Key state
+  const [apiKeyStatus, setApiKeyStatus] = useState(null);
+  const [newApiKey, setNewApiKey] = useState('');
+  const [apiKeySaving, setApiKeySaving] = useState(false);
+
+  useEffect(() => {
+    fetchApiKeyStatus()
+      .then(setApiKeyStatus)
+      .catch(() => setApiKeyStatus(null));
+  }, []);
+
+  // ─── Password handlers ──────────────────────────────
 
   function handleChange(field) {
     return (e) => {
@@ -54,12 +76,105 @@ export default function AdminSettingsPage() {
     }
   }
 
+  // ─── API Key handlers ───────────────────────────────
+
+  async function handleSaveApiKey() {
+    if (!newApiKey.trim()) return;
+    setApiKeySaving(true);
+    try {
+      const res = await setAdminApiKey(newApiKey.trim());
+      setApiKeyStatus(res);
+      setNewApiKey('');
+      setSnackbar({ severity: 'success', text: 'API key saved' });
+    } catch (err) {
+      setSnackbar({ severity: 'error', text: err.message });
+    } finally {
+      setApiKeySaving(false);
+    }
+  }
+
+  async function handleRemoveApiKey() {
+    setApiKeySaving(true);
+    try {
+      await removeAdminApiKey();
+      setApiKeyStatus({ configured: false, maskedKey: null });
+      setSnackbar({ severity: 'success', text: 'API key removed' });
+    } catch (err) {
+      setSnackbar({ severity: 'error', text: err.message });
+    } finally {
+      setApiKeySaving(false);
+    }
+  }
+
   return (
     <Box>
       <Typography variant="h2" sx={{ mb: 3 }}>
         Settings
       </Typography>
 
+      {/* Claude API Key */}
+      <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>
+        <Typography variant="h4" sx={{ mb: 2 }}>
+          Claude API Key
+        </Typography>
+
+        <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            Status:
+          </Typography>
+          {apiKeyStatus?.configured ? (
+            <Chip
+              label={`Configured (${apiKeyStatus.maskedKey})`}
+              color="success"
+              size="small"
+            />
+          ) : (
+            <Chip label="Not configured" size="small" />
+          )}
+        </Stack>
+
+        <AdminFormField
+          label="API Key"
+          type="password"
+          value={newApiKey}
+          onChange={(e) => setNewApiKey(e.target.value)}
+          placeholder="sk-ant-..."
+          autoComplete="off"
+        />
+
+        <Stack direction="row" spacing={1}>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={handleSaveApiKey}
+            loading={apiKeySaving}
+            disabled={!newApiKey.trim()}
+          >
+            Save Key
+          </Button>
+          {apiKeyStatus?.configured && (
+            <Button
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={handleRemoveApiKey}
+              loading={apiKeySaving}
+            >
+              Remove Key
+            </Button>
+          )}
+        </Stack>
+
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: 'block', mt: 1.5 }}
+        >
+          Key is stored in server memory only. Resets when server restarts. Set
+          ANTHROPIC_API_KEY env var for persistence.
+        </Typography>
+      </Paper>
+
+      {/* Change Password */}
       <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Change Password
@@ -109,7 +224,7 @@ export default function AdminSettingsPage() {
           App Info
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-          Version: <strong>Phase 3 (dev)</strong>
+          Version: <strong>Phase 4 (dev)</strong>
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
           Schema: <strong>v24</strong>

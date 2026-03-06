@@ -1,9 +1,10 @@
 import { ValidationError, UnauthorizedError } from '../errors/AppError.js';
 
 export class AdminAuthController {
-  constructor(adminPassword, adminRepo) {
+  constructor(adminPassword, adminRepo, claudeService) {
     this.adminPassword = adminPassword;
     this.adminRepo = adminRepo;
+    this.claudeService = claudeService;
   }
 
   /**
@@ -89,6 +90,45 @@ export class AdminAuthController {
       success: true,
       warning:
         'Password changed for this server session only. Update ADMIN_PASSWORD env var for persistence.',
+    };
+  };
+
+  /** POST /api/admin/settings/api-key -- Store Claude API key */
+  setApiKey = async (request) => {
+    const { apiKey } = request.body || {};
+    if (!apiKey?.trim()) throw new ValidationError('apiKey is required');
+
+    this.claudeService.setApiKey(apiKey.trim());
+
+    this.adminRepo.logAction({
+      action: 'update',
+      entityType: 'admin',
+      metadata: { action: 'api_key_set' },
+      ipAddress: request.ip,
+    });
+
+    return { success: true, message: 'API key configured' };
+  };
+
+  /** DELETE /api/admin/settings/api-key -- Remove Claude API key */
+  removeApiKey = async (request) => {
+    this.claudeService.removeApiKey();
+
+    this.adminRepo.logAction({
+      action: 'update',
+      entityType: 'admin',
+      metadata: { action: 'api_key_removed' },
+      ipAddress: request.ip,
+    });
+
+    return { success: true, message: 'API key removed' };
+  };
+
+  /** GET /api/admin/settings/api-key/status -- Check if key is configured */
+  getApiKeyStatus = async () => {
+    return {
+      configured: this.claudeService.isConfigured(),
+      maskedKey: this.claudeService.getMaskedKey(),
     };
   };
 }

@@ -346,3 +346,108 @@ export function changeAdminPassword(currentPassword, newPassword) {
     body: JSON.stringify({ currentPassword, newPassword }),
   });
 }
+
+// ─── API KEY MANAGEMENT ─────────────────────────────────────
+
+export function setAdminApiKey(apiKey) {
+  return adminRequest('/settings/api-key', {
+    method: 'POST',
+    body: JSON.stringify({ apiKey }),
+  });
+}
+
+export function removeAdminApiKey() {
+  return adminRequest('/settings/api-key', { method: 'DELETE' });
+}
+
+export function fetchApiKeyStatus() {
+  return adminRequest('/settings/api-key/status');
+}
+
+// ─── CONTENT GENERATION ─────────────────────────────────────
+
+/**
+ * Stream content generation via SSE.
+ * Uses fetch + ReadableStream (EventSource only supports GET).
+ *
+ * @param {Object} params - Generation parameters
+ * @param {Object} callbacks - { onThinking, onText, onUsage, onDone, onError }
+ * @returns {AbortController} - call .abort() to cancel
+ */
+export function streamGenerate(
+  params,
+  { onThinking, onText, onUsage, onDone, onError },
+) {
+  const controller = new AbortController();
+
+  fetch(`${API_BASE}/generate`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+    signal: controller.signal,
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        onError?.({
+          error: body.error || `HTTP ${response.status}`,
+          type: 'http_error',
+        });
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        let currentEvent = null;
+        for (const line of lines) {
+          if (line.startsWith('event: ')) {
+            currentEvent = line.slice(7);
+          } else if (line.startsWith('data: ') && currentEvent) {
+            const data = JSON.parse(line.slice(6));
+            if (currentEvent === 'thinking') onThinking?.(data);
+            else if (currentEvent === 'text') onText?.(data);
+            else if (currentEvent === 'usage') onUsage?.(data);
+            else if (currentEvent === 'done') onDone?.(data);
+            else if (currentEvent === 'error') onError?.(data);
+            currentEvent = null;
+          } else if (line === '') {
+            currentEvent = null;
+          }
+        }
+      }
+    })
+    .catch((err) => {
+      if (err.name !== 'AbortError') {
+        onError?.({ error: err.message, type: 'network_error' });
+      }
+    });
+
+  return controller;
+}
+
+// ─── YAML IMPORT ────────────────────────────────────────────
+
+export function validateYamlImport(yamlContent) {
+  return adminRequest('/import/validate', {
+    method: 'POST',
+    body: JSON.stringify({ yaml: yamlContent }),
+  });
+}
+
+export function executeYamlImport(yamlContent) {
+  return adminRequest('/import/execute', {
+    method: 'POST',
+    body: JSON.stringify({ yaml: yamlContent }),
+  });
+}

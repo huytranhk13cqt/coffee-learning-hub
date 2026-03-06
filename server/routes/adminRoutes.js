@@ -19,7 +19,7 @@ export function adminRoutes(controller, adminAuth, adminAuthController) {
     // Weak Spots aggregate
     fastify.get('/weak-spots-aggregate', controller.getWeakSpots);
 
-    // Settings — password change
+    // Settings — password change + API key management
     if (adminAuthController) {
       fastify.put('/settings/password', {
         schema: {
@@ -34,6 +34,26 @@ export function adminRoutes(controller, adminAuth, adminAuthController) {
         },
         handler: adminAuthController.changePassword,
       });
+
+      fastify.post('/settings/api-key', {
+        schema: {
+          body: {
+            type: 'object',
+            required: ['apiKey'],
+            properties: {
+              apiKey: { type: 'string', minLength: 1 },
+            },
+          },
+        },
+        handler: adminAuthController.setApiKey,
+      });
+
+      fastify.delete('/settings/api-key', adminAuthController.removeApiKey);
+
+      fastify.get(
+        '/settings/api-key/status',
+        adminAuthController.getApiKeyStatus,
+      );
     }
   };
 }

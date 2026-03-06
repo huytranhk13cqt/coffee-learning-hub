@@ -274,6 +274,24 @@ const router = createBrowserRouter([
         ErrorBoundary: ErrorPage,
       },
       {
+        path: 'generate',
+        lazy: async () => {
+          const { default: Component } =
+            await import('./pages/admin/AdminContentGenerationPage.jsx');
+          return { Component };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'import',
+        lazy: async () => {
+          const { default: Component } =
+            await import('./pages/admin/AdminYamlImportPage.jsx');
+          return { Component };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
         path: 'exercises/new',
         lazy: async () => {
           const { default: Component, loader } =

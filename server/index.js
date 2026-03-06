@@ -32,6 +32,9 @@ import { AdminExerciseRepository } from './repositories/adminExerciseRepository.
 import { AdminExerciseController } from './controllers/adminExerciseController.js';
 import { AdminLearningPathRepository } from './repositories/adminLearningPathRepository.js';
 import { AdminLearningPathController } from './controllers/adminLearningPathController.js';
+import { ClaudeService } from './services/claudeService.js';
+import { ClaudeController } from './controllers/claudeController.js';
+import { YamlImportController } from './controllers/yamlImportController.js';
 import { createApp } from './app.js';
 
 // --- Startup env validation (fail-fast) ---
@@ -92,9 +95,11 @@ const bookmarkControllerInstance = BookmarkController(bookmarkRepo);
 
 const adminRepo = new AdminRepository(sql);
 const adminController = new AdminController(adminRepo);
+const claudeService = new ClaudeService();
 const adminAuthController = new AdminAuthController(
   process.env.ADMIN_PASSWORD,
   adminRepo,
+  claudeService,
 );
 const adminCrudRepo = new AdminCrudRepository(sql);
 const adminCrudController = new AdminCrudController(adminCrudRepo, adminRepo);
@@ -108,6 +113,8 @@ const adminLearningPathController = new AdminLearningPathController(
   adminLearningPathRepo,
   adminRepo,
 );
+const claudeController = new ClaudeController(claudeService, adminRepo);
+const yamlImportController = new YamlImportController(sql, adminRepo);
 
 const app = await createApp({
   categoryController,
@@ -123,6 +130,8 @@ const app = await createApp({
   adminCrudController,
   adminExerciseController,
   adminLearningPathController,
+  claudeController,
+  yamlImportController,
   sql,
 });
 

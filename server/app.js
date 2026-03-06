@@ -26,6 +26,8 @@ import { adminRoutes } from './routes/adminRoutes.js';
 import { adminCrudRoutes } from './routes/adminCrudRoutes.js';
 import { adminExerciseRoutes } from './routes/adminExerciseRoutes.js';
 import { adminLearningPathRoutes } from './routes/adminLearningPathRoutes.js';
+import { claudeRoutes } from './routes/claudeRoutes.js';
+import { yamlImportRoutes } from './routes/yamlImportRoutes.js';
 import { AppError } from './errors/AppError.js';
 
 // __dirname equivalent for ES modules (app.js lives in server/, media/ is at project root)
@@ -49,6 +51,8 @@ export async function createApp({
   adminCrudController,
   adminExerciseController,
   adminLearningPathController,
+  claudeController,
+  yamlImportController,
   sql,
   logger = true,
 }) {
@@ -186,6 +190,16 @@ export async function createApp({
       adminLearningPathRoutes(adminLearningPathController, adminAuth),
       { prefix: '/api/admin' },
     );
+  }
+  if (claudeController) {
+    app.register(claudeRoutes(claudeController, adminAuth), {
+      prefix: '/api/admin',
+    });
+  }
+  if (yamlImportController) {
+    app.register(yamlImportRoutes(yamlImportController, adminAuth), {
+      prefix: '/api/admin',
+    });
   }
 
   // --- 404 handler ---
