@@ -27,15 +27,15 @@ import { adminCrudRoutes } from './routes/adminCrudRoutes.js';
 import { adminExerciseRoutes } from './routes/adminExerciseRoutes.js';
 import { adminLearningPathRoutes } from './routes/adminLearningPathRoutes.js';
 import { claudeRoutes } from './routes/claudeRoutes.js';
+import { assetRoutes } from './routes/assetRoutes.js';
 import { yamlImportRoutes } from './routes/yamlImportRoutes.js';
+import multipart from '@fastify/multipart';
 import { AppError } from './errors/AppError.js';
 
 // __dirname equivalent for ES modules (app.js lives in server/, media/ is at project root)
-const MEDIA_ROOT = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '..',
-  'media',
-);
+const __appDir = path.dirname(fileURLToPath(import.meta.url));
+const MEDIA_ROOT = path.join(__appDir, '..', 'media');
+const SPRITES_ROOT = path.join(__appDir, 'uploads', 'sprites');
 
 export async function createApp({
   categoryController,
@@ -52,6 +52,7 @@ export async function createApp({
   adminExerciseController,
   adminLearningPathController,
   claudeController,
+  assetController,
   yamlImportController,
   sql,
   logger = true,
@@ -100,6 +101,14 @@ export async function createApp({
     prefix: '/media/',
     decorateReply: false,
   });
+  // Serve uploaded sprites from server/uploads/sprites/
+  await app.register(fastifyStatic, {
+    root: SPRITES_ROOT,
+    prefix: '/sprites/',
+    decorateReply: false,
+  });
+  // Multipart for file uploads (Asset Studio)
+  await app.register(multipart, { limits: { fileSize: 5 * 1024 * 1024 } });
 
   await app.register(compress, { threshold: 1024 });
   await app.register(rateLimit, {
@@ -194,6 +203,11 @@ export async function createApp({
   if (claudeController) {
     app.register(claudeRoutes(claudeController, adminAuth), {
       prefix: '/api/admin',
+    });
+  }
+  if (assetController) {
+    app.register(assetRoutes(assetController, adminAuth), {
+      prefix: '/api/admin/assets',
     });
   }
   if (yamlImportController) {

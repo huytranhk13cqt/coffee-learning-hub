@@ -34,6 +34,9 @@ import { AdminLearningPathRepository } from './repositories/adminLearningPathRep
 import { AdminLearningPathController } from './controllers/adminLearningPathController.js';
 import { ClaudeService } from './services/claudeService.js';
 import { ClaudeController } from './controllers/claudeController.js';
+import { GeminiService } from './services/geminiService.js';
+import { AssetRepository } from './repositories/assetRepository.js';
+import { AssetController } from './controllers/assetController.js';
 import { YamlImportController } from './controllers/yamlImportController.js';
 import { createApp } from './app.js';
 
@@ -114,6 +117,13 @@ const adminLearningPathController = new AdminLearningPathController(
   adminRepo,
 );
 const claudeController = new ClaudeController(claudeService, adminRepo);
+const geminiService = new GeminiService();
+const assetRepo = new AssetRepository(sql);
+const assetController = new AssetController(
+  assetRepo,
+  geminiService,
+  adminRepo,
+);
 const yamlImportController = new YamlImportController(sql, adminRepo);
 
 const app = await createApp({
@@ -131,6 +141,7 @@ const app = await createApp({
   adminExerciseController,
   adminLearningPathController,
   claudeController,
+  assetController,
   yamlImportController,
   sql,
 });

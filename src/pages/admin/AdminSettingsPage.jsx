@@ -15,6 +15,9 @@ import {
   fetchApiKeyStatus,
   setAdminApiKey,
   removeAdminApiKey,
+  getGeminiApiKeyStatus,
+  setGeminiApiKey,
+  removeGeminiApiKey,
 } from '../../api/admin.js';
 
 export default function AdminSettingsPage() {
@@ -24,15 +27,23 @@ export default function AdminSettingsPage() {
   const [errors, setErrors] = useState({});
   const [snackbar, setSnackbar] = useState(null);
 
-  // API Key state
+  // Claude API Key state
   const [apiKeyStatus, setApiKeyStatus] = useState(null);
   const [newApiKey, setNewApiKey] = useState('');
   const [apiKeySaving, setApiKeySaving] = useState(false);
+
+  // Gemini API Key state
+  const [geminiKeyStatus, setGeminiKeyStatus] = useState(null);
+  const [newGeminiKey, setNewGeminiKey] = useState('');
+  const [geminiKeySaving, setGeminiKeySaving] = useState(false);
 
   useEffect(() => {
     fetchApiKeyStatus()
       .then(setApiKeyStatus)
       .catch(() => setApiKeyStatus(null));
+    getGeminiApiKeyStatus()
+      .then(setGeminiKeyStatus)
+      .catch(() => setGeminiKeyStatus(null));
   }, []);
 
   // ─── Password handlers ──────────────────────────────
@@ -106,6 +117,36 @@ export default function AdminSettingsPage() {
     }
   }
 
+  // ─── Gemini API Key handlers ──────────────────────────
+
+  async function handleSaveGeminiKey() {
+    if (!newGeminiKey.trim()) return;
+    setGeminiKeySaving(true);
+    try {
+      const res = await setGeminiApiKey(newGeminiKey.trim());
+      setGeminiKeyStatus(res);
+      setNewGeminiKey('');
+      setSnackbar({ severity: 'success', text: 'Gemini API key saved' });
+    } catch (err) {
+      setSnackbar({ severity: 'error', text: err.message });
+    } finally {
+      setGeminiKeySaving(false);
+    }
+  }
+
+  async function handleRemoveGeminiKey() {
+    setGeminiKeySaving(true);
+    try {
+      await removeGeminiApiKey();
+      setGeminiKeyStatus({ configured: false, maskedKey: null });
+      setSnackbar({ severity: 'success', text: 'Gemini API key removed' });
+    } catch (err) {
+      setSnackbar({ severity: 'error', text: err.message });
+    } finally {
+      setGeminiKeySaving(false);
+    }
+  }
+
   return (
     <Box>
       <Typography variant="h2" sx={{ mb: 3 }}>
@@ -174,6 +215,68 @@ export default function AdminSettingsPage() {
         </Typography>
       </Paper>
 
+      {/* Gemini API Key */}
+      <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>
+        <Typography variant="h4" sx={{ mb: 2 }}>
+          Gemini API Key
+        </Typography>
+
+        <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            Status:
+          </Typography>
+          {geminiKeyStatus?.configured ? (
+            <Chip
+              label={`Configured (${geminiKeyStatus.maskedKey})`}
+              color="success"
+              size="small"
+            />
+          ) : (
+            <Chip label="Not configured" size="small" />
+          )}
+        </Stack>
+
+        <AdminFormField
+          label="API Key"
+          type="password"
+          value={newGeminiKey}
+          onChange={(e) => setNewGeminiKey(e.target.value)}
+          placeholder="AIza..."
+          autoComplete="off"
+        />
+
+        <Stack direction="row" spacing={1}>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={handleSaveGeminiKey}
+            loading={geminiKeySaving}
+            disabled={!newGeminiKey.trim()}
+          >
+            Save Key
+          </Button>
+          {geminiKeyStatus?.configured && (
+            <Button
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={handleRemoveGeminiKey}
+              loading={geminiKeySaving}
+            >
+              Remove Key
+            </Button>
+          )}
+        </Stack>
+
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: 'block', mt: 1.5 }}
+        >
+          Used by Asset Studio for AI image generation. Key is stored in server
+          memory only. Set GEMINI_API_KEY env var for persistence.
+        </Typography>
+      </Paper>
+
       {/* Change Password */}
       <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
@@ -227,7 +330,7 @@ export default function AdminSettingsPage() {
           Version: <strong>Phase 4 (dev)</strong>
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-          Schema: <strong>v24</strong>
+          Schema: <strong>v25</strong>
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Environment: <strong>{import.meta.env.MODE}</strong>

@@ -20,8 +20,26 @@ function renderFrame(ctx, sprite, frameIndex) {
   }
 }
 
+function renderSpriteSheetFrame(ctx, img, sheet, frameIndex) {
+  const { frameWidth, frameHeight } = sheet;
+  ctx.clearRect(0, 0, frameWidth, frameHeight);
+  const sx = frameIndex * frameWidth;
+  ctx.drawImage(
+    img,
+    sx,
+    0,
+    frameWidth,
+    frameHeight,
+    0,
+    0,
+    frameWidth,
+    frameHeight,
+  );
+}
+
 export default function PixelMascot({
   sprite = bulbasaur,
+  spriteSheet,
   scale = 4,
   show = true,
 }) {
@@ -32,8 +50,55 @@ export default function PixelMascot({
   const excitedRef = useRef(false);
   const excitedTimerRef = useRef(null);
 
+  // PNG sprite sheet mode
   useEffect(() => {
-    if (!show) return;
+    if (!show || !spriteSheet) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+
+    const img = new Image();
+    img.src = spriteSheet.src;
+
+    const fps = spriteSheet.fps || 4;
+    const frameDuration = 1000 / fps;
+    const frameCount = spriteSheet.frameCount;
+
+    frameRef.current = 0;
+    lastTimeRef.current = 0;
+
+    img.onload = () => {
+      renderSpriteSheetFrame(ctx, img, spriteSheet, 0);
+
+      function animate(timestamp) {
+        if (!lastTimeRef.current) lastTimeRef.current = timestamp;
+        const elapsed = timestamp - lastTimeRef.current;
+        const duration = excitedRef.current ? frameDuration / 2 : frameDuration;
+
+        if (elapsed >= duration) {
+          lastTimeRef.current = timestamp;
+          frameRef.current = (frameRef.current + 1) % frameCount;
+          renderSpriteSheetFrame(ctx, img, spriteSheet, frameRef.current);
+        }
+
+        rafRef.current = requestAnimationFrame(animate);
+      }
+
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (excitedTimerRef.current) clearTimeout(excitedTimerRef.current);
+    };
+  }, [show, spriteSheet]);
+
+  // JS array sprite mode (original)
+  useEffect(() => {
+    if (!show || spriteSheet) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -68,7 +133,7 @@ export default function PixelMascot({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (excitedTimerRef.current) clearTimeout(excitedTimerRef.current);
     };
-  }, [show, sprite]);
+  }, [show, sprite, spriteSheet]);
 
   function handleClick() {
     if (excitedRef.current) return;
@@ -83,8 +148,12 @@ export default function PixelMascot({
 
   if (!show) return null;
 
+  const w = spriteSheet ? spriteSheet.frameWidth : sprite.FRAME_WIDTH;
+  const h = spriteSheet ? spriteSheet.frameHeight : sprite.FRAME_HEIGHT;
+  const tooltipLabel = spriteSheet ? 'Mascot' : 'Bulbasaur';
+
   return (
-    <Tooltip title="Bulbasaur" placement="top">
+    <Tooltip title={tooltipLabel} placement="top">
       <Box
         onClick={handleClick}
         sx={{
@@ -100,12 +169,12 @@ export default function PixelMascot({
       >
         <canvas
           ref={canvasRef}
-          width={sprite.FRAME_WIDTH}
-          height={sprite.FRAME_HEIGHT}
+          width={w}
+          height={h}
           style={{
             display: 'block',
-            width: sprite.FRAME_WIDTH * scale,
-            height: sprite.FRAME_HEIGHT * scale,
+            width: w * scale,
+            height: h * scale,
             imageRendering: 'pixelated',
           }}
         />

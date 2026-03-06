@@ -104,7 +104,7 @@ const NAV_GROUPS = [
         path: '/admin/generate',
       },
       { label: 'YAML Import', icon: UploadFileIcon, path: '/admin/import' },
-      { label: 'Media Library', icon: PermMediaIcon, path: '/admin/media' },
+      { label: 'Asset Studio', icon: PermMediaIcon, path: '/admin/assets' },
     ],
   },
   {

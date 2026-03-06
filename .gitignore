@@ -50,3 +50,7 @@ docs/documentations/
 /media/**
 !/media/**/
 !/media/**/.gitkeep
+
+# Uploaded sprites (binary, not version-controlled)
+/server/uploads/sprites/**
+!/server/uploads/sprites/.gitkeep
