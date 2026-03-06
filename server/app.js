@@ -25,6 +25,7 @@ import { adminAuthRoutes } from './routes/adminAuthRoutes.js';
 import { adminRoutes } from './routes/adminRoutes.js';
 import { adminCrudRoutes } from './routes/adminCrudRoutes.js';
 import { adminExerciseRoutes } from './routes/adminExerciseRoutes.js';
+import { adminLearningPathRoutes } from './routes/adminLearningPathRoutes.js';
 import { AppError } from './errors/AppError.js';
 
 // __dirname equivalent for ES modules (app.js lives in server/, media/ is at project root)
@@ -47,6 +48,7 @@ export async function createApp({
   adminAuthController,
   adminCrudController,
   adminExerciseController,
+  adminLearningPathController,
   sql,
   logger = true,
 }) {
@@ -76,7 +78,7 @@ export async function createApp({
   await app.register(cors, {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'X-Session-Id', 'X-Request-Id'],
     exposedHeaders: ['X-Request-Id'],
     maxAge: 86400,
@@ -165,7 +167,7 @@ export async function createApp({
     });
   }
   if (adminController) {
-    app.register(adminRoutes(adminController, adminAuth), {
+    app.register(adminRoutes(adminController, adminAuth, adminAuthController), {
       prefix: '/api/admin',
     });
   }
@@ -178,6 +180,12 @@ export async function createApp({
     app.register(adminExerciseRoutes(adminExerciseController, adminAuth), {
       prefix: '/api/admin',
     });
+  }
+  if (adminLearningPathController) {
+    app.register(
+      adminLearningPathRoutes(adminLearningPathController, adminAuth),
+      { prefix: '/api/admin' },
+    );
   }
 
   // --- 404 handler ---

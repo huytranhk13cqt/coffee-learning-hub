@@ -211,6 +211,69 @@ const router = createBrowserRouter([
         ErrorBoundary: ErrorPage,
       },
       {
+        path: 'paths',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminLearningPathsPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'paths/new',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminLearningPathFormPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'paths/:id/edit',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminLearningPathFormPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'activity',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminActivityLogPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'review',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminReviewPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'weak-spots',
+        lazy: async () => {
+          const { default: Component, loader } =
+            await import('./pages/admin/AdminWeakSpotsPage.jsx');
+          return { Component, loader };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
+        path: 'settings',
+        lazy: async () => {
+          const { default: Component } =
+            await import('./pages/admin/AdminSettingsPage.jsx');
+          return { Component };
+        },
+        ErrorBoundary: ErrorPage,
+      },
+      {
         path: 'exercises/new',
         lazy: async () => {
           const { default: Component, loader } =

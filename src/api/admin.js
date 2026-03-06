@@ -243,3 +243,106 @@ export function reorderAdminExercises(lessonId, orderedIds) {
     body: JSON.stringify({ orderedIds }),
   });
 }
+
+// ─── LEARNING PATHS CRUD ────────────────────────────────────
+
+export function fetchAdminPaths() {
+  return adminRequest('/paths');
+}
+
+export function fetchAdminPath(id) {
+  return adminRequest(`/paths/${id}`);
+}
+
+export function createAdminPath(data) {
+  return adminRequest('/paths', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export function updateAdminPath(id, data) {
+  return adminRequest(`/paths/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export function deleteAdminPath(id) {
+  return adminRequest(`/paths/${id}`, { method: 'DELETE' });
+}
+
+export function reorderAdminPaths(orderedIds) {
+  return adminRequest('/paths/reorder', {
+    method: 'POST',
+    body: JSON.stringify({ orderedIds }),
+  });
+}
+
+export function replaceAdminPathSteps(pathId, steps) {
+  return adminRequest(`/paths/${pathId}/steps`, {
+    method: 'PUT',
+    body: JSON.stringify({ steps }),
+  });
+}
+
+export function toggleAdminPathActive(id) {
+  return adminRequest(`/paths/${id}/toggle-active`, { method: 'PATCH' });
+}
+
+// ─── ACTIVITY LOG ───────────────────────────────────────────
+
+export function fetchAdminActivityLog({
+  page,
+  pageSize,
+  action,
+  entityType,
+  from,
+  to,
+  search,
+} = {}) {
+  const params = new URLSearchParams();
+  if (page) params.set('page', page);
+  if (pageSize) params.set('pageSize', pageSize);
+  if (action) params.set('action', action);
+  if (entityType) params.set('entityType', entityType);
+  if (from) params.set('from', from);
+  if (to) params.set('to', to);
+  if (search) params.set('search', search);
+  const qs = params.toString();
+  return adminRequest(`/activity-log${qs ? `?${qs}` : ''}`);
+}
+
+// ─── REVIEW STATS ───────────────────────────────────────────
+
+export function fetchAdminReviewStats() {
+  return adminRequest('/review-stats');
+}
+
+// ─── WEAK SPOTS ─────────────────────────────────────────────
+
+export function fetchAdminWeakSpots({
+  minAttempts,
+  type,
+  lessonId,
+  categoryId,
+  limit,
+} = {}) {
+  const params = new URLSearchParams();
+  if (minAttempts) params.set('minAttempts', minAttempts);
+  if (type) params.set('type', type);
+  if (lessonId) params.set('lessonId', lessonId);
+  if (categoryId) params.set('categoryId', categoryId);
+  if (limit) params.set('limit', limit);
+  const qs = params.toString();
+  return adminRequest(`/weak-spots-aggregate${qs ? `?${qs}` : ''}`);
+}
+
+// ─── SETTINGS ───────────────────────────────────────────────
+
+export function changeAdminPassword(currentPassword, newPassword) {
+  return adminRequest('/settings/password', {
+    method: 'PUT',
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+}

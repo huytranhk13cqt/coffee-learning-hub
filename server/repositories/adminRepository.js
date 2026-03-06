@@ -207,4 +207,161 @@ export class AdminRepository {
       VALUES (${action}, ${entityType}, ${entityId ?? null}, ${metadata ?? {}}, ${ipAddress ?? null})
     `;
   }
+
+  // ─── ACTIVITY LOG ─────────────────────────────────────────
+
+  async findActionLogs({
+    page = 1,
+    pageSize = 25,
+    action,
+    entityType,
+    from,
+    to,
+    search,
+  } = {}) {
+    const offset = (page - 1) * pageSize;
+    const searchPattern = search
+      ? `%${search.replace(/[%_\\]/g, '\\$&')}%`
+      : null;
+
+    return this.sql`
+      SELECT id, action, entity_type, entity_id, metadata, ip_address, created_at
+      FROM admin_action_log
+      WHERE 1=1
+        ${action ? this.sql`AND action = ${action}` : this.sql``}
+        ${entityType ? this.sql`AND entity_type = ${entityType}` : this.sql``}
+        ${from ? this.sql`AND created_at >= ${from}::timestamptz` : this.sql``}
+        ${to ? this.sql`AND created_at <= ${to}::timestamptz + interval '1 day'` : this.sql``}
+        ${searchPattern ? this.sql`AND metadata::text ILIKE ${searchPattern}` : this.sql``}
+      ORDER BY created_at DESC
+      LIMIT ${pageSize}
+      OFFSET ${offset}
+    `;
+  }
+
+  async countActionLogs({ action, entityType, from, to, search } = {}) {
+    const searchPattern = search
+      ? `%${search.replace(/[%_\\]/g, '\\$&')}%`
+      : null;
+
+    const [{ total }] = await this.sql`
+      SELECT COUNT(*)::int AS total
+      FROM admin_action_log
+      WHERE 1=1
+        ${action ? this.sql`AND action = ${action}` : this.sql``}
+        ${entityType ? this.sql`AND entity_type = ${entityType}` : this.sql``}
+        ${from ? this.sql`AND created_at >= ${from}::timestamptz` : this.sql``}
+        ${to ? this.sql`AND created_at <= ${to}::timestamptz + interval '1 day'` : this.sql``}
+        ${searchPattern ? this.sql`AND metadata::text ILIKE ${searchPattern}` : this.sql``}
+    `;
+    return total;
+  }
+
+  // ─── REVIEW AGGREGATE STATS ───────────────────────────────
+
+  async getReviewAggregateStats() {
+    const [summary] = await this.sql`
+      SELECT
+        COUNT(*)::int AS total_enrolled,
+        COUNT(*) FILTER (WHERE next_review_at <= CURRENT_DATE)::int AS due_today,
+        COUNT(*) FILTER (WHERE next_review_at <= CURRENT_DATE + 7)::int AS due_this_week,
+        ROUND(AVG(ease_factor), 2) AS avg_ease_factor,
+        ROUND(AVG(interval_days), 1) AS avg_interval_days,
+        COUNT(DISTINCT session_id)::int AS unique_sessions
+      FROM exercise_review
+    `;
+
+    const easeDistribution = await this.sql`
+      SELECT
+        CASE
+          WHEN ease_factor < 1.7 THEN '1.3-1.7'
+          WHEN ease_factor < 2.1 THEN '1.7-2.1'
+          WHEN ease_factor < 2.5 THEN '2.1-2.5'
+          WHEN ease_factor < 2.9 THEN '2.5-2.9'
+          WHEN ease_factor < 3.3 THEN '2.9-3.3'
+          ELSE '3.3+'
+        END AS bucket,
+        COUNT(*)::int AS count
+      FROM exercise_review
+      GROUP BY bucket
+      ORDER BY bucket
+    `;
+
+    const intervalDistribution = await this.sql`
+      SELECT
+        CASE
+          WHEN interval_days <= 1 THEN '0-1'
+          WHEN interval_days <= 7 THEN '2-7'
+          WHEN interval_days <= 14 THEN '8-14'
+          WHEN interval_days <= 30 THEN '15-30'
+          ELSE '31+'
+        END AS bucket,
+        COUNT(*)::int AS count
+      FROM exercise_review
+      GROUP BY bucket
+      ORDER BY MIN(interval_days)
+    `;
+
+    const topReviewed = await this.sql`
+      SELECT
+        er.exercise_id,
+        e.question,
+        l.name AS lesson_name,
+        COUNT(DISTINCT er.session_id)::int AS review_count,
+        ROUND(AVG(er.ease_factor), 2) AS avg_ease
+      FROM exercise_review er
+      JOIN exercise e ON e.id = er.exercise_id
+      JOIN lesson l ON l.id = e.lesson_id
+      GROUP BY er.exercise_id, e.question, l.name
+      ORDER BY review_count DESC
+      LIMIT 10
+    `;
+
+    return {
+      ...summary,
+      ease_distribution: easeDistribution,
+      interval_distribution: intervalDistribution,
+      top_reviewed: topReviewed,
+    };
+  }
+
+  // ─── WEAK SPOTS AGGREGATE ────────────────────────────────
+
+  async getWeakSpotsAggregate({
+    minAttempts = 5,
+    type,
+    lessonId,
+    categoryId,
+    limit = 50,
+  } = {}) {
+    return this.sql`
+      SELECT
+        e.id AS exercise_id,
+        e.question,
+        e.question_vi,
+        e.type,
+        l.name AS lesson_name,
+        l.id AS lesson_id,
+        c.name AS category_name,
+        c.id AS category_id,
+        COUNT(*)::int AS total_attempts,
+        SUM(CASE WHEN ea.is_correct = FALSE THEN 1 ELSE 0 END)::int AS total_errors,
+        ROUND(
+          SUM(CASE WHEN ea.is_correct = FALSE THEN 1 ELSE 0 END)::NUMERIC / COUNT(*), 2
+        ) AS error_rate,
+        COUNT(DISTINCT ea.session_id)::int AS unique_sessions
+      FROM exercise_attempt ea
+      JOIN exercise e ON ea.exercise_id = e.id
+      JOIN lesson l ON e.lesson_id = l.id
+      JOIN category c ON l.group_id = c.id
+      WHERE e.is_active = TRUE
+        ${type ? this.sql`AND e.type = ${type}` : this.sql``}
+        ${lessonId ? this.sql`AND e.lesson_id = ${lessonId}` : this.sql``}
+        ${categoryId ? this.sql`AND l.group_id = ${categoryId}` : this.sql``}
+      GROUP BY e.id, e.question, e.question_vi, e.type, l.name, l.id, c.name, c.id
+      HAVING COUNT(*) >= ${minAttempts}
+      ORDER BY error_rate DESC, total_attempts DESC
+      LIMIT ${limit}
+    `;
+  }
 }

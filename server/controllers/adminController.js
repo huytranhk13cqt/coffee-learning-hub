@@ -87,4 +87,62 @@ export class AdminController {
       data: { exercises_by_type, sections_by_type, lessons_per_category },
     };
   };
+
+  /** GET /api/admin/activity-log — paginated action logs */
+  listActionLogs = async (request) => {
+    const page = parseInt(request.query.page, 10) || 1;
+    const pageSize = [25, 50, 100].includes(
+      parseInt(request.query.pageSize, 10),
+    )
+      ? parseInt(request.query.pageSize, 10)
+      : 25;
+    const action = request.query.action || null;
+    const entityType = request.query.entityType || null;
+    const from = request.query.from || null;
+    const to = request.query.to || null;
+    const search = request.query.search?.trim() || null;
+
+    const filters = { action, entityType, from, to, search };
+    const [data, total] = await Promise.all([
+      this.adminRepo.findActionLogs({ page, pageSize, ...filters }),
+      this.adminRepo.countActionLogs(filters),
+    ]);
+
+    return {
+      data,
+      pagination: {
+        page,
+        pageSize,
+        total,
+        totalPages: Math.ceil(total / pageSize),
+      },
+    };
+  };
+
+  /** GET /api/admin/review-stats — aggregate SM-2 stats */
+  getReviewStats = async () => {
+    const data = await this.adminRepo.getReviewAggregateStats();
+    return { data };
+  };
+
+  /** GET /api/admin/weak-spots-aggregate — cross-session weak spots */
+  getWeakSpots = async (request) => {
+    const minAttempts = parseInt(request.query.minAttempts, 10) || 5;
+    const type = request.query.type || null;
+    const lessonId = request.query.lessonId
+      ? parseInt(request.query.lessonId, 10)
+      : null;
+    const categoryId = request.query.categoryId
+      ? parseInt(request.query.categoryId, 10)
+      : null;
+    const limit = parseInt(request.query.limit, 10) || 50;
+    const data = await this.adminRepo.getWeakSpotsAggregate({
+      minAttempts,
+      type,
+      lessonId,
+      categoryId,
+      limit,
+    });
+    return { data };
+  };
 }

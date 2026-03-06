@@ -30,6 +30,8 @@ import { AdminCrudRepository } from './repositories/adminCrudRepository.js';
 import { AdminCrudController } from './controllers/adminCrudController.js';
 import { AdminExerciseRepository } from './repositories/adminExerciseRepository.js';
 import { AdminExerciseController } from './controllers/adminExerciseController.js';
+import { AdminLearningPathRepository } from './repositories/adminLearningPathRepository.js';
+import { AdminLearningPathController } from './controllers/adminLearningPathController.js';
 import { createApp } from './app.js';
 
 // --- Startup env validation (fail-fast) ---
@@ -101,6 +103,11 @@ const adminExerciseController = new AdminExerciseController(
   adminExerciseRepo,
   adminRepo,
 );
+const adminLearningPathRepo = new AdminLearningPathRepository(sql);
+const adminLearningPathController = new AdminLearningPathController(
+  adminLearningPathRepo,
+  adminRepo,
+);
 
 const app = await createApp({
   categoryController,
@@ -115,6 +122,7 @@ const app = await createApp({
   adminAuthController,
   adminCrudController,
   adminExerciseController,
+  adminLearningPathController,
   sql,
 });
 

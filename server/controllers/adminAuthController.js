@@ -59,4 +59,36 @@ export class AdminAuthController {
       return reply.send({ authenticated: false });
     }
   };
+
+  /**
+   * PUT /api/admin/settings/password
+   * Changes the admin password (runtime-only, resets on server restart).
+   */
+  changePassword = async (request) => {
+    const { currentPassword, newPassword } = request.body || {};
+    if (!currentPassword || !newPassword) {
+      throw new ValidationError('currentPassword and newPassword are required');
+    }
+    if (currentPassword !== this.adminPassword) {
+      throw new UnauthorizedError('Current password is incorrect');
+    }
+    if (newPassword.length < 8) {
+      throw new ValidationError('New password must be at least 8 characters');
+    }
+    // Update in-memory password
+    this.adminPassword = newPassword;
+
+    this.adminRepo.logAction({
+      action: 'update',
+      entityType: 'admin',
+      metadata: { action: 'password_change' },
+      ipAddress: request.ip,
+    });
+
+    return {
+      success: true,
+      warning:
+        'Password changed for this server session only. Update ADMIN_PASSWORD env var for persistence.',
+    };
+  };
 }
