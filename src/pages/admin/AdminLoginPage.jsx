@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
               />
 
               {error && (
-                <Alert severity="error" sx={{ mb: 2, borderRadius: 0 }}>
+                <Alert severity="error" sx={{ mb: 2 }}>
                   {error}
                 </Alert>
               )}

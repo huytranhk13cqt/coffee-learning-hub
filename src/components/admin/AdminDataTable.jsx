@@ -121,8 +121,6 @@ export default function AdminDataTable({
                 key={header.id}
                 sx={{
                   width: header.getSize(),
-                  fontFamily: '"Silkscreen", cursive',
-                  fontSize: '0.8rem',
                   borderBottom: '2px solid',
                   borderColor: 'divider',
                 }}

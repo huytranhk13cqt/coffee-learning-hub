@@ -353,7 +353,7 @@ function AdminLayoutContent() {
               bgcolor: 'background.paper',
               borderRight: '2px solid',
               borderColor: 'divider',
-              transition: 'width 0.15s step-end',
+              transition: 'width 0.2s ease-out',
             },
           }}
         >

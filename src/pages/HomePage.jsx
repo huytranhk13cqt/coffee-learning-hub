@@ -570,7 +570,7 @@ function CategoryCard({ group }) {
           <Chip
             label={`${group.lessons.length} bài học`}
             size="small"
-            sx={{ backgroundColor: group.color, color: '#fff' }}
+            sx={{ backgroundColor: group.color, color: 'common.white' }}
           />
         </Box>
       </CardContent>

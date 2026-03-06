@@ -47,7 +47,7 @@ export default function AdminContentHealth({ health }) {
               width: 16,
               height: 16,
               borderRadius: '50%',
-              bgcolor: LEVEL_COLORS[score?.level] || 'grey.500',
+              bgcolor: LEVEL_COLORS[score?.level] || 'text.disabled',
               flexShrink: 0,
             }}
           />

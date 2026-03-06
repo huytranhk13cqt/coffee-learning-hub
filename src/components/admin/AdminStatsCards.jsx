@@ -42,10 +42,9 @@ export default function AdminStatsCards({ stats }) {
               minHeight: 100,
               '&:hover': {
                 transform: 'translateY(-2px)',
-                boxShadow: (t) =>
-                  `4px 0 0 0 ${t.palette.primary.main}, -4px 0 0 0 ${t.palette.primary.main}, 0 4px 0 0 ${t.palette.primary.main}, 0 -4px 0 0 ${t.palette.primary.main}`,
+                boxShadow: 3,
               },
-              transition: 'transform 0.1s step-end, box-shadow 0.1s step-end',
+              transition: 'transform 0.15s ease-out, box-shadow 0.15s ease-out',
             }}
           >
             <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>

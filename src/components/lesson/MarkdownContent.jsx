@@ -98,7 +98,7 @@ export default function MarkdownContent({ content, sx }) {
           fontFamily: 'monospace',
         },
         '& pre': {
-          bgcolor: 'grey.900',
+          bgcolor: 'background.paper',
           p: 2,
           borderRadius: 1,
           overflow: 'auto',
@@ -106,7 +106,7 @@ export default function MarkdownContent({ content, sx }) {
           '& code': {
             bgcolor: 'transparent',
             p: 0,
-            color: 'grey.100',
+            color: 'text.primary',
           },
         },
         '& blockquote': {

@@ -221,66 +221,12 @@ export default function AdminActivityLogPage() {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell
-                sx={{
-                  fontFamily: '"Silkscreen", cursive',
-                  fontSize: '0.8rem',
-                  borderBottom: '2px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                Time
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: '"Silkscreen", cursive',
-                  fontSize: '0.8rem',
-                  borderBottom: '2px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                Action
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: '"Silkscreen", cursive',
-                  fontSize: '0.8rem',
-                  borderBottom: '2px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                Entity
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: '"Silkscreen", cursive',
-                  fontSize: '0.8rem',
-                  borderBottom: '2px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                ID
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: '"Silkscreen", cursive',
-                  fontSize: '0.8rem',
-                  borderBottom: '2px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                Details
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: '"Silkscreen", cursive',
-                  fontSize: '0.8rem',
-                  borderBottom: '2px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                IP
-              </TableCell>
+              <TableCell>Time</TableCell>
+              <TableCell>Action</TableCell>
+              <TableCell>Entity</TableCell>
+              <TableCell>ID</TableCell>
+              <TableCell>Details</TableCell>
+              <TableCell>IP</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

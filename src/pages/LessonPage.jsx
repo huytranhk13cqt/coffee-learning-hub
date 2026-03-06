@@ -225,7 +225,7 @@ export default function LessonPage() {
             <Chip
               label={lesson.group_name_vi}
               size="small"
-              sx={{ bgcolor: lesson.group_color, color: '#fff' }}
+              sx={{ bgcolor: lesson.group_color, color: 'common.white' }}
             />
             <LessonStatusChip status={progress?.status} />
           </Stack>

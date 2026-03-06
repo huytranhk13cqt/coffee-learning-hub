@@ -171,56 +171,11 @@ export default function AdminReviewPage() {
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell
-                  sx={{
-                    fontFamily: '"Silkscreen", cursive',
-                    fontSize: '0.8rem',
-                    borderBottom: '2px solid',
-                    borderColor: 'divider',
-                  }}
-                >
-                  #
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: '"Silkscreen", cursive',
-                    fontSize: '0.8rem',
-                    borderBottom: '2px solid',
-                    borderColor: 'divider',
-                  }}
-                >
-                  Question
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: '"Silkscreen", cursive',
-                    fontSize: '0.8rem',
-                    borderBottom: '2px solid',
-                    borderColor: 'divider',
-                  }}
-                >
-                  Lesson
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: '"Silkscreen", cursive',
-                    fontSize: '0.8rem',
-                    borderBottom: '2px solid',
-                    borderColor: 'divider',
-                  }}
-                >
-                  Reviews
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: '"Silkscreen", cursive',
-                    fontSize: '0.8rem',
-                    borderBottom: '2px solid',
-                    borderColor: 'divider',
-                  }}
-                >
-                  Avg EF
-                </TableCell>
+                <TableCell>#</TableCell>
+                <TableCell>Question</TableCell>
+                <TableCell>Lesson</TableCell>
+                <TableCell>Reviews</TableCell>
+                <TableCell>Avg EF</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

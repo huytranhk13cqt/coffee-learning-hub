@@ -125,7 +125,7 @@ export default function PathDetailPage() {
               mb: 3,
               textAlign: 'center',
               bgcolor: 'success.main',
-              color: '#fff',
+              color: 'common.white',
             }}
           >
             <Typography variant="h6" fontWeight={700}>
@@ -186,7 +186,10 @@ export default function PathDetailPage() {
                           : isActive
                             ? 'primary.main'
                             : 'action.hover',
-                        color: isDone || isActive ? '#fff' : 'text.secondary',
+                        color:
+                          isDone || isActive
+                            ? 'common.white'
+                            : 'text.secondary',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',

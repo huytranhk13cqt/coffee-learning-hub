@@ -6,6 +6,7 @@ import {
   useRouteLoaderData,
   Link as RouterLink,
 } from 'react-router';
+import '@fontsource/silkscreen/400.css';
 import { ThemeProvider, useColorScheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
