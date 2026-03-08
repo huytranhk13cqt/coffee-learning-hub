@@ -18,8 +18,8 @@ import { CSS } from '@dnd-kit/utilities';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
+import { PixelFrame } from '../../components/pixel/index.js';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import TextField from '@mui/material/TextField';
@@ -133,7 +133,12 @@ function SortableSectionCard({
     : '';
 
   return (
-    <Paper ref={setNodeRef} style={style} sx={{ mb: 2, overflow: 'hidden' }}>
+    <PixelFrame
+      ref={setNodeRef}
+      variant="default"
+      style={style}
+      sx={{ mb: 2, overflow: 'hidden' }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -265,7 +270,7 @@ function SortableSectionCard({
           </Button>
         </Box>
       </Collapse>
-    </Paper>
+    </PixelFrame>
   );
 }
 
@@ -387,14 +392,17 @@ export default function AdminSectionsPage() {
       </DndContext>
 
       {sections.length === 0 && (
-        <Paper sx={{ p: 4, textAlign: 'center', mb: 2 }}>
+        <PixelFrame variant="default" sx={{ p: 4, textAlign: 'center', mb: 2 }}>
           <Typography variant="body1" color="text.secondary">
             No sections yet. Add one below.
           </Typography>
-        </Paper>
+        </PixelFrame>
       )}
 
-      <Paper sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+      <PixelFrame
+        variant="default"
+        sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}
+      >
         <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>
           Add Section:
         </Typography>
@@ -420,7 +428,7 @@ export default function AdminSectionsPage() {
         >
           Add
         </Button>
-      </Paper>
+      </PixelFrame>
 
       <DeleteConfirmDialog
         open={!!deleteItem}

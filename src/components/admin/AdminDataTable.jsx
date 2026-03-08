@@ -31,8 +31,8 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
-import Paper from '@mui/material/Paper';
 import InputAdornment from '@mui/material/InputAdornment';
+import { PixelFrame } from '../pixel/index.js';
 import { SearchIcon } from '../pixel/icons.jsx';
 import { DragHandleCell, SortableTableRow } from './DragHandle.jsx';
 
@@ -101,11 +101,11 @@ export default function AdminDataTable({
 
   if (loading) {
     return (
-      <Paper sx={{ p: 2 }}>
+      <PixelFrame variant="default" sx={{ p: 2 }}>
         {Array.from({ length: 5 }).map((_, i) => (
           <Skeleton key={i} height={48} sx={{ mb: 1 }} />
         ))}
-      </Paper>
+      </PixelFrame>
     );
   }
 
@@ -205,7 +205,7 @@ export default function AdminDataTable({
         sx={{ mb: 2, maxWidth: 360 }}
       />
 
-      <Paper sx={{ overflow: 'auto' }}>
+      <PixelFrame variant="default" sx={{ overflow: 'auto' }}>
         {onReorder ? (
           <DndContext
             sensors={sensors}
@@ -223,7 +223,7 @@ export default function AdminDataTable({
         ) : (
           tableContent
         )}
-      </Paper>
+      </PixelFrame>
 
       <TablePagination
         component="div"

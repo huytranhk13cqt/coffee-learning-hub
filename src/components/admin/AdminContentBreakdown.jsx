@@ -1,8 +1,6 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
+import { PixelFrame, PixelDivider } from '../pixel/index.js';
 
 function CSSBarChart({ items, label }) {
   if (!items || items.length === 0) return null;
@@ -70,15 +68,13 @@ export default function AdminContentBreakdown({ breakdown }) {
   const data = breakdown.data || breakdown;
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h4" gutterBottom>
-          Content Breakdown
-        </Typography>
-        <CSSBarChart items={data.exercises_by_type} label="Exercises by Type" />
-        <Divider sx={{ my: 2 }} />
-        <CSSBarChart items={data.sections_by_type} label="Sections by Type" />
-      </CardContent>
-    </Card>
+    <PixelFrame variant="raised" sx={{ p: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Content Breakdown
+      </Typography>
+      <CSSBarChart items={data.exercises_by_type} label="Exercises by Type" />
+      <PixelDivider sx={{ my: 2 }} />
+      <CSSBarChart items={data.sections_by_type} label="Sections by Type" />
+    </PixelFrame>
   );
 }

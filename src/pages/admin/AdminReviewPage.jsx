@@ -1,10 +1,8 @@
 import { useLoaderData } from 'react-router';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { PixelFrame } from '../../components/pixel/index.js';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
@@ -109,60 +107,58 @@ export default function AdminReviewPage() {
       <Grid container spacing={2} sx={{ mb: 3 }}>
         {STAT_CARDS.map(({ key, label, color }) => (
           <Grid key={key} size={{ xs: 6, sm: 3 }}>
-            <Card>
-              <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                <Typography variant="h3" sx={{ color }}>
-                  {data[key] ?? 0}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {label}
-                </Typography>
-              </CardContent>
-            </Card>
+            <PixelFrame variant="raised" sx={{ p: 2 }}>
+              <Typography variant="h3" sx={{ color }}>
+                {data[key] ?? 0}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {label}
+              </Typography>
+            </PixelFrame>
           </Grid>
         ))}
       </Grid>
 
       <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid size={{ xs: 6 }}>
-          <Paper sx={{ p: 2 }}>
+          <PixelFrame variant="default" sx={{ p: 2 }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
               Avg Ease Factor: <strong>{data.avg_ease_factor ?? '-'}</strong>
             </Typography>
-          </Paper>
+          </PixelFrame>
         </Grid>
         <Grid size={{ xs: 6 }}>
-          <Paper sx={{ p: 2 }}>
+          <PixelFrame variant="default" sx={{ p: 2 }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
               Avg Interval:{' '}
               <strong>{data.avg_interval_days ?? '-'} days</strong>
             </Typography>
-          </Paper>
+          </PixelFrame>
         </Grid>
       </Grid>
 
       <Grid container spacing={3} sx={{ mb: 3 }}>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Paper sx={{ p: 3 }}>
+          <PixelFrame variant="default" sx={{ p: 3 }}>
             <CssBarChart
               data={data.ease_distribution}
               colors={EASE_COLORS}
               title="Ease Factor Distribution"
             />
-          </Paper>
+          </PixelFrame>
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Paper sx={{ p: 3 }}>
+          <PixelFrame variant="default" sx={{ p: 3 }}>
             <CssBarChart
               data={data.interval_distribution}
               colors={INTERVAL_COLORS}
               title="Interval Distribution (days)"
             />
-          </Paper>
+          </PixelFrame>
         </Grid>
       </Grid>
 
-      <Paper sx={{ p: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Top 10 Most Reviewed Exercises
         </Typography>
@@ -209,7 +205,7 @@ export default function AdminReviewPage() {
             </TableBody>
           </Table>
         </Box>
-      </Paper>
+      </PixelFrame>
     </Box>
   );
 }

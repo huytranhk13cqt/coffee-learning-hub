@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../../pixel/index.js';
 import Box from '@mui/material/Box';
 
 export default function SentenceTransform({
@@ -11,7 +11,7 @@ export default function SentenceTransform({
 }) {
   return (
     <Box>
-      <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+      <PixelFrame variant="inset" sx={{ p: 2, mb: 2 }}>
         <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
           {exercise.content}
         </Typography>
@@ -20,7 +20,7 @@ export default function SentenceTransform({
             {exercise.content_vi}
           </Typography>
         )}
-      </Paper>
+      </PixelFrame>
       <TextField
         fullWidth
         size="small"

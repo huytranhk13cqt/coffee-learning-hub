@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
+import { PixelFrame } from '../../components/pixel/index.js';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
@@ -218,7 +218,7 @@ export default function AdminActivityLogPage() {
         </TextField>
       </Box>
 
-      <Paper sx={{ overflow: 'auto', mb: 2 }}>
+      <PixelFrame variant="default" sx={{ overflow: 'auto', mb: 2 }}>
         <Table size="small">
           <TableHead>
             <TableRow>
@@ -278,7 +278,7 @@ export default function AdminActivityLogPage() {
             )}
           </TableBody>
         </Table>
-      </Paper>
+      </PixelFrame>
 
       <Box
         sx={{

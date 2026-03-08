@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../../pixel/index.js';
 import Box from '@mui/material/Box';
 
 export default function ErrorCorrection({
@@ -11,8 +11,8 @@ export default function ErrorCorrection({
 }) {
   return (
     <Box>
-      <Paper
-        variant="outlined"
+      <PixelFrame
+        variant="inset"
         role="region"
         aria-label="Câu có lỗi cần sửa"
         sx={{ p: 2, mb: 2, bgcolor: 'error.50', borderColor: 'error.200' }}
@@ -23,7 +23,7 @@ export default function ErrorCorrection({
         >
           {exercise.content}
         </Typography>
-      </Paper>
+      </PixelFrame>
       <TextField
         fullWidth
         size="small"

@@ -2,7 +2,7 @@ import { useEffect, useState, useId } from 'react';
 import mermaid from 'mermaid';
 import DOMPurify from 'dompurify';
 import { useColorScheme } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../../pixel/index.js';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -64,7 +64,7 @@ export default function DiagramSection({ section }) {
   if (!diagramCode) return null;
 
   return (
-    <Paper variant="outlined" sx={{ p: 2.5 }}>
+    <PixelFrame variant="default" sx={{ p: 2.5 }}>
       {section.title_vi && (
         <Typography variant="h6" gutterBottom>
           {section.title_vi}
@@ -98,6 +98,6 @@ export default function DiagramSection({ section }) {
           sx={{ mt: 1.5, '& p:last-child': { mb: 0 } }}
         />
       )}
-    </Paper>
+    </PixelFrame>
   );
 }

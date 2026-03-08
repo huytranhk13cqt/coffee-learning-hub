@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { PixelFrame } from '../pixel/index.js';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -41,60 +40,58 @@ export default function UsageSection({ usages }) {
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {usages.map((usage) => (
-          <Card key={usage.id} variant="outlined">
-            <CardContent>
-              <Typography variant="subtitle1" fontWeight={600}>
-                {usage.title}
+          <PixelFrame key={usage.id} variant="default" sx={{ p: 2 }}>
+            <Typography variant="subtitle1" fontWeight={600}>
+              {usage.title}
+            </Typography>
+            {usage.title_vi && (
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                {usage.title_vi}
               </Typography>
-              {usage.title_vi && (
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  {usage.title_vi}
-                </Typography>
-              )}
+            )}
 
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                {usage.description_vi || usage.description}
-              </Typography>
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              {usage.description_vi || usage.description}
+            </Typography>
 
-              {usage.examples.length > 0 && (
-                <List dense sx={{ mt: 1 }}>
-                  {usage.examples.map((ex) => (
-                    <ListItem
-                      key={ex.id}
-                      sx={{
-                        px: 0,
-                        ...(ex.audio_url && {
-                          flexDirection: 'column',
-                          alignItems: 'flex-start',
-                        }),
+            {usage.examples.length > 0 && (
+              <List dense sx={{ mt: 1 }}>
+                {usage.examples.map((ex) => (
+                  <ListItem
+                    key={ex.id}
+                    sx={{
+                      px: 0,
+                      ...(ex.audio_url && {
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                      }),
+                    }}
+                  >
+                    <ListItemText
+                      primary={highlightText(ex.sentence, ex.highlight_word)}
+                      secondary={ex.sentence_vi}
+                      slotProps={{
+                        primary: { sx: { fontStyle: 'italic' } },
                       }}
-                    >
-                      <ListItemText
-                        primary={highlightText(ex.sentence, ex.highlight_word)}
-                        secondary={ex.sentence_vi}
-                        slotProps={{
-                          primary: { sx: { fontStyle: 'italic' } },
+                    />
+                    {ex.audio_url && (
+                      <Box
+                        component="audio"
+                        controls
+                        src={ex.audio_url}
+                        aria-label={`Nghe phát âm: ${ex.sentence}`}
+                        sx={{
+                          mt: 0.5,
+                          height: 32,
+                          maxWidth: 300,
                         }}
                       />
-                      {ex.audio_url && (
-                        <Box
-                          component="audio"
-                          controls
-                          src={ex.audio_url}
-                          aria-label={`Nghe phát âm: ${ex.sentence}`}
-                          sx={{
-                            mt: 0.5,
-                            height: 32,
-                            maxWidth: 300,
-                          }}
-                        />
-                      )}
-                    </ListItem>
-                  ))}
-                </List>
-              )}
-            </CardContent>
-          </Card>
+                    )}
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </PixelFrame>
         ))}
       </Box>
     </Box>

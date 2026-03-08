@@ -1,5 +1,3 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -7,6 +5,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
+import { PixelFrame } from '../pixel/index.js';
 import {
   MenuBookIcon,
   AssignmentIcon,
@@ -46,53 +45,51 @@ export default function AdminRecentActivity({ activity }) {
   const items = activity?.data ?? activity ?? [];
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h4" gutterBottom>
-          Recent Activity
+    <PixelFrame variant="raised" sx={{ p: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Recent Activity
+      </Typography>
+      {items.length === 0 ? (
+        <Typography variant="body2" color="text.secondary">
+          No recent activity
         </Typography>
-        {items.length === 0 ? (
-          <Typography variant="body2" color="text.secondary">
-            No recent activity
-          </Typography>
-        ) : (
-          <List disablePadding sx={{ maxHeight: 360, overflowY: 'auto' }}>
-            {items.slice(0, 10).map((item, i) => {
-              const Icon = TYPE_ICONS[item.type] || MenuBookIcon;
-              return (
-                <ListItem
-                  key={`${item.type}-${item.id}-${i}`}
-                  sx={{ px: 0 }}
-                  secondaryAction={
-                    <Chip
-                      label={item.type}
-                      size="small"
-                      color={TYPE_COLORS[item.type] || 'default'}
-                      variant="outlined"
-                    />
-                  }
-                >
-                  <ListItemIcon sx={{ minWidth: 36 }}>
-                    <Icon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <Typography variant="body2" noWrap sx={{ maxWidth: 180 }}>
-                        {item.name}
-                      </Typography>
-                    }
-                    secondary={
-                      <Box component="span">
-                        {item.action} {relativeTime(item.timestamp)}
-                      </Box>
-                    }
+      ) : (
+        <List disablePadding sx={{ maxHeight: 360, overflowY: 'auto' }}>
+          {items.slice(0, 10).map((item, i) => {
+            const Icon = TYPE_ICONS[item.type] || MenuBookIcon;
+            return (
+              <ListItem
+                key={`${item.type}-${item.id}-${i}`}
+                sx={{ px: 0 }}
+                secondaryAction={
+                  <Chip
+                    label={item.type}
+                    size="small"
+                    color={TYPE_COLORS[item.type] || 'default'}
+                    variant="outlined"
                   />
-                </ListItem>
-              );
-            })}
-          </List>
-        )}
-      </CardContent>
-    </Card>
+                }
+              >
+                <ListItemIcon sx={{ minWidth: 36 }}>
+                  <Icon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography variant="body2" noWrap sx={{ maxWidth: 180 }}>
+                      {item.name}
+                    </Typography>
+                  }
+                  secondary={
+                    <Box component="span">
+                      {item.action} {relativeTime(item.timestamp)}
+                    </Box>
+                  }
+                />
+              </ListItem>
+            );
+          })}
+        </List>
+      )}
+    </PixelFrame>
   );
 }

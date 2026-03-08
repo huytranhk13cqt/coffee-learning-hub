@@ -17,7 +17,7 @@ import {
   Legend,
 } from 'recharts';
 import { useTheme } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../../pixel/index.js';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import MarkdownContent from '../MarkdownContent.jsx';
@@ -148,7 +148,7 @@ export default function ChartSection({ section }) {
   if (!chart) return null;
 
   return (
-    <Paper variant="outlined" sx={{ p: 2.5 }}>
+    <PixelFrame variant="default" sx={{ p: 2.5 }}>
       {section.title_vi && (
         <Typography variant="h6" gutterBottom>
           {section.title_vi}
@@ -165,6 +165,6 @@ export default function ChartSection({ section }) {
           sx={{ mt: 1.5, '& p:last-child': { mb: 0 } }}
         />
       )}
-    </Paper>
+    </PixelFrame>
   );
 }

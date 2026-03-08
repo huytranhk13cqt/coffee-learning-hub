@@ -1,8 +1,7 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import { PixelFrame } from '../pixel/index.js';
 import {
   FolderOpenIcon,
   CategoryIcon,
@@ -59,9 +58,11 @@ export default function AdminStatsCards({ stats }) {
     <Grid container spacing={2}>
       {STAT_CARDS.map(({ key, label, icon: Icon, color }) => (
         <Grid key={key} size={{ xs: 6, sm: 4, md: 2 }}>
-          <Card
+          <PixelFrame
+            variant="raised"
             sx={{
               minHeight: 100,
+              p: 2,
               borderTop: `3px solid ${color}`,
               position: 'relative',
               overflow: 'hidden',
@@ -72,32 +73,29 @@ export default function AdminStatsCards({ stats }) {
               transition: 'transform 0.2s ease-out, box-shadow 0.2s ease-out',
             }}
           >
-            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Box
-                  sx={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 2,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    bgcolor: `${color}18`,
-                    border: `1px solid ${color}30`,
-                    flexShrink: 0,
-                  }}
-                >
-                  <Icon sx={{ fontSize: '1.4rem', color }} />
-                </Box>
-                <Box>
-                  <Typography variant="h3">{stats[key] ?? 0}</Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {label}
-                  </Typography>
-                </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  bgcolor: `${color}18`,
+                  border: `2px solid ${color}30`,
+                  flexShrink: 0,
+                }}
+              >
+                <Icon sx={{ fontSize: '1.4rem', color }} />
               </Box>
-            </CardContent>
-          </Card>
+              <Box>
+                <Typography variant="h3">{stats[key] ?? 0}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {label}
+                </Typography>
+              </Box>
+            </Box>
+          </PixelFrame>
         </Grid>
       ))}
     </Grid>

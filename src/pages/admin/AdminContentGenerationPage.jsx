@@ -1,8 +1,8 @@
 import { useState, useReducer, useRef, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import { PixelFrame } from '../../components/pixel/index.js';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import Switch from '@mui/material/Switch';
@@ -181,7 +181,7 @@ export default function AdminContentGenerationPage() {
       )}
 
       {/* Configuration */}
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Configuration
         </Typography>
@@ -258,10 +258,10 @@ export default function AdminContentGenerationPage() {
             {thinking ? 'with thinking' : 'no thinking'})
           </Typography>
         </Stack>
-      </Paper>
+      </PixelFrame>
 
       {/* Prompts */}
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Prompts
         </Typography>
@@ -300,7 +300,7 @@ export default function AdminContentGenerationPage() {
           rows={5}
           placeholder="Describe what content you want to generate..."
         />
-      </Paper>
+      </PixelFrame>
 
       {/* Generate button */}
       <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
@@ -347,7 +347,7 @@ export default function AdminContentGenerationPage() {
 
       {/* Thinking output */}
       {state.thinking && (
-        <Paper sx={{ p: 2, mb: 2, bgcolor: 'action.hover' }}>
+        <PixelFrame variant="inset" sx={{ p: 2, mb: 2 }}>
           <Stack
             direction="row"
             spacing={1}
@@ -381,12 +381,12 @@ export default function AdminContentGenerationPage() {
               {state.thinking}
             </Box>
           </Collapse>
-        </Paper>
+        </PixelFrame>
       )}
 
       {/* Text output */}
       {state.text && (
-        <Paper sx={{ p: 3, mb: 2 }}>
+        <PixelFrame variant="default" sx={{ p: 3, mb: 2 }}>
           <Stack
             direction="row"
             justifyContent="space-between"
@@ -413,12 +413,12 @@ export default function AdminContentGenerationPage() {
           >
             {state.text}
           </Box>
-        </Paper>
+        </PixelFrame>
       )}
 
       {/* Usage info */}
       {state.usage && (
-        <Paper sx={{ p: 2 }}>
+        <PixelFrame variant="default" sx={{ p: 2 }}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Usage
           </Typography>
@@ -434,7 +434,7 @@ export default function AdminContentGenerationPage() {
               variant="outlined"
             />
           </Stack>
-        </Paper>
+        </PixelFrame>
       )}
     </Box>
   );

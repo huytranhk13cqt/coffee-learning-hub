@@ -4,18 +4,15 @@ import { exportSession, importSession } from '../api/progress.js';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
+import { PixelFrame, PixelDivider } from '../components/pixel/index.js';
 import {
   DownloadIcon,
   UploadIcon,
@@ -160,69 +157,66 @@ export default function SettingsPage() {
 
         <Stack spacing={3} maxWidth={640}>
           {/* Export */}
-          <Card variant="outlined">
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Sao lưu tiến trình
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Tải xuống toàn bộ tiến trình học tập, bài tập, thành tựu và lịch
-                sử ôn tập dưới dạng file JSON. Bạn có thể dùng file này để khôi
-                phục dữ liệu trên thiết bị khác hoặc sau khi xóa cache trình
-                duyệt.
-              </Typography>
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ p: 2 }}>
-              <Button
-                variant="contained"
-                startIcon={<DownloadIcon />}
-                onClick={handleExport}
-                loading={exportLoading}
-                loadingPosition="start"
-              >
-                Tải xuống file sao lưu
-              </Button>
-            </CardActions>
-          </Card>
+          <PixelFrame variant="raised" sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>
+              Sao lưu tiến trình
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Tải xuống toàn bộ tiến trình học tập, bài tập, thành tựu và lịch
+              sử ôn tập dưới dạng file JSON. Bạn có thể dùng file này để khôi
+              phục dữ liệu trên thiết bị khác hoặc sau khi xóa cache trình
+              duyệt.
+            </Typography>
+            <PixelDivider sx={{ my: 2 }} />
+            <Button
+              variant="contained"
+              startIcon={<DownloadIcon />}
+              onClick={handleExport}
+              loading={exportLoading}
+              loadingPosition="start"
+            >
+              Tải xuống file sao lưu
+            </Button>
+          </PixelFrame>
 
           {/* Import */}
-          <Card variant="outlined" sx={{ borderColor: 'warning.main' }}>
-            <CardContent>
-              <Box
-                sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}
-              >
-                <WarningAmberIcon color="warning" fontSize="small" />
-                <Typography variant="h6">Khôi phục tiến trình</Typography>
-              </Box>
-              <Typography variant="body2" color="text.secondary">
-                Nhập file sao lưu để khôi phục tiến trình học tập. Dữ liệu hiện
-                tại sẽ được <strong>gộp</strong> với dữ liệu từ file — tiến
-                trình tốt hơn sẽ được giữ lại. Lịch sử XP và hoạt động hàng ngày
-                sẽ được thay thế hoàn toàn bằng dữ liệu từ file.
-              </Typography>
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ p: 2 }}>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".json,application/json"
-                style={{ display: 'none' }}
-                onChange={handleFilePick}
-              />
-              <Button
-                variant="outlined"
-                color="warning"
-                startIcon={<UploadIcon />}
-                onClick={() => fileInputRef.current?.click()}
-                loading={importLoading}
-                loadingPosition="start"
-              >
-                Chọn file sao lưu để khôi phục
-              </Button>
-            </CardActions>
-          </Card>
+          <PixelFrame
+            variant="raised"
+            sx={{
+              p: 3,
+              borderTop: '3px solid',
+              borderTopColor: 'warning.main',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+              <WarningAmberIcon color="warning" fontSize="small" />
+              <Typography variant="h6">Khôi phục tiến trình</Typography>
+            </Box>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Nhập file sao lưu để khôi phục tiến trình học tập. Dữ liệu hiện
+              tại sẽ được <strong>gộp</strong> với dữ liệu từ file — tiến trình
+              tốt hơn sẽ được giữ lại. Lịch sử XP và hoạt động hàng ngày sẽ được
+              thay thế hoàn toàn bằng dữ liệu từ file.
+            </Typography>
+            <PixelDivider sx={{ my: 2 }} />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json,application/json"
+              style={{ display: 'none' }}
+              onChange={handleFilePick}
+            />
+            <Button
+              variant="outlined"
+              color="warning"
+              startIcon={<UploadIcon />}
+              onClick={() => fileInputRef.current?.click()}
+              loading={importLoading}
+              loadingPosition="start"
+            >
+              Chọn file sao lưu để khôi phục
+            </Button>
+          </PixelFrame>
         </Stack>
 
         {/* Confirm import dialog */}

@@ -18,14 +18,13 @@ import { CSS } from '@dnd-kit/utilities';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { PixelFrame, PixelDivider } from '../../components/pixel/index.js';
 import {
   ArrowBackIcon,
   SaveIcon,
@@ -96,8 +95,9 @@ function SortableStepItem({ step, index, onRemove }) {
   };
 
   return (
-    <Paper
+    <PixelFrame
       ref={setNodeRef}
+      variant="default"
       style={style}
       {...attributes}
       sx={{
@@ -135,7 +135,7 @@ function SortableStepItem({ step, index, onRemove }) {
       >
         <DeleteIcon fontSize="small" />
       </IconButton>
-    </Paper>
+    </PixelFrame>
   );
 }
 
@@ -325,7 +325,7 @@ export default function AdminLearningPathFormPage() {
         </Typography>
       )}
 
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Basic Info
         </Typography>
@@ -372,9 +372,9 @@ export default function AdminLearningPathFormPage() {
             />
           </Grid>
         </Grid>
-      </Paper>
+      </PixelFrame>
 
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Settings
         </Typography>
@@ -428,7 +428,7 @@ export default function AdminLearningPathFormPage() {
             />
           </Grid>
         </Grid>
-      </Paper>
+      </PixelFrame>
 
       <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mb: 3 }}>
         <Button onClick={() => navigate('/admin/paths')}>Cancel</Button>
@@ -444,9 +444,9 @@ export default function AdminLearningPathFormPage() {
 
       {isEdit && (
         <>
-          <Divider sx={{ mb: 3 }} />
+          <PixelDivider sx={{ mb: 3 }} />
 
-          <Paper sx={{ p: 3, mb: 3 }}>
+          <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
             <Typography variant="h4" sx={{ mb: 2 }}>
               Steps ({steps.length} lessons)
             </Typography>
@@ -514,7 +514,7 @@ export default function AdminLearningPathFormPage() {
                 Save Steps
               </Button>
             </Box>
-          </Paper>
+          </PixelFrame>
         </>
       )}
     </Box>

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import { PixelFrame } from '../../components/pixel/index.js';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Chip from '@mui/material/Chip';
@@ -111,7 +111,7 @@ export default function AdminSettingsPage() {
       <PixelPageHeader title="Settings" />
 
       {/* Claude API Key */}
-      <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3, maxWidth: 500 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Claude API Key
         </Typography>
@@ -169,10 +169,10 @@ export default function AdminSettingsPage() {
         >
           Used by Content Generation. Key is stored in server memory only.
         </Typography>
-      </Paper>
+      </PixelFrame>
 
       {/* Change Password */}
-      <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3, maxWidth: 500 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Change Password
         </Typography>
@@ -214,9 +214,9 @@ export default function AdminSettingsPage() {
         >
           Change Password
         </Button>
-      </Paper>
+      </PixelFrame>
 
-      <Paper sx={{ p: 3, maxWidth: 500 }}>
+      <PixelFrame variant="default" sx={{ p: 3, maxWidth: 500 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           App Info
         </Typography>
@@ -229,7 +229,7 @@ export default function AdminSettingsPage() {
         <Typography variant="body2" color="text.secondary">
           Environment: <strong>{import.meta.env.MODE}</strong>
         </Typography>
-      </Paper>
+      </PixelFrame>
 
       <Snackbar
         open={!!snackbar}

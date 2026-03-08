@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../../pixel/index.js';
 
 export default function ArrangeWords({
   exercise,
@@ -43,8 +43,8 @@ export default function ArrangeWords({
   return (
     <Box>
       {/* Answer area */}
-      <Paper
-        variant="outlined"
+      <PixelFrame
+        variant="inset"
         role="region"
         aria-label="Câu trả lời đã sắp xếp"
         sx={{
@@ -71,7 +71,7 @@ export default function ArrangeWords({
             />
           ))
         )}
-      </Paper>
+      </PixelFrame>
 
       {/* Word bank */}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>

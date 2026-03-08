@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react';
 import { Link as RouterLink } from 'react-router';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import { PixelFrame } from '../../components/pixel/index.js';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import Chip from '@mui/material/Chip';
@@ -115,7 +115,8 @@ export default function AdminYamlImportPage() {
 
       {/* Upload area */}
       {mode === 'upload' && (
-        <Paper
+        <PixelFrame
+          variant="default"
           sx={{
             p: 4,
             mb: 3,
@@ -142,12 +143,12 @@ export default function AdminYamlImportPage() {
             onChange={handleFileDrop}
             style={{ display: 'none' }}
           />
-        </Paper>
+        </PixelFrame>
       )}
 
       {/* Paste area */}
       {mode === 'paste' && (
-        <Paper sx={{ p: 3, mb: 3 }}>
+        <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
           <AdminFormField
             label="Paste YAML Content"
             value={yaml}
@@ -164,12 +165,15 @@ export default function AdminYamlImportPage() {
               input: { sx: { fontFamily: 'monospace', fontSize: '0.85rem' } },
             }}
           />
-        </Paper>
+        </PixelFrame>
       )}
 
       {/* YAML preview (if uploaded via file) */}
       {yaml && mode === 'upload' && (
-        <Paper sx={{ p: 2, mb: 3, maxHeight: 300, overflow: 'auto' }}>
+        <PixelFrame
+          variant="inset"
+          sx={{ p: 2, mb: 3, maxHeight: 300, overflow: 'auto' }}
+        >
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
             File Content Preview
           </Typography>
@@ -185,7 +189,7 @@ export default function AdminYamlImportPage() {
             {yaml.slice(0, 5000)}
             {yaml.length > 5000 && '\n... (truncated)'}
           </Box>
-        </Paper>
+        </PixelFrame>
       )}
 
       {/* Action buttons */}
@@ -218,7 +222,7 @@ export default function AdminYamlImportPage() {
 
       {/* Validation results */}
       {validation && (
-        <Paper sx={{ p: 3, mb: 3 }}>
+        <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
           <Typography variant="h4" sx={{ mb: 2 }}>
             Validation Result
           </Typography>
@@ -279,12 +283,12 @@ export default function AdminYamlImportPage() {
               </List>
             </>
           )}
-        </Paper>
+        </PixelFrame>
       )}
 
       {/* Import result */}
       {importResult && (
-        <Paper sx={{ p: 3 }}>
+        <PixelFrame variant="default" sx={{ p: 3 }}>
           <Alert severity="success" sx={{ mb: 2 }}>
             Successfully imported!
           </Alert>
@@ -323,7 +327,7 @@ export default function AdminYamlImportPage() {
               View Lesson
             </Button>
           )}
-        </Paper>
+        </PixelFrame>
       )}
 
       <Snackbar

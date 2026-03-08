@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../../pixel/index.js';
 import Box from '@mui/material/Box';
 import MarkdownContent from '../MarkdownContent.jsx';
 
@@ -39,7 +39,7 @@ export default function VideoSection({ section }) {
   const embedUrl = provider && videoId ? EMBED_URLS[provider]?.(videoId) : null;
 
   return (
-    <Paper variant="outlined" sx={{ p: 2.5 }}>
+    <PixelFrame variant="default" sx={{ p: 2.5 }}>
       {section.title_vi && (
         <Typography variant="h6" gutterBottom>
           {section.title_vi}
@@ -69,6 +69,6 @@ export default function VideoSection({ section }) {
           sx={{ mt: 1.5, '& p:last-child': { mb: 0 } }}
         />
       )}
-    </Paper>
+    </PixelFrame>
   );
 }

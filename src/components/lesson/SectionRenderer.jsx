@@ -1,16 +1,16 @@
 import { Suspense } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../pixel/index.js';
 import SectionErrorBoundary from './SectionErrorBoundary.jsx';
 import sectionRegistry from './sectionRegistry.js';
 
 const SectionFallback = (
-  <Paper
-    variant="outlined"
+  <PixelFrame
+    variant="default"
     sx={{ p: 4, display: 'flex', justifyContent: 'center' }}
   >
     <CircularProgress size={28} />
-  </Paper>
+  </PixelFrame>
 );
 
 export default function SectionRenderer({ sections }) {

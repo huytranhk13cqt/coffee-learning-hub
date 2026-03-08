@@ -6,7 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../pixel/index.js';
 
 export default function ComparisonSection({ comparisons, lessonName }) {
   if (!comparisons.length) return null;
@@ -37,7 +37,7 @@ export default function ComparisonSection({ comparisons, lessonName }) {
             {lessonName} vs {group.name}
           </Typography>
 
-          <TableContainer component={Paper} variant="outlined">
+          <TableContainer component={PixelFrame} variant="default">
             <Table
               size="small"
               aria-label={`So sánh ${lessonName} và ${group.name}`}

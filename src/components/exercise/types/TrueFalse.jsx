@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../../pixel/index.js';
 import Box from '@mui/material/Box';
 
 export default function TrueFalse({
@@ -12,7 +12,7 @@ export default function TrueFalse({
 }) {
   return (
     <Box>
-      <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+      <PixelFrame variant="inset" sx={{ p: 2, mb: 2 }}>
         <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
           {exercise.content}
         </Typography>
@@ -21,7 +21,7 @@ export default function TrueFalse({
             {exercise.content_vi}
           </Typography>
         )}
-      </Paper>
+      </PixelFrame>
       <ToggleButtonGroup
         exclusive
         value={answer || ''}

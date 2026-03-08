@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../../pixel/index.js';
 import Stack from '@mui/material/Stack';
 
 export default function Matching({
@@ -56,7 +56,7 @@ export default function Matching({
     <Box>
       {/* Paired items display */}
       {pairs.length > 0 && (
-        <Paper variant="outlined" sx={{ p: 1.5, mb: 2 }}>
+        <PixelFrame variant="inset" sx={{ p: 1.5, mb: 2 }}>
           <Stack spacing={1}>
             {pairs.map((pair) => {
               const left = leftItems.find((l) => l.id === pair.leftId);
@@ -83,7 +83,7 @@ export default function Matching({
               );
             })}
           </Stack>
-        </Paper>
+        </PixelFrame>
       )}
 
       {/* Matching columns */}

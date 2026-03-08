@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../pixel/index.js';
 import Chip from '@mui/material/Chip';
 
 const TYPE_LABELS = {
@@ -36,7 +36,7 @@ export default function FormulaSection({ formulas }) {
         ))}
       </Tabs>
 
-      <Paper variant="outlined" sx={{ p: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3 }}>
         <Typography
           variant="h5"
           sx={{ fontFamily: 'monospace', mb: 2, fontWeight: 600 }}
@@ -54,7 +54,7 @@ export default function FormulaSection({ formulas }) {
           <Chip label={current.subject_note} size="small" sx={{ mb: 2 }} />
         )}
 
-        <Paper sx={{ p: 2, bgcolor: 'action.hover' }}>
+        <PixelFrame variant="inset" sx={{ p: 2 }}>
           <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
             {current.example}
           </Typography>
@@ -68,14 +68,14 @@ export default function FormulaSection({ formulas }) {
               {current.example_negative}
             </Typography>
           )}
-        </Paper>
+        </PixelFrame>
 
         {current.note && (
           <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
             {current.note}
           </Typography>
         )}
-      </Paper>
+      </PixelFrame>
     </Box>
   );
 }

@@ -16,8 +16,8 @@ import AchievementToast from '../components/gamification/AchievementToast.jsx';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import { PixelFrame } from '../components/pixel/index.js';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
@@ -109,8 +109,8 @@ export default function ExercisePage() {
             Bạn đã trả lời đúng {correctCount}/{totalExercises} câu ({score}%)
           </Typography>
 
-          <Paper
-            variant="outlined"
+          <PixelFrame
+            variant="default"
             sx={{ p: 2, my: 3, maxWidth: 400, mx: 'auto' }}
           >
             <Stack spacing={1}>
@@ -130,7 +130,7 @@ export default function ExercisePage() {
                 </Box>
               ))}
             </Stack>
-          </Paper>
+          </PixelFrame>
 
           <Stack direction="row" spacing={2} justifyContent="center">
             <Button

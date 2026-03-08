@@ -3,12 +3,11 @@ import { useLoaderData, useNavigate, useParams } from 'react-router';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import MenuItem from '@mui/material/MenuItem';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Divider from '@mui/material/Divider';
+import { PixelFrame, PixelDivider } from '../../components/pixel/index.js';
 import { ArrowBackIcon, SaveIcon } from '../../components/pixel/icons.jsx';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import {
@@ -160,7 +159,7 @@ export default function AdminLessonFormPage() {
         </Typography>
       )}
 
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Basic Info
         </Typography>
@@ -205,9 +204,9 @@ export default function AdminLessonFormPage() {
             />
           </Grid>
         </Grid>
-      </Paper>
+      </PixelFrame>
 
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Content
         </Typography>
@@ -225,9 +224,9 @@ export default function AdminLessonFormPage() {
           multiline
           rows={4}
         />
-      </Paper>
+      </PixelFrame>
 
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <PixelFrame variant="default" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Settings
         </Typography>
@@ -285,9 +284,9 @@ export default function AdminLessonFormPage() {
             />
           </Grid>
         </Grid>
-      </Paper>
+      </PixelFrame>
 
-      <Divider sx={{ mb: 3 }} />
+      <PixelDivider sx={{ mb: 3 }} />
 
       <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
         <Button onClick={() => navigate('/admin/lessons')}>Cancel</Button>
