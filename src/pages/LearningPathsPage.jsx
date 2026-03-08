@@ -18,7 +18,7 @@ import {
   PixelFrame,
   PixelProgressBar,
 } from '../components/pixel/index.js';
-import { FONT } from '../theme/pixelUtils.js';
+import { FONT, ANIMATION } from '../theme/pixelUtils.js';
 
 export async function loader({ request }) {
   return fetchPaths({ signal: request.signal });
@@ -45,8 +45,12 @@ export default function LearningPathsPage() {
               Nổi bật
             </Typography>
             <Grid container spacing={3} sx={{ mb: 4 }}>
-              {featured.map((path) => (
-                <Grid key={path.id} size={{ xs: 12, sm: 6, md: 4 }}>
+              {featured.map((path, index) => (
+                <Grid
+                  key={path.id}
+                  size={{ xs: 12, sm: 6, md: 4 }}
+                  sx={{ ...ANIMATION.stagger(index) }}
+                >
                   <PathCard path={path} />
                 </Grid>
               ))}
@@ -60,8 +64,12 @@ export default function LearningPathsPage() {
               Tất cả lộ trình
             </Typography>
             <Grid container spacing={3}>
-              {rest.map((path) => (
-                <Grid key={path.id} size={{ xs: 12, sm: 6, md: 4 }}>
+              {rest.map((path, index) => (
+                <Grid
+                  key={path.id}
+                  size={{ xs: 12, sm: 6, md: 4 }}
+                  sx={{ ...ANIMATION.stagger(index) }}
+                >
                   <PathCard path={path} />
                 </Grid>
               ))}

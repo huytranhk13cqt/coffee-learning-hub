@@ -10,6 +10,7 @@ import Link from '@mui/material/Link';
 import Fade from '@mui/material/Fade';
 import AchievementCard from '../components/gamification/AchievementCard.jsx';
 import { PixelPageHeader } from '../components/pixel/index.js';
+import { ANIMATION } from '../theme/pixelUtils.js';
 
 export async function loader({ request }) {
   return fetchAchievements({ signal: request.signal });
@@ -73,8 +74,12 @@ export default function AchievementsPage() {
               {CATEGORY_LABELS[category] ?? category}
             </Typography>
             <Grid container spacing={2}>
-              {grouped[category].map((achievement) => (
-                <Grid key={achievement.id} size={{ xs: 12, sm: 6, md: 4 }}>
+              {grouped[category].map((achievement, index) => (
+                <Grid
+                  key={achievement.id}
+                  size={{ xs: 12, sm: 6, md: 4 }}
+                  sx={{ ...ANIMATION.stagger(index) }}
+                >
                   <AchievementCard achievement={achievement} />
                 </Grid>
               ))}

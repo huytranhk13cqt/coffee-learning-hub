@@ -24,7 +24,7 @@ import {
   PixelFrame,
   PixelProgressBar,
 } from '../components/pixel/index.js';
-import { FONT } from '../theme/pixelUtils.js';
+import { FONT, ANIMATION } from '../theme/pixelUtils.js';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import Fade from '@mui/material/Fade';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';
@@ -133,10 +133,15 @@ export default function DashboardPage() {
 
         {/* Stat Cards */}
         <Grid container spacing={2} sx={{ mb: 4 }}>
-          {STAT_CARDS.map(({ key, icon: Icon, label, color }) => (
+          {STAT_CARDS.map(({ key, icon: Icon, label, color }, index) => (
             <Grid key={key} size={{ xs: 6, sm: 3 }}>
-              <PixelFrame variant="raised" sx={{ p: 2, textAlign: 'center' }}>
-                <Icon sx={{ fontSize: 32, color, mb: 0.5 }} />
+              <PixelFrame
+                variant="raised"
+                sx={{ p: 2, textAlign: 'center', ...ANIMATION.stagger(index) }}
+              >
+                <Icon
+                  sx={{ fontSize: 32, color, mb: 0.5, ...ANIMATION.float }}
+                />
                 <Typography
                   variant="h5"
                   sx={{ fontFamily: FONT.pixel, fontSize: '1.1rem' }}

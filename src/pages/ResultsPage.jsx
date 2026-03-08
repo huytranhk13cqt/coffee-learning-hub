@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { PixelFrame, PixelDivider } from '../components/pixel/index.js';
-import { FONT } from '../theme/pixelUtils.js';
+import { FONT, ANIMATION } from '../theme/pixelUtils.js';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -103,7 +103,11 @@ export default function ResultsPage() {
           {results.map((ex, index) => {
             const hasAttempt = ex.user_answer != null;
             return (
-              <PixelFrame key={ex.exercise_id} variant="default" sx={{ p: 2 }}>
+              <PixelFrame
+                key={ex.exercise_id}
+                variant="default"
+                sx={{ p: 2, ...ANIMATION.stagger(index) }}
+              >
                 <Box
                   sx={{
                     display: 'flex',

@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import { PixelFrame } from '../components/pixel/index.js';
-import { FONT } from '../theme/pixelUtils.js';
+import { FONT, ANIMATION } from '../theme/pixelUtils.js';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
 import {
@@ -68,7 +68,12 @@ export default function ReviewPage() {
       <Fade in timeout={300}>
         <Box sx={{ textAlign: 'center', py: 8 }}>
           <EmojiEmotionsIcon
-            sx={{ fontSize: 72, color: 'warning.main', mb: 2 }}
+            sx={{
+              fontSize: 72,
+              color: 'warning.main',
+              mb: 2,
+              ...ANIMATION.float,
+            }}
           />
           <Typography variant="h5" component="h1" gutterBottom>
             Không có bài ôn tập 🎉
@@ -99,7 +104,12 @@ export default function ReviewPage() {
       <Fade in timeout={300}>
         <Box sx={{ textAlign: 'center', py: 4 }}>
           <CheckCircleOutlineIcon
-            sx={{ fontSize: 64, color: 'success.main', mb: 2 }}
+            sx={{
+              fontSize: 64,
+              color: 'success.main',
+              mb: 2,
+              ...ANIMATION.float,
+            }}
           />
           <Typography
             variant="h4"
@@ -128,7 +138,11 @@ export default function ReviewPage() {
               {results.map((r, i) => (
                 <Box
                   key={r.exerciseId}
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    ...ANIMATION.stagger(i),
+                  }}
                 >
                   <Typography variant="body2">Câu {i + 1}</Typography>
                   <Typography
@@ -168,7 +182,7 @@ export default function ReviewPage() {
     <Fade in timeout={300}>
       <Box>
         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
-          <AutorenewIcon color="primary" />
+          <AutorenewIcon color="primary" sx={{ ...ANIMATION.float }} />
           <Typography variant="h5" component="h1">
             Ôn tập hôm nay
           </Typography>

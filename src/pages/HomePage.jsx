@@ -21,7 +21,7 @@ import Fade from '@mui/material/Fade';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { PixelFrame, PixelProgressBar } from '../components/pixel/index.js';
-import { FONT } from '../theme/pixelUtils.js';
+import { FONT, ANIMATION } from '../theme/pixelUtils.js';
 import {
   RouteIcon,
   ArrowForwardIcon,
@@ -245,9 +245,13 @@ function TopicOverview({
 
       {/* Topic cards grid */}
       <Grid container spacing={2}>
-        {topics.map((topic) => (
+        {topics.map((topic, index) => (
           <Grid key={topic.id ?? 'other'} size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
-            <TopicCard topic={topic} onClick={() => onSelectTopic(topic)} />
+            <TopicCard
+              topic={topic}
+              index={index}
+              onClick={() => onSelectTopic(topic)}
+            />
           </Grid>
         ))}
       </Grid>
@@ -261,7 +265,7 @@ function TopicOverview({
   );
 }
 
-function TopicCard({ topic, onClick }) {
+function TopicCard({ topic, index = 0, onClick }) {
   const TopicIcon = TOPIC_ICONS[topic.icon] || MenuBookIcon;
   const lessonCount = getTopicLessonCount(topic);
 
@@ -275,6 +279,7 @@ function TopicCard({ topic, onClick }) {
         '&:hover': {
           transform: 'translateY(-2px)',
         },
+        ...ANIMATION.stagger(index),
       }}
     >
       <CardActionArea
@@ -304,7 +309,9 @@ function TopicCard({ topic, onClick }) {
             mb: 1.5,
           }}
         >
-          <TopicIcon sx={{ color: topic.color, fontSize: 28 }} />
+          <TopicIcon
+            sx={{ color: topic.color, fontSize: 28, ...ANIMATION.float }}
+          />
         </Box>
         <Typography
           variant="subtitle2"

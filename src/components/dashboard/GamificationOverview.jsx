@@ -13,6 +13,7 @@ import {
 } from '../pixel/icons.jsx';
 import { PixelFrame, PixelProgressBar } from '../pixel/index.js';
 import { useGamification } from '../../hooks/useGamification.js';
+import { ANIMATION } from '../../theme/pixelUtils.js';
 
 export default function GamificationOverview({ stats }) {
   const { openDailyGoalDialog } = useGamification() ?? {};
@@ -37,8 +38,18 @@ export default function GamificationOverview({ stats }) {
       <Grid container spacing={2}>
         {/* Level & XP */}
         <Grid size={{ xs: 6, sm: 3 }}>
-          <PixelFrame variant="raised" sx={{ textAlign: 'center', p: 2 }}>
-            <BoltIcon sx={{ fontSize: 32, color: 'warning.main', mb: 0.5 }} />
+          <PixelFrame
+            variant="raised"
+            sx={{ textAlign: 'center', p: 2, ...ANIMATION.stagger(0) }}
+          >
+            <BoltIcon
+              sx={{
+                fontSize: 32,
+                color: 'warning.main',
+                mb: 0.5,
+                ...ANIMATION.float,
+              }}
+            />
             <Typography variant="h5" fontWeight={700}>
               Lv. {xp?.level ?? 1}
             </Typography>
@@ -59,8 +70,18 @@ export default function GamificationOverview({ stats }) {
 
         {/* Streak */}
         <Grid size={{ xs: 6, sm: 3 }}>
-          <PixelFrame variant="raised" sx={{ textAlign: 'center', p: 2 }}>
-            <WhatshotIcon sx={{ fontSize: 32, color: 'error.main', mb: 0.5 }} />
+          <PixelFrame
+            variant="raised"
+            sx={{ textAlign: 'center', p: 2, ...ANIMATION.stagger(1) }}
+          >
+            <WhatshotIcon
+              sx={{
+                fontSize: 32,
+                color: 'error.main',
+                mb: 0.5,
+                ...ANIMATION.pulse,
+              }}
+            />
             <Typography variant="h5" fontWeight={700}>
               {streak?.current ?? 0}
             </Typography>
@@ -85,6 +106,7 @@ export default function GamificationOverview({ stats }) {
                 cursor: 'pointer',
                 transition: 'border-color 0.2s',
                 '&:hover': { borderColor: 'success.main' },
+                ...ANIMATION.stagger(2),
               }}
             >
               <Box
@@ -96,7 +118,13 @@ export default function GamificationOverview({ stats }) {
                   mb: 0.5,
                 }}
               >
-                <FlagIcon sx={{ fontSize: 32, color: 'success.main' }} />
+                <FlagIcon
+                  sx={{
+                    fontSize: 32,
+                    color: 'success.main',
+                    ...ANIMATION.float,
+                  }}
+                />
                 <EditIcon sx={{ fontSize: 14, color: 'text.disabled' }} />
               </Box>
               <Typography variant="h5" fontWeight={700}>
@@ -117,9 +145,17 @@ export default function GamificationOverview({ stats }) {
 
         {/* Achievements */}
         <Grid size={{ xs: 6, sm: 3 }}>
-          <PixelFrame variant="raised" sx={{ textAlign: 'center', p: 2 }}>
+          <PixelFrame
+            variant="raised"
+            sx={{ textAlign: 'center', p: 2, ...ANIMATION.stagger(3) }}
+          >
             <EmojiEventsIcon
-              sx={{ fontSize: 32, color: 'secondary.main', mb: 0.5 }}
+              sx={{
+                fontSize: 32,
+                color: 'secondary.main',
+                mb: 0.5,
+                ...ANIMATION.bounce,
+              }}
             />
             <Typography variant="h5" fontWeight={700}>
               {achievementsEarned ?? 0}

@@ -146,6 +146,83 @@ export const KEYFRAMES = {
       '100%': { backgroundPosition: '200% 0' },
     },
   },
+
+  // ── Commit 9: Entrance & idle animations ──────────────
+  pixelSlideUp: {
+    '@keyframes pixelSlideUp': {
+      '0%': { opacity: 0, transform: 'translateY(8px)' },
+      '33%': { opacity: 0.5, transform: 'translateY(4px)' },
+      '66%': { opacity: 0.85, transform: 'translateY(2px)' },
+      '100%': { opacity: 1, transform: 'translateY(0)' },
+    },
+  },
+  pixelScaleIn: {
+    '@keyframes pixelScaleIn': {
+      '0%': { opacity: 0, transform: 'scale(0.85)' },
+      '50%': { opacity: 0.8, transform: 'scale(1.03)' },
+      '100%': { opacity: 1, transform: 'scale(1)' },
+    },
+  },
+  pixelFloat: {
+    '@keyframes pixelFloat': {
+      '0%, 100%': { transform: 'translateY(0)' },
+      '50%': { transform: 'translateY(-4px)' },
+    },
+  },
+  pixelGlowPulse: {
+    '@keyframes pixelGlowPulse': {
+      '0%, 100%': { filter: 'brightness(1)' },
+      '50%': { filter: 'brightness(1.15)' },
+    },
+  },
+};
+
+// ── Animation Presets ────────────────────────────────────
+// Ready-to-spread sx objects. Each includes keyframe + animation property.
+// Usage: sx={{ ...ANIMATION.fadeIn }}
+//        sx={{ ...ANIMATION.stagger(2) }}
+
+export const ANIMATION = {
+  // Entrances — play once on mount
+  fadeIn: {
+    ...KEYFRAMES.pixelFadeIn,
+    animation: 'pixelFadeIn 0.3s steps(5, end) both',
+  },
+  slideUp: {
+    ...KEYFRAMES.pixelSlideUp,
+    animation: 'pixelSlideUp 0.3s steps(4, end) both',
+  },
+  scaleIn: {
+    ...KEYFRAMES.pixelScaleIn,
+    animation: 'pixelScaleIn 0.3s steps(4, end) both',
+  },
+
+  // Idle loops — continuous atmospheric motion
+  float: {
+    ...KEYFRAMES.pixelFloat,
+    animation: 'pixelFloat 3s steps(6, end) infinite alternate',
+  },
+  pulse: {
+    ...KEYFRAMES.pixelPulse,
+    animation: 'pixelPulse 2s steps(8, end) infinite alternate',
+  },
+  bounce: {
+    ...KEYFRAMES.pixelBounce,
+    animation: 'pixelBounce 2s steps(6, end) infinite alternate',
+  },
+  glowPulse: {
+    ...KEYFRAMES.pixelGlowPulse,
+    animation: 'pixelGlowPulse 2s steps(8, end) infinite alternate',
+  },
+
+  // Stagger helper — cascading list entrance
+  stagger(index, gap = 60) {
+    return {
+      ...KEYFRAMES.pixelFadeIn,
+      animation: 'pixelFadeIn 0.3s steps(5, end) both',
+      animationDelay: `${index * gap}ms`,
+    };
+  },
 };
 
 // ── Glow Effects ───────────────────────────────────────────

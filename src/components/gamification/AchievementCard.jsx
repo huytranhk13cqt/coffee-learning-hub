@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import * as Icons from './achievementIcons.js';
 import { PixelFrame } from '../pixel/index.js';
-import { FONT } from '../../theme/pixelUtils.js';
+import { FONT, ANIMATION } from '../../theme/pixelUtils.js';
 
 export default function AchievementCard({ achievement }) {
   const { nameVi, descriptionVi, icon, xpReward, earned, earnedAt } =
@@ -39,7 +39,9 @@ export default function AchievementCard({ achievement }) {
             boxShadow: earned ? '2px 2px 0 0 rgba(0,0,0,0.12)' : 'none',
           }}
         >
-          <IconComponent sx={{ fontSize: 28 }} />
+          <IconComponent
+            sx={{ fontSize: 28, ...(earned ? ANIMATION.bounce : {}) }}
+          />
         </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography

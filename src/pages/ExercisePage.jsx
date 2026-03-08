@@ -17,11 +17,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import { PixelFrame } from '../components/pixel/index.js';
+import { PixelFrame, PixelParticles } from '../components/pixel/index.js';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
 import { CheckCircleOutlineIcon } from '../components/pixel/icons.jsx';
+import { ANIMATION } from '../theme/pixelUtils.js';
 
 export async function loader({ params, request }) {
   const exercises = await fetchExercises(params.lessonId, {
@@ -98,9 +99,15 @@ export default function ExercisePage() {
 
     return (
       <Fade in timeout={300}>
-        <Box sx={{ textAlign: 'center', py: 4 }}>
+        <Box sx={{ textAlign: 'center', py: 4, position: 'relative' }}>
+          <PixelParticles active preset="confetti" fixed />
           <CheckCircleOutlineIcon
-            sx={{ fontSize: 64, color: 'success.main', mb: 2 }}
+            sx={{
+              fontSize: 64,
+              color: 'success.main',
+              mb: 2,
+              ...ANIMATION.bounce,
+            }}
           />
           <Typography variant="h4" component="h1" gutterBottom>
             Hoàn thành!

@@ -23,6 +23,7 @@ import {
   InboxIcon as EmptyIcon,
 } from '../components/pixel/icons.jsx';
 import { PixelPageHeader } from '../components/pixel/index.js';
+import { ANIMATION } from '../theme/pixelUtils.js';
 
 export async function loader({ request }) {
   return fetchBookmarks({ signal: request.signal });
@@ -75,8 +76,12 @@ export default function BookmarksPage() {
           </PixelFrame>
         ) : (
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            {bookmarks.map((bookmark) => (
-              <Grid key={bookmark.bookmark_id} size={{ xs: 12, sm: 6, md: 4 }}>
+            {bookmarks.map((bookmark, index) => (
+              <Grid
+                key={bookmark.bookmark_id}
+                size={{ xs: 12, sm: 6, md: 4 }}
+                sx={{ ...ANIMATION.stagger(index) }}
+              >
                 <PixelFrame
                   variant="raised"
                   sx={{
