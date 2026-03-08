@@ -292,15 +292,6 @@ const router = createBrowserRouter([
         ErrorBoundary: ErrorPage,
       },
       {
-        path: 'assets',
-        lazy: async () => {
-          const { default: Component, loader } =
-            await import('./pages/admin/AdminAssetStudioPage.jsx');
-          return { Component, loader };
-        },
-        ErrorBoundary: ErrorPage,
-      },
-      {
         path: 'exercises/new',
         lazy: async () => {
           const { default: Component, loader } =

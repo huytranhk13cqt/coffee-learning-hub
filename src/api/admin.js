@@ -436,65 +436,6 @@ export function streamGenerate(
   return controller;
 }
 
-// ─── IMAGE PROVIDER API KEY MANAGEMENT ──────────────────────
-
-export function getAllProviderStatus() {
-  return adminRequest('/assets/providers');
-}
-
-export function setProviderApiKey(provider, apiKey) {
-  return adminRequest(`/assets/providers/${provider}/api-key`, {
-    method: 'POST',
-    body: JSON.stringify({ apiKey }),
-  });
-}
-
-export function removeProviderApiKey(provider) {
-  return adminRequest(`/assets/providers/${provider}/api-key`, {
-    method: 'DELETE',
-  });
-}
-
-export function getProviderApiKeyStatus(provider) {
-  return adminRequest(`/assets/providers/${provider}/api-key`);
-}
-
-// ─── ASSET CRUD ─────────────────────────────────────────────
-
-export function generateAsset({ model, prompt, name, config }) {
-  return adminRequest('/assets/generate', {
-    method: 'POST',
-    body: JSON.stringify({ model, prompt, name, config }),
-  });
-}
-
-export async function uploadAsset(formData) {
-  const res = await fetch(`${API_BASE}/assets/upload`, {
-    method: 'POST',
-    body: formData,
-    credentials: 'include',
-  });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || `Upload failed (${res.status})`);
-  }
-  return res.json();
-}
-
-export function listAssets({ type, tag, page, limit } = {}) {
-  const params = new URLSearchParams();
-  if (type) params.set('type', type);
-  if (tag) params.set('tag', tag);
-  if (page) params.set('page', page);
-  if (limit) params.set('limit', limit);
-  const qs = params.toString();
-  return adminRequest(`/assets${qs ? `?${qs}` : ''}`);
-}
-
-export function deleteAsset(id) {
-  return adminRequest(`/assets/${id}`, { method: 'DELETE' });
-}
-
 // ─── YAML IMPORT ────────────────────────────────────────────
 
 export function validateYamlImport(yamlContent) {

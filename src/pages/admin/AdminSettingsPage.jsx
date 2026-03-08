@@ -15,16 +15,7 @@ import {
   fetchApiKeyStatus,
   setAdminApiKey,
   removeAdminApiKey,
-  getAllProviderStatus,
-  setProviderApiKey,
-  removeProviderApiKey,
 } from '../../api/admin.js';
-
-const IMAGE_PROVIDERS = [
-  { id: 'gemini', label: 'Google Gemini', placeholder: 'AIza...' },
-  { id: 'openai', label: 'OpenAI', placeholder: 'sk-...' },
-  { id: 'stability', label: 'Stability AI', placeholder: 'sk-...' },
-];
 
 export default function AdminSettingsPage() {
   // Password form
@@ -38,18 +29,10 @@ export default function AdminSettingsPage() {
   const [newApiKey, setNewApiKey] = useState('');
   const [apiKeySaving, setApiKeySaving] = useState(false);
 
-  // Image provider keys state — keyed by provider id
-  const [providerStatus, setProviderStatus] = useState({});
-  const [providerKeys, setProviderKeys] = useState({});
-  const [providerSaving, setProviderSaving] = useState({});
-
   useEffect(() => {
     fetchApiKeyStatus()
       .then(setApiKeyStatus)
       .catch(() => setApiKeyStatus(null));
-    getAllProviderStatus()
-      .then((res) => setProviderStatus(res.providers || {}))
-      .catch(() => setProviderStatus({}));
   }, []);
 
   // ─── Password handlers ──────────────────────────────
@@ -123,43 +106,6 @@ export default function AdminSettingsPage() {
     }
   }
 
-  // ─── Image provider key handlers ──────────────────────
-
-  async function handleSaveProviderKey(providerId) {
-    const key = providerKeys[providerId]?.trim();
-    if (!key) return;
-    setProviderSaving((s) => ({ ...s, [providerId]: true }));
-    try {
-      const res = await setProviderApiKey(providerId, key);
-      setProviderStatus((s) => ({ ...s, [providerId]: res }));
-      setProviderKeys((k) => ({ ...k, [providerId]: '' }));
-      setSnackbar({ severity: 'success', text: `${providerId} API key saved` });
-    } catch (err) {
-      setSnackbar({ severity: 'error', text: err.message });
-    } finally {
-      setProviderSaving((s) => ({ ...s, [providerId]: false }));
-    }
-  }
-
-  async function handleRemoveProviderKey(providerId) {
-    setProviderSaving((s) => ({ ...s, [providerId]: true }));
-    try {
-      await removeProviderApiKey(providerId);
-      setProviderStatus((s) => ({
-        ...s,
-        [providerId]: { configured: false, maskedKey: null },
-      }));
-      setSnackbar({
-        severity: 'success',
-        text: `${providerId} API key removed`,
-      });
-    } catch (err) {
-      setSnackbar({ severity: 'error', text: err.message });
-    } finally {
-      setProviderSaving((s) => ({ ...s, [providerId]: false }));
-    }
-  }
-
   return (
     <Box>
       <Typography variant="h2" sx={{ mb: 3 }}>
@@ -225,84 +171,6 @@ export default function AdminSettingsPage() {
         >
           Used by Content Generation. Key is stored in server memory only.
         </Typography>
-      </Paper>
-
-      {/* Image Generation Provider Keys */}
-      <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>
-        <Typography variant="h4" sx={{ mb: 2 }}>
-          Image Generation API Keys
-        </Typography>
-
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          Used by Asset Studio. Keys are stored in server memory only and reset
-          when server restarts.
-        </Typography>
-
-        {IMAGE_PROVIDERS.map((p) => {
-          const status = providerStatus[p.id];
-          const isSaving = !!providerSaving[p.id];
-          const keyValue = providerKeys[p.id] || '';
-
-          return (
-            <Box key={p.id} sx={{ mb: 2.5 }}>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                sx={{ mb: 1 }}
-              >
-                <Typography variant="subtitle2">{p.label}</Typography>
-                {status?.configured ? (
-                  <Chip
-                    label={`Configured (${status.maskedKey})`}
-                    color="success"
-                    size="small"
-                  />
-                ) : (
-                  <Chip label="Not configured" size="small" />
-                )}
-              </Stack>
-
-              <AdminFormField
-                label="API Key"
-                type="password"
-                value={keyValue}
-                onChange={(e) =>
-                  setProviderKeys((k) => ({
-                    ...k,
-                    [p.id]: e.target.value,
-                  }))
-                }
-                placeholder={p.placeholder}
-                autoComplete="off"
-              />
-
-              <Stack direction="row" spacing={1}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  startIcon={<SaveIcon />}
-                  onClick={() => handleSaveProviderKey(p.id)}
-                  loading={isSaving}
-                  disabled={!keyValue.trim()}
-                >
-                  Save
-                </Button>
-                {status?.configured && (
-                  <Button
-                    size="small"
-                    color="error"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => handleRemoveProviderKey(p.id)}
-                    loading={isSaving}
-                  >
-                    Remove
-                  </Button>
-                )}
-              </Stack>
-            </Box>
-          );
-        })}
       </Paper>
 
       {/* Change Password */}

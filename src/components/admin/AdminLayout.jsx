@@ -37,7 +37,6 @@ import RepeatIcon from '@mui/icons-material/Repeat';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import PermMediaIcon from '@mui/icons-material/PermMedia';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import HistoryIcon from '@mui/icons-material/History';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -52,7 +51,6 @@ import pixelTheme from '../../theme/pixelTheme.js';
 import { adminVerify } from '../../api/admin.js';
 import { useAdminAuth } from '../../hooks/useAdminAuth.js';
 import PageSkeleton from '../skeletons/PageSkeleton.jsx';
-import PixelMascot from './PixelMascot.jsx';
 
 const SIDEBAR_WIDTH = 240;
 const SIDEBAR_COLLAPSED = 64;
@@ -104,7 +102,6 @@ const NAV_GROUPS = [
         path: '/admin/generate',
       },
       { label: 'YAML Import', icon: UploadFileIcon, path: '/admin/import' },
-      { label: 'Asset Studio', icon: PermMediaIcon, path: '/admin/assets' },
     ],
   },
   {
@@ -465,19 +462,6 @@ function AdminLayoutContent() {
           {isLoading ? <PageSkeleton /> : <Outlet />}
         </Container>
       </Box>
-
-      <PixelMascot
-        spriteSheet={{
-          src: '/sprites/1772830000149-71ca58ef.png',
-          frameWidth: 256,
-          frameHeight: 256,
-          frameCount: 16,
-          cols: 4,
-          fps: 6,
-          chromaKey: true,
-        }}
-        scale={0.5}
-      />
     </Box>
   );
 }
