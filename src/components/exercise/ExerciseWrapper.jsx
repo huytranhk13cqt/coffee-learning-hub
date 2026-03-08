@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../pixel/index.js';
 import Stack from '@mui/material/Stack';
 import ExerciseProgress from './ExerciseProgress.jsx';
 import ExerciseRenderer from './ExerciseRenderer.jsx';
@@ -102,7 +102,10 @@ export default function ExerciseWrapper({
 
       {/* Context (reading passage, code snippet, etc.) */}
       {exercise.context && (
-        <Paper variant="outlined" sx={{ p: 2, mb: 2, bgcolor: 'action.hover' }}>
+        <PixelFrame
+          variant="inset"
+          sx={{ p: 2, mb: 2, bgcolor: 'action.hover' }}
+        >
           <MarkdownContent
             content={exercise.context}
             sx={{ '& p:last-child': { mb: 0 } }}
@@ -116,7 +119,7 @@ export default function ExerciseWrapper({
               {exercise.context_vi}
             </Typography>
           )}
-        </Paper>
+        </PixelFrame>
       )}
 
       {/* Question */}

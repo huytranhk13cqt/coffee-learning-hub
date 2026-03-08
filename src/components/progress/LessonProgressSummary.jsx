@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import LinearProgress from '@mui/material/LinearProgress';
 import Stack from '@mui/material/Stack';
 import { CheckCircleIcon, RadioButtonUncheckedIcon } from '../pixel/icons.jsx';
+import { PixelFrame, PixelProgressBar } from '../pixel/index.js';
+import { FONT } from '../../theme/pixelUtils.js';
 import ScoreBadge from './ScoreBadge.jsx';
 
 export default function LessonProgressSummary({ progress }) {
@@ -17,8 +17,12 @@ export default function LessonProgressSummary({ progress }) {
       : 0;
 
   return (
-    <Paper variant="outlined" sx={{ p: 2.5 }}>
-      <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+    <PixelFrame variant="raised" sx={{ p: 2.5 }}>
+      <Typography
+        variant="subtitle1"
+        gutterBottom
+        sx={{ fontFamily: FONT.pixel, fontSize: '0.9rem' }}
+      >
         Tiến trình học
       </Typography>
 
@@ -51,10 +55,11 @@ export default function LessonProgressSummary({ progress }) {
                 {exercisePercent}%
               </Typography>
             </Box>
-            <LinearProgress
-              variant="determinate"
+            <PixelProgressBar
               value={exercisePercent}
-              sx={{ height: 6, borderRadius: 3 }}
+              segments={Math.min(progress.exercises_total, 15)}
+              color="primary.main"
+              height={8}
             />
           </Box>
         )}
@@ -65,6 +70,6 @@ export default function LessonProgressSummary({ progress }) {
           <ScoreBadge score={progress.best_score} label="Điểm cao nhất" />
         </Stack>
       </Stack>
-    </Paper>
+    </PixelFrame>
   );
 }

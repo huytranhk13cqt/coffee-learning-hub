@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
-import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
+import { PixelProgressBar } from '../pixel/index.js';
+import { FONT } from '../../theme/pixelUtils.js';
 
 export default function ExerciseProgress({ current, total }) {
   const progress = total > 0 ? ((current + 1) / total) * 100 : 0;
@@ -12,18 +13,27 @@ export default function ExerciseProgress({ current, total }) {
         aria-live="polite"
         aria-atomic="true"
       >
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontFamily: FONT.pixel, fontSize: '0.8rem' }}
+        >
           Bài {current + 1} / {total}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontFamily: FONT.pixel, fontSize: '0.8rem' }}
+        >
           {Math.round(progress)}%
         </Typography>
       </Box>
-      <LinearProgress
-        variant="determinate"
+      <PixelProgressBar
         value={progress}
-        aria-label={`Tiến trình: bài ${current + 1} trên ${total}`}
-        sx={{ height: 8, borderRadius: 4 }}
+        segments={total > 0 ? Math.min(total, 20) : 10}
+        color="primary.main"
+        height={10}
+        sx={{ width: '100%' }}
       />
     </Box>
   );

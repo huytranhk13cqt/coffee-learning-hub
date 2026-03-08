@@ -1,4 +1,3 @@
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -8,6 +7,8 @@ import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router';
 import { WhatshotIcon, ArrowForwardIcon } from '../pixel/icons.jsx';
+import { PixelFrame } from '../pixel/index.js';
+import { FONT } from '../../theme/pixelUtils.js';
 
 export default function WeakSpotPanel({ weakSpots }) {
   if (!weakSpots || weakSpots.length === 0) return null;
@@ -15,7 +16,7 @@ export default function WeakSpotPanel({ weakSpots }) {
   const top5 = weakSpots.slice(0, 5);
 
   return (
-    <Paper variant="outlined" sx={{ mb: 3 }}>
+    <PixelFrame variant="default" sx={{ mb: 3 }}>
       <Box
         sx={{
           px: 2.5,
@@ -27,7 +28,11 @@ export default function WeakSpotPanel({ weakSpots }) {
         }}
       >
         <WhatshotIcon sx={{ color: 'error.main', fontSize: 20 }} />
-        <Typography variant="h6" component="h2">
+        <Typography
+          variant="h6"
+          component="h2"
+          sx={{ fontFamily: FONT.pixel, fontSize: '0.95rem' }}
+        >
           Điểm yếu cần cải thiện
         </Typography>
       </Box>
@@ -95,6 +100,6 @@ export default function WeakSpotPanel({ weakSpots }) {
           Ôn tập bài khó
         </Button>
       </Box>
-    </Paper>
+    </PixelFrame>
   );
 }

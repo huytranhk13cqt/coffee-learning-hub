@@ -4,16 +4,12 @@ import { fetchReviewStats } from '../api/review.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import {
   MenuBookIcon,
@@ -23,13 +19,18 @@ import {
   TrendingUpIcon,
   AutorenewIcon,
 } from '../components/pixel/icons.jsx';
+import {
+  PixelPageHeader,
+  PixelFrame,
+  PixelProgressBar,
+} from '../components/pixel/index.js';
+import { FONT } from '../theme/pixelUtils.js';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import Fade from '@mui/material/Fade';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';
 import GamificationOverview from '../components/dashboard/GamificationOverview.jsx';
 import WeakSpotPanel from '../components/progress/WeakSpotPanel.jsx';
 import { useGamification } from '../hooks/useGamification.js';
-import { PixelPageHeader } from '../components/pixel/index.js';
 
 export async function loader({ request }) {
   const [dashboard, reviewStats, weakSpots] = await Promise.all([
@@ -134,57 +135,61 @@ export default function DashboardPage() {
         <Grid container spacing={2} sx={{ mb: 4 }}>
           {STAT_CARDS.map(({ key, icon: Icon, label, color }) => (
             <Grid key={key} size={{ xs: 6, sm: 3 }}>
-              <Card variant="outlined">
-                <CardContent sx={{ textAlign: 'center', py: 2 }}>
-                  <Icon sx={{ fontSize: 32, color, mb: 0.5 }} />
-                  <Typography variant="h5" fontWeight={700}>
-                    {getStatValue(key, stats)}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {label}
-                  </Typography>
-                </CardContent>
-              </Card>
+              <PixelFrame variant="raised" sx={{ p: 2, textAlign: 'center' }}>
+                <Icon sx={{ fontSize: 32, color, mb: 0.5 }} />
+                <Typography
+                  variant="h5"
+                  sx={{ fontFamily: FONT.pixel, fontSize: '1.1rem' }}
+                >
+                  {getStatValue(key, stats)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {label}
+                </Typography>
+              </PixelFrame>
             </Grid>
           ))}
         </Grid>
 
         {/* Review Card — shown only when there are exercises due */}
         {reviewStats?.due_today > 0 && (
-          <Card
-            variant="outlined"
-            sx={{ mb: 3, borderColor: 'primary.main', borderWidth: 2 }}
+          <PixelFrame
+            variant="raised"
+            glow
+            sx={{
+              mb: 3,
+              p: 2.5,
+              borderColor: 'primary.main',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: 2,
+            }}
           >
-            <CardContent
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-                gap: 2,
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <AutorenewIcon sx={{ color: 'primary.main', fontSize: 32 }} />
-                <Box>
-                  <Typography variant="h6" fontWeight={700}>
-                    Ôn tập hôm nay
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {reviewStats.due_today} bài đến hạn ôn tập
-                  </Typography>
-                </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <AutorenewIcon sx={{ color: 'primary.main', fontSize: 32 }} />
+              <Box>
+                <Typography
+                  variant="h6"
+                  sx={{ fontFamily: FONT.pixel, fontSize: '0.95rem' }}
+                >
+                  Ôn tập hôm nay
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {reviewStats.due_today} bài đến hạn ôn tập
+                </Typography>
               </Box>
-              <Button
-                variant="contained"
-                component={RouterLink}
-                to="/review"
-                startIcon={<AutorenewIcon />}
-              >
-                Bắt đầu ôn tập
-              </Button>
-            </CardContent>
-          </Card>
+            </Box>
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to="/review"
+              startIcon={<AutorenewIcon />}
+            >
+              Bắt đầu ôn tập
+            </Button>
+          </PixelFrame>
         )}
 
         {/* Gamification Overview */}
@@ -192,7 +197,10 @@ export default function DashboardPage() {
 
         {/* Empty state */}
         {isEmpty && (
-          <Paper variant="outlined" sx={{ p: 4, textAlign: 'center', mb: 4 }}>
+          <PixelFrame
+            variant="default"
+            sx={{ p: 4, textAlign: 'center', mb: 4 }}
+          >
             <SchoolIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 1 }} />
             <Typography variant="h6" gutterBottom>
               Chưa có tiến trình nào
@@ -203,7 +211,7 @@ export default function DashboardPage() {
             <Button variant="contained" component={RouterLink} to="/">
               Bắt đầu học
             </Button>
-          </Paper>
+          </PixelFrame>
         )}
 
         {/* Weak Spots — exercises the learner struggles with most */}
@@ -212,13 +220,20 @@ export default function DashboardPage() {
         {/* Per-group lesson progress */}
         <Stack spacing={3}>
           {groups.map((group) => (
-            <Paper
+            <PixelFrame
               key={group.id}
-              variant="outlined"
-              sx={{ borderTop: 4, borderColor: group.color }}
+              variant="default"
+              sx={{
+                borderTop: '4px solid',
+                borderTopColor: group.color,
+              }}
             >
               <Box sx={{ px: 2.5, pt: 2, pb: 1 }}>
-                <Typography variant="h6" component="h2">
+                <Typography
+                  variant="h6"
+                  component="h2"
+                  sx={{ fontFamily: FONT.pixel, fontSize: '0.95rem' }}
+                >
                   {group.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -274,10 +289,11 @@ export default function DashboardPage() {
                               display: { xs: 'none', sm: 'block' },
                             }}
                           >
-                            <LinearProgress
-                              variant="determinate"
+                            <PixelProgressBar
                               value={exercisePercent}
-                              sx={{ height: 6, borderRadius: 3 }}
+                              segments={5}
+                              color="primary.main"
+                              height={6}
                             />
                           </Box>
                         )}
@@ -288,7 +304,7 @@ export default function DashboardPage() {
                   );
                 })}
               </List>
-            </Paper>
+            </PixelFrame>
           ))}
         </Stack>
       </div>

@@ -4,7 +4,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import LinearProgress from '@mui/material/LinearProgress';
 import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import {
@@ -14,6 +13,7 @@ import {
   EmojiEventsIcon,
   EditIcon,
 } from '../pixel/icons.jsx';
+import { PixelProgressBar } from '../pixel/index.js';
 import { useGamification } from '../../hooks/useGamification.js';
 
 export default function GamificationOverview({ stats }) {
@@ -48,11 +48,11 @@ export default function GamificationOverview({ stats }) {
               <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                 {xp?.total ?? 0} XP
               </Typography>
-              <LinearProgress
-                variant="determinate"
+              <PixelProgressBar
                 value={xpInLevel}
-                color="warning"
-                sx={{ height: 6, borderRadius: 3 }}
+                segments={10}
+                color="warning.main"
+                height={8}
               />
               <Typography variant="caption" color="text.secondary">
                 {xpInLevel}/100 đến level tiếp theo
@@ -116,11 +116,11 @@ export default function GamificationOverview({ stats }) {
                 >
                   Mục tiêu hôm nay
                 </Typography>
-                <LinearProgress
-                  variant="determinate"
+                <PixelProgressBar
                   value={goalProgress}
-                  color="success"
-                  sx={{ height: 6, borderRadius: 3 }}
+                  segments={Math.max(dailyGoal?.target ?? 5, 5)}
+                  color="success.main"
+                  height={8}
                 />
               </CardContent>
             </Card>
