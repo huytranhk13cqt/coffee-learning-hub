@@ -27,6 +27,7 @@ import GamificationOverview from '../components/dashboard/GamificationOverview.j
 import WeakSpotPanel from '../components/progress/WeakSpotPanel.jsx';
 import { useGamification } from '../hooks/useGamification.js';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import { PixelPageHeader } from '../components/pixel/index.js';
 
 export async function loader({ request }) {
   const [dashboard, reviewStats, weakSpots] = await Promise.all([
@@ -125,9 +126,7 @@ export default function DashboardPage() {
   return (
     <Fade in timeout={300}>
       <div>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Tổng quan học tập
-        </Typography>
+        <PixelPageHeader title="Tổng quan học tập" />
 
         {/* Stat Cards */}
         <Grid container spacing={2} sx={{ mb: 4 }}>

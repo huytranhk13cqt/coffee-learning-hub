@@ -21,6 +21,7 @@ import {
 import AdminDataTable from '../../components/admin/AdminDataTable.jsx';
 import CategoryFormDialog from '../../components/admin/CategoryFormDialog.jsx';
 import DeleteConfirmDialog from '../../components/admin/DeleteConfirmDialog.jsx';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export async function loader() {
   const [categoriesRes, topicsRes] = await Promise.all([
@@ -159,26 +160,21 @@ export default function AdminCategoriesPage() {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 3,
-        }}
-      >
-        <Typography variant="h2">Categories</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => {
-            setEditItem(null);
-            setFormOpen(true);
-          }}
-        >
-          New Category
-        </Button>
-      </Box>
+      <PixelPageHeader
+        title="Categories"
+        action={
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              setEditItem(null);
+              setFormOpen(true);
+            }}
+          >
+            New Category
+          </Button>
+        }
+      />
 
       <TextField
         select

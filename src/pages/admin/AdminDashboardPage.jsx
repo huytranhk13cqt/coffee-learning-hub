@@ -10,6 +10,7 @@ import AdminRecentActivity from '../../components/admin/AdminRecentActivity.jsx'
 import AdminDraftsWidget from '../../components/admin/AdminDraftsWidget.jsx';
 import AdminContentHealth from '../../components/admin/AdminContentHealth.jsx';
 import AdminContentBreakdown from '../../components/admin/AdminContentBreakdown.jsx';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export async function loader() {
   return fetchAdminDashboard();
@@ -25,9 +26,7 @@ export default function AdminDashboardPage() {
 
   return (
     <Box>
-      <Typography variant="h2" sx={{ mb: 3 }}>
-        Dashboard
-      </Typography>
+      <PixelPageHeader title="Dashboard" />
       <Grid container spacing={3}>
         <Grid size={12}>
           <AdminStatsCards stats={data?.stats?.data} />

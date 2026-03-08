@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
@@ -18,6 +17,7 @@ import {
 } from '../../api/admin.js';
 import AdminDataTable from '../../components/admin/AdminDataTable.jsx';
 import DeleteConfirmDialog from '../../components/admin/DeleteConfirmDialog.jsx';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export async function loader() {
   const [lessonsRes, categoriesRes] = await Promise.all([
@@ -146,23 +146,18 @@ export default function AdminLessonsPage() {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 3,
-        }}
-      >
-        <Typography variant="h2">Lessons</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => navigate('/admin/lessons/new')}
-        >
-          New Lesson
-        </Button>
-      </Box>
+      <PixelPageHeader
+        title="Lessons"
+        action={
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => navigate('/admin/lessons/new')}
+          >
+            New Lesson
+          </Button>
+        }
+      />
 
       <TextField
         select

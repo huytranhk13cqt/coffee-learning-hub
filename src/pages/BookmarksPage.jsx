@@ -21,6 +21,7 @@ import Fade from '@mui/material/Fade';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import EmptyIcon from '@mui/icons-material/Inbox';
+import { PixelPageHeader } from '../components/pixel/index.js';
 
 export async function loader({ request }) {
   return fetchBookmarks({ signal: request.signal });
@@ -52,9 +53,7 @@ export default function BookmarksPage() {
           <Typography color="text.primary">Bài học đã lưu</Typography>
         </Breadcrumbs>
 
-        <Typography variant="h4" component="h1" gutterBottom>
-          Bài học đã lưu
-        </Typography>
+        <PixelPageHeader title="Bài học đã lưu" />
 
         {isEmpty ? (
           <Paper variant="outlined" sx={{ p: 6, textAlign: 'center', mt: 4 }}>

@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
@@ -17,6 +16,7 @@ import {
 } from '../../api/admin.js';
 import AdminDataTable from '../../components/admin/AdminDataTable.jsx';
 import DeleteConfirmDialog from '../../components/admin/DeleteConfirmDialog.jsx';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export async function loader() {
   const res = await fetchAdminPaths();
@@ -146,23 +146,18 @@ export default function AdminLearningPathsPage() {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 3,
-        }}
-      >
-        <Typography variant="h2">Learning Paths</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => navigate('/admin/paths/new')}
-        >
-          New Path
-        </Button>
-      </Box>
+      <PixelPageHeader
+        title="Learning Paths"
+        action={
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => navigate('/admin/paths/new')}
+          >
+            New Path
+          </Button>
+        }
+      />
 
       <AdminDataTable
         data={paths}

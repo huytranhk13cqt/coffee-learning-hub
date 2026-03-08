@@ -19,6 +19,7 @@ import AdminDataTable from '../../components/admin/AdminDataTable.jsx';
 import TopicFormDialog from '../../components/admin/TopicFormDialog.jsx';
 import DeleteConfirmDialog from '../../components/admin/DeleteConfirmDialog.jsx';
 import { ICON_MAP } from '../../components/admin/IconPickerField.jsx';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export async function loader() {
   return fetchAdminTopics();
@@ -142,26 +143,21 @@ export default function AdminTopicsPage() {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 3,
-        }}
-      >
-        <Typography variant="h2">Topics</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => {
-            setEditItem(null);
-            setFormOpen(true);
-          }}
-        >
-          New Topic
-        </Button>
-      </Box>
+      <PixelPageHeader
+        title="Topics"
+        action={
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              setEditItem(null);
+              setFormOpen(true);
+            }}
+          >
+            New Topic
+          </Button>
+        }
+      />
 
       <AdminDataTable
         data={topics}

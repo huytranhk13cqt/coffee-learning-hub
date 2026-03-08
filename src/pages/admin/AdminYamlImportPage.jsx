@@ -20,6 +20,7 @@ import PublishIcon from '@mui/icons-material/Publish';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import { validateYamlImport, executeYamlImport } from '../../api/admin.js';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export default function AdminYamlImportPage() {
   const [yaml, setYaml] = useState('');
@@ -92,9 +93,7 @@ export default function AdminYamlImportPage() {
 
   return (
     <Box>
-      <Typography variant="h2" sx={{ mb: 3 }}>
-        YAML Import
-      </Typography>
+      <PixelPageHeader title="YAML Import" />
 
       {/* Upload / Paste toggle */}
       <Stack direction="row" spacing={1} sx={{ mb: 2 }}>

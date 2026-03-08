@@ -16,6 +16,7 @@ import {
   setAdminApiKey,
   removeAdminApiKey,
 } from '../../api/admin.js';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export default function AdminSettingsPage() {
   // Password form
@@ -108,9 +109,7 @@ export default function AdminSettingsPage() {
 
   return (
     <Box>
-      <Typography variant="h2" sx={{ mb: 3 }}>
-        Settings
-      </Typography>
+      <PixelPageHeader title="Settings" />
 
       {/* Claude API Key */}
       <Paper sx={{ p: 3, mb: 3, maxWidth: 500 }}>

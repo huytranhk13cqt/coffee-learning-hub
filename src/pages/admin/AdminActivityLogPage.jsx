@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { fetchAdminActivityLog } from '../../api/admin.js';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 const ACTIONS = [
   '',
@@ -164,9 +165,7 @@ export default function AdminActivityLogPage() {
 
   return (
     <Box>
-      <Typography variant="h2" sx={{ mb: 3 }}>
-        Activity Log
-      </Typography>
+      <PixelPageHeader title="Activity Log" />
 
       <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
         <TextField

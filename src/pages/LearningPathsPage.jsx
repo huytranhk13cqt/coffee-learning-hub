@@ -13,6 +13,7 @@ import Fade from '@mui/material/Fade';
 import RouteIcon from '@mui/icons-material/Route';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { PixelPageHeader } from '../components/pixel/index.js';
 
 export async function loader({ request }) {
   return fetchPaths({ signal: request.signal });
@@ -28,16 +29,10 @@ export default function LearningPathsPage() {
   return (
     <Fade in timeout={300}>
       <div>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
-          <RouteIcon sx={{ color: 'primary.main', fontSize: 32 }} />
-          <Typography variant="h4" component="h1">
-            Lộ trình học tập
-          </Typography>
-        </Box>
-        <Typography color="text.secondary" sx={{ mb: 4 }}>
-          Các lộ trình được thiết kế giúp bạn học có hệ thống và đạt mục tiêu
-          nhanh hơn.
-        </Typography>
+        <PixelPageHeader
+          title="Lộ trình học tập"
+          subtitle="Các lộ trình được thiết kế giúp bạn học có hệ thống và đạt mục tiêu nhanh hơn."
+        />
 
         {featured.length > 0 && (
           <>

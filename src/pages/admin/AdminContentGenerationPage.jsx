@@ -22,6 +22,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import { streamGenerate, fetchApiKeyStatus } from '../../api/admin.js';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 const MODELS = [
   {
@@ -169,9 +170,7 @@ export default function AdminContentGenerationPage() {
 
   return (
     <Box>
-      <Typography variant="h2" sx={{ mb: 3 }}>
-        Content Generation
-      </Typography>
+      <PixelPageHeader title="Content Generation" />
 
       {apiKeyReady === false && (
         <Alert severity="warning" sx={{ mb: 3 }}>

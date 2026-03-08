@@ -13,6 +13,7 @@ import TableCell from '@mui/material/TableCell';
 import CircularProgress from '@mui/material/CircularProgress';
 import { COZY } from '../../theme/pixelTheme.js';
 import { fetchAdminReviewStats } from '../../api/admin.js';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export async function loader() {
   const res = await fetchAdminReviewStats();
@@ -103,9 +104,7 @@ export default function AdminReviewPage() {
 
   return (
     <Box>
-      <Typography variant="h2" sx={{ mb: 3 }}>
-        Spaced Repetition Overview
-      </Typography>
+      <PixelPageHeader title="Spaced Repetition Overview" />
 
       <Grid container spacing={2} sx={{ mb: 3 }}>
         {STAT_CARDS.map(({ key, label, color }) => (

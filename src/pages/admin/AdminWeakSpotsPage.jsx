@@ -11,6 +11,7 @@ import {
   fetchAdminCategories,
 } from '../../api/admin.js';
 import AdminDataTable from '../../components/admin/AdminDataTable.jsx';
+import { PixelPageHeader } from '../../components/pixel/index.js';
 
 export async function loader() {
   const [weakSpotsRes, lessonsRes, categoriesRes] = await Promise.all([
@@ -176,9 +177,7 @@ export default function AdminWeakSpotsPage() {
 
   return (
     <Box>
-      <Typography variant="h2" sx={{ mb: 3 }}>
-        Weak Spots (All Users)
-      </Typography>
+      <PixelPageHeader title="Weak Spots (All Users)" />
 
       <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
         <TextField

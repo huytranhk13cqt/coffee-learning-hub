@@ -9,6 +9,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Fade from '@mui/material/Fade';
 import AchievementCard from '../components/gamification/AchievementCard.jsx';
+import { PixelPageHeader } from '../components/pixel/index.js';
 
 export async function loader({ request }) {
   return fetchAchievements({ signal: request.signal });
@@ -50,23 +51,16 @@ export default function AchievementsPage() {
           <Typography color="text.primary">Thành tựu</Typography>
         </Breadcrumbs>
 
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: 2,
-            mb: 3,
-          }}
-        >
-          <Typography variant="h4" component="h1">
-            Thành tựu
-          </Typography>
-          <Chip
-            label={`${earnedCount}/${achievements.length}`}
-            color="primary"
-            size="small"
-          />
-        </Box>
+        <PixelPageHeader
+          title="Thành tựu"
+          action={
+            <Chip
+              label={`${earnedCount}/${achievements.length}`}
+              color="primary"
+              size="small"
+            />
+          }
+        />
 
         {categories.map((category) => (
           <Box key={category} sx={{ mb: 4 }}>

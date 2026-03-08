@@ -20,6 +20,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import UploadIcon from '@mui/icons-material/Upload';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { PixelPageHeader } from '../components/pixel/index.js';
 
 // Build a human-readable summary of the import payload for the confirm dialog
 function buildImportSummary(data) {
@@ -140,9 +141,7 @@ export default function SettingsPage() {
   return (
     <Fade in timeout={300}>
       <div>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Cài đặt
-        </Typography>
+        <PixelPageHeader title="Cài đặt" />
 
         {status && (
           <Alert
