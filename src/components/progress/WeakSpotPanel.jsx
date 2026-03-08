@@ -7,8 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { WhatshotIcon, ArrowForwardIcon } from '../pixel/icons.jsx';
 
 export default function WeakSpotPanel({ weakSpots }) {
   if (!weakSpots || weakSpots.length === 0) return null;

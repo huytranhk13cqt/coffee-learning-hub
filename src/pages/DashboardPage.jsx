@@ -15,18 +15,20 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import SchoolIcon from '@mui/icons-material/School';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import {
+  MenuBookIcon,
+  SchoolIcon,
+  CheckCircleIcon,
+  AccessTimeIcon,
+  TrendingUpIcon,
+  AutorenewIcon,
+} from '../components/pixel/icons.jsx';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import Fade from '@mui/material/Fade';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';
 import GamificationOverview from '../components/dashboard/GamificationOverview.jsx';
 import WeakSpotPanel from '../components/progress/WeakSpotPanel.jsx';
 import { useGamification } from '../hooks/useGamification.js';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { PixelPageHeader } from '../components/pixel/index.js';
 
 export async function loader({ request }) {

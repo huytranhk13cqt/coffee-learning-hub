@@ -3,8 +3,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import Stack from '@mui/material/Stack';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import { CheckCircleIcon, RadioButtonUncheckedIcon } from '../pixel/icons.jsx';
 import ScoreBadge from './ScoreBadge.jsx';
 
 export default function LessonProgressSummary({ progress }) {

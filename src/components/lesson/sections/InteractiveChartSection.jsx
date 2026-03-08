@@ -23,7 +23,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
-import TuneIcon from '@mui/icons-material/Tune';
+import { TuneIcon } from '../../pixel/icons.jsx';
 import MarkdownContent from '../MarkdownContent.jsx';
 import { generateChartData, getDefaultParams } from './chartGenerators.js';
 

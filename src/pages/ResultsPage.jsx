@@ -11,8 +11,7 @@ import Chip from '@mui/material/Chip';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { CheckCircleIcon, CancelIcon } from '../components/pixel/icons.jsx';
 import Fade from '@mui/material/Fade';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 

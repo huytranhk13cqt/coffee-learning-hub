@@ -6,3 +6,6 @@ export { default as PixelPageHeader } from './PixelPageHeader.jsx';
 export { default as PixelProgressBar } from './PixelProgressBar.jsx';
 export { default as PixelLogo } from './PixelLogo.jsx';
 export { default as PixelDivider } from './PixelDivider.jsx';
+
+// Re-export all pixel icons for convenience
+export * from './icons.jsx';

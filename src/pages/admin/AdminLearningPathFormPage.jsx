@@ -26,11 +26,13 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SaveIcon from '@mui/icons-material/Save';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import AddIcon from '@mui/icons-material/Add';
+import {
+  ArrowBackIcon,
+  SaveIcon,
+  DeleteIcon,
+  DragIndicatorIcon,
+  AddIcon,
+} from '../../components/pixel/icons.jsx';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import IconPickerField from '../../components/admin/IconPickerField.jsx';
 import {

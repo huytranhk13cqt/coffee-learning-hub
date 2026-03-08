@@ -19,13 +19,15 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import SchoolIcon from '@mui/icons-material/School';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import {
+  SchoolIcon,
+  BarChartIcon,
+  EmojiEventsIcon,
+  BookmarkIcon,
+  SettingsIcon,
+  LightModeIcon,
+  DarkModeIcon,
+} from './pixel/icons.jsx';
 import pixelTheme from '../theme/pixelTheme.js';
 import { FONT } from '../theme/pixelUtils.js';
 import MuiLink from '@mui/material/Link';

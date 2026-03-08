@@ -5,9 +5,11 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
 import Switch from '@mui/material/Switch';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  AddIcon,
+  EditIcon,
+  DeleteIcon,
+} from '../../components/pixel/icons.jsx';
 import {
   fetchAdminPaths,
   deleteAdminPath,

@@ -5,7 +5,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Chip from '@mui/material/Chip';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { ExpandMoreIcon } from '../pixel/icons.jsx';
 
 const CATEGORY_LABELS = {
   memory: 'Ghi nhớ',

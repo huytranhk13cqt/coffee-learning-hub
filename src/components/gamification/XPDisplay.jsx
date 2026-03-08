@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import BoltIcon from '@mui/icons-material/Bolt';
+import { BoltIcon } from '../pixel/icons.jsx';
 
 export default function XPDisplay({ totalXP = 0, level = 1 }) {
   return (

@@ -33,7 +33,7 @@ import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import Paper from '@mui/material/Paper';
 import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
+import { SearchIcon } from '../pixel/icons.jsx';
 import { DragHandleCell, SortableTableRow } from './DragHandle.jsx';
 
 export default function AdminDataTable({

@@ -1,6 +1,5 @@
 import Chip from '@mui/material/Chip';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import { CheckCircleIcon, PlayCircleOutlineIcon } from '../pixel/icons.jsx';
 
 const STATUS_CONFIG = {
   completed: {

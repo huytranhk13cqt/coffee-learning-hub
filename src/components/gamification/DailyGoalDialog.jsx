@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import FlagIcon from '@mui/icons-material/Flag';
+import { FlagIcon } from '../pixel/icons.jsx';
 import { useGamification } from '../../hooks/useGamification.js';
 
 const PRESETS = [3, 5, 10, 15, 20];

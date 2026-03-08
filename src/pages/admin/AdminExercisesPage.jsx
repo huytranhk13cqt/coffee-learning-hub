@@ -6,9 +6,11 @@ import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  AddIcon,
+  EditIcon,
+  DeleteIcon,
+} from '../../components/pixel/icons.jsx';
 import {
   fetchAdminExercises,
   fetchAdminLessons,

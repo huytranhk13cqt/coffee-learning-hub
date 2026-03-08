@@ -10,9 +10,11 @@ import CardContent from '@mui/material/CardContent';
 import LinearProgress from '@mui/material/LinearProgress';
 import Chip from '@mui/material/Chip';
 import Fade from '@mui/material/Fade';
-import RouteIcon from '@mui/icons-material/Route';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import {
+  RouteIcon,
+  AutoStoriesIcon,
+  AccessTimeIcon,
+} from '../components/pixel/icons.jsx';
 import { PixelPageHeader } from '../components/pixel/index.js';
 
 export async function loader({ request }) {

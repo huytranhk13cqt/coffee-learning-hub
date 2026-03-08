@@ -14,9 +14,11 @@ import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import {
+  CheckCircleOutlineIcon,
+  AutorenewIcon,
+  EmojiEmotionsIcon,
+} from '../components/pixel/icons.jsx';
 
 export async function loader({ request }) {
   return fetchDueReviews({ signal: request.signal });

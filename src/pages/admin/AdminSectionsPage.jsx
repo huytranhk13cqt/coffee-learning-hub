@@ -24,13 +24,15 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import {
+  ArrowBackIcon,
+  AddIcon,
+  ExpandMoreIcon,
+  ExpandLessIcon,
+  DeleteIcon,
+  SaveIcon,
+  DragIndicatorIcon,
+} from '../../components/pixel/icons.jsx';
 import {
   fetchAdminSections,
   createAdminSection,

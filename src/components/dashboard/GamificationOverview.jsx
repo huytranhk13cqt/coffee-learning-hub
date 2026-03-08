@@ -7,11 +7,13 @@ import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
-import BoltIcon from '@mui/icons-material/Bolt';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
-import FlagIcon from '@mui/icons-material/Flag';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import EditIcon from '@mui/icons-material/Edit';
+import {
+  BoltIcon,
+  WhatshotIcon,
+  FlagIcon,
+  EmojiEventsIcon,
+  EditIcon,
+} from '../pixel/icons.jsx';
 import { useGamification } from '../../hooks/useGamification.js';
 
 export default function GamificationOverview({ stats }) {

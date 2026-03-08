@@ -16,10 +16,12 @@ import DialogActions from '@mui/material/DialogActions';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
-import DownloadIcon from '@mui/icons-material/Download';
-import UploadIcon from '@mui/icons-material/Upload';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import {
+  DownloadIcon,
+  UploadIcon,
+  WarningAmberIcon,
+  CheckCircleOutlineIcon,
+} from '../components/pixel/icons.jsx';
 import { PixelPageHeader } from '../components/pixel/index.js';
 
 // Build a human-readable summary of the import payload for the confirm dialog

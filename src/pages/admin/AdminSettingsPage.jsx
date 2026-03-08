@@ -7,8 +7,7 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import SaveIcon from '@mui/icons-material/Save';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { SaveIcon, DeleteIcon } from '../../components/pixel/icons.jsx';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import {
   changeAdminPassword,

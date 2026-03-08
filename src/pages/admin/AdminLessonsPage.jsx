@@ -6,10 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import {
+  AddIcon,
+  EditIcon,
+  DeleteIcon,
+  ListAltIcon,
+} from '../../components/pixel/icons.jsx';
 import {
   fetchAdminLessons,
   fetchAdminCategories,

@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import { LocalFireDepartmentIcon } from '../pixel/icons.jsx';
 
 export default function StreakDisplay({ streak = 0 }) {
   if (streak <= 0) return null;

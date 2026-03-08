@@ -12,12 +12,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Snackbar from '@mui/material/Snackbar';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ErrorIcon from '@mui/icons-material/Error';
-import ClearIcon from '@mui/icons-material/Clear';
-import PublishIcon from '@mui/icons-material/Publish';
-import VerifiedIcon from '@mui/icons-material/Verified';
+import {
+  UploadFileIcon,
+  CheckCircleIcon,
+  ErrorIcon,
+  ClearIcon,
+  PublishIcon,
+  VerifiedIcon,
+} from '../../components/pixel/icons.jsx';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import { validateYamlImport, executeYamlImport } from '../../api/admin.js';
 import { PixelPageHeader } from '../../components/pixel/index.js';

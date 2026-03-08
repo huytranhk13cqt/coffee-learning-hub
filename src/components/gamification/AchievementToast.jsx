@@ -3,7 +3,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { EmojiEventsIcon } from '../pixel/icons.jsx';
 
 /**
  * Shows a celebratory toast when new achievements are earned.

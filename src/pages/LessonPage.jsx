@@ -23,13 +23,15 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import {
+  AccessTimeIcon,
+  CheckCircleIcon,
+  MenuBookIcon,
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  BookmarkIcon,
+  BookmarkBorderIcon,
+} from '../components/pixel/icons.jsx';
 import FormulaSection from '../components/lesson/FormulaSection.jsx';
 import UsageSection from '../components/lesson/UsageSection.jsx';
 import SignalWordSection from '../components/lesson/SignalWordSection.jsx';

@@ -4,36 +4,38 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import ScienceIcon from '@mui/icons-material/Science';
-import PsychologyIcon from '@mui/icons-material/Psychology';
-import PaletteIcon from '@mui/icons-material/Palette';
-import BusinessIcon from '@mui/icons-material/Business';
-import SchoolIcon from '@mui/icons-material/School';
-import CodeIcon from '@mui/icons-material/Code';
-import CalculateIcon from '@mui/icons-material/Calculate';
-import HistoryIcon from '@mui/icons-material/History';
-import LanguageIcon from '@mui/icons-material/Language';
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import BiotechIcon from '@mui/icons-material/Biotech';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import BuildIcon from '@mui/icons-material/Build';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import PublicIcon from '@mui/icons-material/Public';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import CategoryIcon from '@mui/icons-material/Category';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import ExtensionIcon from '@mui/icons-material/Extension';
-import ExploreIcon from '@mui/icons-material/Explore';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
-import ArchitectureIcon from '@mui/icons-material/Architecture';
-import HandymanIcon from '@mui/icons-material/Handyman';
-import AnalyticsIcon from '@mui/icons-material/Analytics';
+import {
+  DashboardIcon,
+  MenuBookIcon,
+  ScienceIcon,
+  PsychologyIcon,
+  PaletteIcon,
+  BusinessIcon,
+  SchoolIcon,
+  CodeIcon,
+  CalculateIcon,
+  HistoryIcon,
+  LanguageIcon,
+  MusicNoteIcon,
+  BiotechIcon,
+  AccountBalanceIcon,
+  TrendingUpIcon,
+  LightbulbIcon,
+  BuildIcon,
+  LocalHospitalIcon,
+  PublicIcon,
+  AutoStoriesIcon,
+  FolderOpenIcon,
+  CategoryIcon,
+  AssignmentIcon,
+  ExtensionIcon,
+  ExploreIcon,
+  VisibilityIcon,
+  EmojiObjectsIcon,
+  ArchitectureIcon,
+  HandymanIcon,
+  AnalyticsIcon,
+} from '../pixel/icons.jsx';
 
 const ICON_MAP = {
   Dashboard: DashboardIcon,

@@ -27,25 +27,27 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import TopicIcon from '@mui/icons-material/FolderOpen';
-import CategoryIcon from '@mui/icons-material/Category';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import RouteIcon from '@mui/icons-material/Route';
-import RepeatIcon from '@mui/icons-material/Repeat';
-import TrackChangesIcon from '@mui/icons-material/TrackChanges';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import AnalyticsIcon from '@mui/icons-material/Analytics';
-import HistoryIcon from '@mui/icons-material/History';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import MenuIcon from '@mui/icons-material/Menu';
+import {
+  DashboardIcon,
+  FolderOpenIcon as TopicIcon,
+  CategoryIcon,
+  MenuBookIcon,
+  AssignmentIcon,
+  RouteIcon,
+  RepeatIcon,
+  TrackChangesIcon,
+  AutoFixHighIcon,
+  UploadFileIcon,
+  AnalyticsIcon,
+  HistoryIcon,
+  SettingsIcon,
+  LightModeIcon,
+  DarkModeIcon,
+  LogoutIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MenuIcon,
+} from '../pixel/icons.jsx';
 
 import pixelTheme from '../../theme/pixelTheme.js';
 import { adminVerify } from '../../api/admin.js';

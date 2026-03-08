@@ -14,8 +14,10 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import {
+  ExpandMoreIcon,
+  ExpandLessIcon,
+} from '../../components/pixel/icons.jsx';
 import { fetchAdminActivityLog } from '../../api/admin.js';
 import { PixelPageHeader } from '../../components/pixel/index.js';
 

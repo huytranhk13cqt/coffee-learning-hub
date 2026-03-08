@@ -5,8 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
 import Radio from '@mui/material/Radio';
 import Collapse from '@mui/material/Collapse';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { AddIcon, DeleteIcon } from '../../pixel/icons.jsx';
 import AdminFormField from '../AdminFormField.jsx';
 import { useState } from 'react';
 

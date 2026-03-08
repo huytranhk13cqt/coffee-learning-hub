@@ -24,56 +24,58 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import LinearProgress from '@mui/material/LinearProgress';
-import RouteIcon from '@mui/icons-material/Route';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import {
+  RouteIcon,
+  ArrowForwardIcon,
+  MenuBookIcon,
+  CodeIcon,
+  BarChartIcon,
+  SecurityIcon,
+  RouterIcon,
+  DeveloperBoardIcon,
+  DevicesIcon,
+  SportsEsportsIcon,
+  ScienceIcon,
+  ArrowUpIcon,
+  NatureIcon,
+  LocalHospitalIcon,
+  FitnessCenterIcon,
+  SportsMartialArtsIcon,
+  NightsStayIcon,
+  RestaurantIcon,
+  PsychologyIcon,
+  GroupsIcon,
+  Diversity3Icon,
+  PolicyIcon,
+  CastForEducationIcon,
+  AutoStoriesIcon,
+  HistoryEduIcon,
+  PublicIcon,
+  LanguageIcon,
+  GavelIcon,
+  TranslateIcon,
+  TrendingUpIcon,
+  SavingsIcon,
+  CampaignIcon,
+  BusinessCenterIcon,
+  HandshakeIcon,
+  LocalShippingIcon,
+  ExtensionIcon,
+  DesignServicesIcon,
+  MusicNoteIcon,
+  BrushIcon,
+  CameraAltIcon,
+  BuildIcon,
+  ShieldIcon,
+  AccountTreeIcon,
+  SchoolIcon,
+  ArrowBackIcon,
+  SearchIcon,
+} from '../components/pixel/icons.jsx';
 
-// Icons — topic icons (static imports for tree-shaking)
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import CodeIcon from '@mui/icons-material/Code';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import SecurityIcon from '@mui/icons-material/Security';
-import RouterIcon from '@mui/icons-material/Router';
-import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
-import DevicesIcon from '@mui/icons-material/Devices';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import ScienceIcon from '@mui/icons-material/Science';
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
-import ParkIcon from '@mui/icons-material/Park';
-import GrassIcon from '@mui/icons-material/Grass';
-import NatureIcon from '@mui/icons-material/Nature';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
-import NightsStayIcon from '@mui/icons-material/NightsStay';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
-import PsychologyIcon from '@mui/icons-material/Psychology';
-import GroupsIcon from '@mui/icons-material/Groups';
-import Diversity3Icon from '@mui/icons-material/Diversity3';
-import PolicyIcon from '@mui/icons-material/Policy';
-import CastForEducationIcon from '@mui/icons-material/CastForEducation';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
-import PublicIcon from '@mui/icons-material/Public';
-import LanguageIcon from '@mui/icons-material/Language';
-import GavelIcon from '@mui/icons-material/Gavel';
-import TranslateIcon from '@mui/icons-material/Translate';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import SavingsIcon from '@mui/icons-material/Savings';
-import CampaignIcon from '@mui/icons-material/Campaign';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import HandshakeIcon from '@mui/icons-material/Handshake';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import ExtensionIcon from '@mui/icons-material/Extension';
-import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import BrushIcon from '@mui/icons-material/Brush';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import BuildIcon from '@mui/icons-material/Build';
-import ShieldIcon from '@mui/icons-material/Shield';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import SchoolIcon from '@mui/icons-material/School';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchIcon from '@mui/icons-material/Search';
+const RocketLaunchIcon = ArrowUpIcon;
+const ParkIcon = NatureIcon;
+const GrassIcon = NatureIcon;
 
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
 import ScoreBadge from '../components/progress/ScoreBadge.jsx';

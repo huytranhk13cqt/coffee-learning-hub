@@ -21,7 +21,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { CheckCircleOutlineIcon } from '../components/pixel/icons.jsx';
 
 export async function loader({ params, request }) {
   const exercises = await fetchExercises(params.lessonId, {

@@ -14,12 +14,14 @@ import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import Chip from '@mui/material/Chip';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import StopIcon from '@mui/icons-material/Stop';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import {
+  PlayArrowIcon,
+  StopIcon,
+  ContentCopyIcon,
+  ExpandMoreIcon,
+  ExpandLessIcon,
+  InfoOutlinedIcon,
+} from '../../components/pixel/icons.jsx';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import { streamGenerate, fetchApiKeyStatus } from '../../api/admin.js';
 import { PixelPageHeader } from '../../components/pixel/index.js';

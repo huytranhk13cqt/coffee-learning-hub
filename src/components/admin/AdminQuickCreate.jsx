@@ -4,8 +4,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import AddIcon from '@mui/icons-material/Add';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { AddIcon, UploadFileIcon } from '../pixel/icons.jsx';
 
 const ACTIONS = [
   { label: '+ Topic', tooltip: 'Coming in Phase 2' },

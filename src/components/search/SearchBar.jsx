@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
+import { SearchIcon } from '../pixel/icons.jsx';
 import { searchLessons } from '../../api/lessons.js';
 import { DIFFICULTY_LABELS } from '../../constants/difficulty.js';
 

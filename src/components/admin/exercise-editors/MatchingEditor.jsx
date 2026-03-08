@@ -2,8 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { AddIcon, DeleteIcon } from '../../pixel/icons.jsx';
 import AdminFormField from '../AdminFormField.jsx';
 
 export default function MatchingEditor({ form, setForm, errors }) {

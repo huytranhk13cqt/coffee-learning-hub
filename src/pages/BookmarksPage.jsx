@@ -18,9 +18,11 @@ import Paper from '@mui/material/Paper';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Fade from '@mui/material/Fade';
-import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import EmptyIcon from '@mui/icons-material/Inbox';
+import {
+  BookmarkRemoveIcon,
+  MenuBookIcon,
+  InboxIcon as EmptyIcon,
+} from '../components/pixel/icons.jsx';
 import { PixelPageHeader } from '../components/pixel/index.js';
 
 export async function loader({ request }) {

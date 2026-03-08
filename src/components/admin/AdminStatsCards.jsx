@@ -3,12 +3,14 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import CategoryIcon from '@mui/icons-material/Category';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import ArticleIcon from '@mui/icons-material/Article';
-import RouteIcon from '@mui/icons-material/Route';
+import {
+  FolderOpenIcon,
+  CategoryIcon,
+  MenuBookIcon,
+  AssignmentIcon,
+  ArticleIcon,
+  RouteIcon,
+} from '../pixel/icons.jsx';
 import { COZY } from '../../theme/pixelTheme.js';
 
 const STAT_CARDS = [

@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import IconButton from '@mui/material/IconButton';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { DragIndicatorIcon } from '../pixel/icons.jsx';
 import TableRow from '@mui/material/TableRow';
 
 export function DragHandleCell({ id }) {

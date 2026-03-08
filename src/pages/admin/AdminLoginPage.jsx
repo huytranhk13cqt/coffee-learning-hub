@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
-import LockIcon from '@mui/icons-material/Lock';
+import { LockIcon } from '../../components/pixel/icons.jsx';
 import pixelTheme from '../../theme/pixelTheme.js';
 import { adminVerify } from '../../api/admin.js';
 import { useAdminAuth } from '../../hooks/useAdminAuth.js';

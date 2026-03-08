@@ -7,10 +7,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import CategoryIcon from '@mui/icons-material/Category';
+import {
+  MenuBookIcon,
+  AssignmentIcon,
+  FolderOpenIcon,
+  CategoryIcon,
+} from '../pixel/icons.jsx';
 
 const TYPE_ICONS = {
   lesson: MenuBookIcon,

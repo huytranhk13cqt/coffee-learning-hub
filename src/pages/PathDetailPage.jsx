@@ -20,12 +20,14 @@ import Fade from '@mui/material/Fade';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import RouteIcon from '@mui/icons-material/Route';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import {
+  CheckCircleIcon,
+  RadioButtonUncheckedIcon,
+  PlayArrowIcon,
+  RouteIcon,
+  AccessTimeIcon,
+  AutoStoriesIcon,
+} from '../components/pixel/icons.jsx';
 
 export async function loader({ params, request }) {
   return fetchPath(params.slug, { signal: request.signal });
