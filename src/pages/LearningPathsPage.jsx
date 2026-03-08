@@ -4,10 +4,8 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
-import LinearProgress from '@mui/material/LinearProgress';
 import Chip from '@mui/material/Chip';
 import Fade from '@mui/material/Fade';
 import {
@@ -15,7 +13,12 @@ import {
   AutoStoriesIcon,
   AccessTimeIcon,
 } from '../components/pixel/icons.jsx';
-import { PixelPageHeader } from '../components/pixel/index.js';
+import {
+  PixelPageHeader,
+  PixelFrame,
+  PixelProgressBar,
+} from '../components/pixel/index.js';
+import { FONT } from '../theme/pixelUtils.js';
 
 export async function loader({ request }) {
   return fetchPaths({ signal: request.signal });
@@ -91,13 +94,13 @@ function PathCard({ path }) {
   );
 
   return (
-    <Card
+    <PixelFrame
+      variant="raised"
+      glow
       sx={{
         height: '100%',
-        borderTop: 4,
-        borderColor: path.color || 'primary.main',
-        transition: 'box-shadow 0.15s',
-        '&:hover': { boxShadow: 4 },
+        borderTop: '4px solid',
+        borderTopColor: path.color || 'primary.main',
       }}
     >
       <CardActionArea
@@ -108,6 +111,7 @@ function PathCard({ path }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'stretch',
+          borderRadius: 0,
         }}
       >
         <CardContent sx={{ flex: 1 }}>
@@ -122,7 +126,13 @@ function PathCard({ path }) {
             <Typography
               variant="h6"
               component="h2"
-              sx={{ lineHeight: 1.3, flex: 1, mr: 1 }}
+              sx={{
+                lineHeight: 1.3,
+                flex: 1,
+                mr: 1,
+                fontFamily: FONT.pixel,
+                fontSize: '0.95rem',
+              }}
             >
               {path.name_vi}
             </Typography>
@@ -182,15 +192,16 @@ function PathCard({ path }) {
                   {path.progress_percent}%
                 </Typography>
               </Box>
-              <LinearProgress
-                variant="determinate"
+              <PixelProgressBar
                 value={path.progress_percent}
-                sx={{ height: 6, borderRadius: 3 }}
+                segments={5}
+                color="primary.main"
+                height={6}
               />
             </Box>
           )}
         </CardContent>
       </CardActionArea>
-    </Card>
+    </PixelFrame>
   );
 }

@@ -7,19 +7,17 @@ import {
 } from '../constants/difficulty.js';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
 import Fade from '@mui/material/Fade';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
 import {
   CheckCircleIcon,
   RadioButtonUncheckedIcon,
@@ -28,6 +26,8 @@ import {
   AccessTimeIcon,
   AutoStoriesIcon,
 } from '../components/pixel/icons.jsx';
+import { PixelFrame, PixelProgressBar } from '../components/pixel/index.js';
+import { FONT } from '../theme/pixelUtils.js';
 
 export async function loader({ params, request }) {
   return fetchPath(params.slug, { signal: request.signal });
@@ -63,16 +63,21 @@ export default function PathDetailPage() {
         </Breadcrumbs>
 
         {/* Header */}
-        <Paper
-          variant="outlined"
+        <PixelFrame
+          variant="raised"
           sx={{
             p: 3,
             mb: 3,
-            borderTop: 4,
-            borderColor: path.color || 'primary.main',
+            borderTop: '4px solid',
+            borderTopColor: path.color || 'primary.main',
           }}
         >
-          <Typography variant="h4" component="h1" gutterBottom>
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{ fontFamily: FONT.pixel, fontSize: '1.3rem' }}
+          >
             {path.name_vi}
           </Typography>
 
@@ -110,34 +115,40 @@ export default function PathDetailPage() {
                 {path.progress_percent}%
               </Typography>
             </Box>
-            <LinearProgress
-              variant="determinate"
+            <PixelProgressBar
               value={path.progress_percent}
-              sx={{ height: 8, borderRadius: 4 }}
+              segments={10}
+              color="primary.main"
+              height={10}
             />
           </Box>
-        </Paper>
+        </PixelFrame>
 
         {/* CTA Button */}
         {allDone ? (
-          <Paper
-            variant="outlined"
+          <PixelFrame
+            variant="raised"
+            glow
             sx={{
               p: 2,
               mb: 3,
               textAlign: 'center',
               bgcolor: 'success.main',
               color: 'common.white',
+              borderColor: 'success.dark',
             }}
           >
-            <Typography variant="h6" fontWeight={700}>
-              Hoàn thành lộ trình! 🎉
+            <Typography
+              variant="h6"
+              sx={{ fontFamily: FONT.pixel, fontSize: '0.95rem' }}
+            >
+              Hoàn thành lộ trình!
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.9 }}>
               Bạn đã hoàn thành tất cả {path.steps.length} bài trong lộ trình
               này.
             </Typography>
-          </Paper>
+          </PixelFrame>
         ) : ctaStep ? (
           <Box sx={{ mb: 3 }}>
             <Button
@@ -160,7 +171,7 @@ export default function PathDetailPage() {
           Danh sách bài học
         </Typography>
 
-        <Paper variant="outlined">
+        <PixelFrame variant="default">
           <List disablePadding>
             {path.steps.map((step, idx) => {
               const isDone = step.status === 'completed';
@@ -177,12 +188,11 @@ export default function PathDetailPage() {
                       opacity: isDone ? 0.65 : 1,
                     }}
                   >
-                    {/* Step number */}
+                    {/* Step number — pixel square */}
                     <Box
                       sx={{
                         width: 28,
                         height: 28,
-                        borderRadius: '50%',
                         bgcolor: isDone
                           ? 'success.main'
                           : isActive
@@ -259,7 +269,7 @@ export default function PathDetailPage() {
               );
             })}
           </List>
-        </Paper>
+        </PixelFrame>
       </div>
     </Fade>
   );

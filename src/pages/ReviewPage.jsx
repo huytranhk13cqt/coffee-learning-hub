@@ -11,7 +11,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../components/pixel/index.js';
+import { FONT } from '../theme/pixelUtils.js';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
 import {
@@ -100,7 +101,12 @@ export default function ReviewPage() {
           <CheckCircleOutlineIcon
             sx={{ fontSize: 64, color: 'success.main', mb: 2 }}
           />
-          <Typography variant="h4" component="h1" gutterBottom>
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{ fontFamily: FONT.pixel, fontSize: '1.3rem' }}
+          >
             Hoàn thành ôn tập!
           </Typography>
           <Typography variant="body1" color="text.secondary" gutterBottom>
@@ -114,8 +120,8 @@ export default function ReviewPage() {
             Hẹn gặp lại ngày mai 👋
           </Typography>
 
-          <Paper
-            variant="outlined"
+          <PixelFrame
+            variant="default"
             sx={{ p: 2, my: 3, maxWidth: 400, mx: 'auto' }}
           >
             <Stack spacing={1}>
@@ -135,7 +141,7 @@ export default function ReviewPage() {
                 </Box>
               ))}
             </Stack>
-          </Paper>
+          </PixelFrame>
 
           <Stack direction="row" spacing={2} justifyContent="center">
             <Button variant="outlined" component={RouterLink} to="/">

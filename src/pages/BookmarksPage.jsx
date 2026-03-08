@@ -7,14 +7,13 @@ import { fetchBookmarks, removeBookmarkById } from '../api/bookmarks.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Paper from '@mui/material/Paper';
+import { PixelFrame } from '../components/pixel/index.js';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Fade from '@mui/material/Fade';
@@ -58,7 +57,10 @@ export default function BookmarksPage() {
         <PixelPageHeader title="Bài học đã lưu" />
 
         {isEmpty ? (
-          <Paper variant="outlined" sx={{ p: 6, textAlign: 'center', mt: 4 }}>
+          <PixelFrame
+            variant="default"
+            sx={{ p: 6, textAlign: 'center', mt: 4 }}
+          >
             <EmptyIcon sx={{ fontSize: 64, color: 'text.disabled', mb: 2 }} />
             <Typography variant="h6" color="text.secondary">
               Bạn chưa lưu bài học nào
@@ -70,13 +72,13 @@ export default function BookmarksPage() {
             <Button variant="contained" component={RouterLink} to="/">
               Khám phá bài học
             </Button>
-          </Paper>
+          </PixelFrame>
         ) : (
           <Grid container spacing={3} sx={{ mt: 1 }}>
             {bookmarks.map((bookmark) => (
               <Grid key={bookmark.bookmark_id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <Card
-                  variant="outlined"
+                <PixelFrame
+                  variant="raised"
                   sx={{
                     height: '100%',
                     display: 'flex',
@@ -92,11 +94,11 @@ export default function BookmarksPage() {
                         mb: 1,
                       }}
                     >
+                      {/* Pixel square indicator */}
                       <Box
                         sx={{
                           width: 12,
                           height: 12,
-                          borderRadius: '50%',
                           bgcolor: bookmark.group_color,
                         }}
                       />
@@ -139,7 +141,7 @@ export default function BookmarksPage() {
                       </IconButton>
                     </Tooltip>
                   </CardActions>
-                </Card>
+                </PixelFrame>
               </Grid>
             ))}
           </Grid>

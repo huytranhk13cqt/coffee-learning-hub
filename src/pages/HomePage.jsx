@@ -5,9 +5,7 @@ import { fetchPaths } from '../api/paths.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
-import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
@@ -22,8 +20,8 @@ import TextField from '@mui/material/TextField';
 import Fade from '@mui/material/Fade';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import LinearProgress from '@mui/material/LinearProgress';
+import { PixelFrame, PixelProgressBar } from '../components/pixel/index.js';
+import { FONT } from '../theme/pixelUtils.js';
 import {
   RouteIcon,
   ArrowForwardIcon,
@@ -215,7 +213,12 @@ function TopicOverview({
 
   return (
     <>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        sx={{ fontFamily: FONT.pixel, fontSize: '1.4rem' }}
+      >
         Learning Hub
       </Typography>
       <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
@@ -263,13 +266,14 @@ function TopicCard({ topic, onClick }) {
   const lessonCount = getTopicLessonCount(topic);
 
   return (
-    <Card
+    <PixelFrame
+      variant="raised"
+      glow
       sx={{
         height: '100%',
-        transition: 'transform 0.15s, box-shadow 0.15s',
+        cursor: 'pointer',
         '&:hover': {
           transform: 'translateY(-2px)',
-          boxShadow: 4,
         },
       }}
     >
@@ -283,14 +287,17 @@ function TopicCard({ topic, onClick }) {
           justifyContent: 'center',
           p: 2,
           textAlign: 'center',
+          borderRadius: 0,
         }}
       >
+        {/* Pixel square icon — no border-radius */}
         <Box
           sx={{
             width: 52,
             height: 52,
-            borderRadius: 2,
             bgcolor: topic.color + '18',
+            border: '2px solid',
+            borderColor: topic.color + '40',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -302,8 +309,9 @@ function TopicCard({ topic, onClick }) {
         <Typography
           variant="subtitle2"
           sx={{
-            fontWeight: 600,
-            lineHeight: 1.3,
+            fontFamily: FONT.pixel,
+            fontSize: '0.75rem',
+            lineHeight: 1.4,
             mb: 0.5,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -322,11 +330,10 @@ function TopicCard({ topic, onClick }) {
             fontSize: '0.7rem',
             bgcolor: topic.color + '18',
             color: topic.color,
-            fontWeight: 600,
           }}
         />
       </CardActionArea>
-    </Card>
+    </PixelFrame>
   );
 }
 
@@ -368,12 +375,14 @@ function TopicDetailView({ topic, onBack }) {
           sx={{
             width: 56,
             height: 56,
-            borderRadius: 2,
             bgcolor: topic.color + '18',
+            border: '2px solid',
+            borderColor: topic.color + '40',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
+            boxShadow: '2px 2px 0 0 rgba(0,0,0,0.08)',
           }}
         >
           <TopicIcon sx={{ color: topic.color, fontSize: 32 }} />
@@ -468,11 +477,9 @@ function FeaturedPaths({ paths }) {
         }}
       >
         {paths.map((path) => (
-          <Paper
+          <PixelFrame
             key={path.id}
-            variant="outlined"
-            component={RouterLink}
-            to={`/paths/${path.slug}`}
+            variant="raised"
             sx={{
               p: 2,
               minWidth: 200,
@@ -480,16 +487,17 @@ function FeaturedPaths({ paths }) {
               flexShrink: 0,
               textDecoration: 'none',
               color: 'inherit',
-              borderTop: 3,
-              borderColor: path.color,
-              transition: 'box-shadow 0.15s',
-              '&:hover': { boxShadow: 3 },
+              borderTop: '3px solid',
+              borderTopColor: path.color,
             }}
+            component={RouterLink}
+            to={`/paths/${path.slug}`}
           >
             <Typography
               variant="subtitle2"
-              fontWeight={700}
               sx={{
+                fontFamily: FONT.pixel,
+                fontSize: '0.8rem',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
@@ -507,13 +515,14 @@ function FeaturedPaths({ paths }) {
               {path.total_steps} bài · {path.estimated_days} ngày
             </Typography>
             {path.progress_percent > 0 && (
-              <LinearProgress
-                variant="determinate"
+              <PixelProgressBar
                 value={path.progress_percent}
-                sx={{ height: 4, borderRadius: 2 }}
+                segments={5}
+                color="primary.main"
+                height={6}
               />
             )}
-          </Paper>
+          </PixelFrame>
         ))}
       </Box>
     </Box>
@@ -522,60 +531,64 @@ function FeaturedPaths({ paths }) {
 
 function CategoryCard({ group }) {
   return (
-    <Card
+    <PixelFrame
+      variant="raised"
       sx={{
         height: '100%',
-        borderTop: 4,
-        borderColor: group.color,
+        borderTop: '4px solid',
+        borderTopColor: group.color,
+        p: 2,
       }}
     >
-      <CardContent>
-        <Typography variant="h6" component="h3" gutterBottom>
-          {group.name}
-        </Typography>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          {group.name_vi}
-        </Typography>
+      <Typography
+        variant="h6"
+        component="h3"
+        gutterBottom
+        sx={{ fontFamily: FONT.pixel, fontSize: '0.95rem' }}
+      >
+        {group.name}
+      </Typography>
+      <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+        {group.name_vi}
+      </Typography>
 
-        <List dense disablePadding>
-          {group.lessons.map((lesson) => (
-            <ListItemButton
-              key={lesson.id}
-              component={RouterLink}
-              to={`/lessons/${lesson.slug}`}
-              sx={{ borderRadius: 1 }}
+      <List dense disablePadding>
+        {group.lessons.map((lesson) => (
+          <ListItemButton
+            key={lesson.id}
+            component={RouterLink}
+            to={`/lessons/${lesson.slug}`}
+          >
+            <ListItemIcon sx={{ minWidth: 36 }}>
+              <MenuBookIcon fontSize="small" sx={{ color: group.color }} />
+            </ListItemIcon>
+            <ListItemText
+              primary={lesson.name}
+              secondary={`${lesson.name_vi} · ${DIFFICULTY_LABELS[lesson.difficulty] || lesson.difficulty}`}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                ml: 1,
+                flexShrink: 0,
+              }}
             >
-              <ListItemIcon sx={{ minWidth: 36 }}>
-                <MenuBookIcon fontSize="small" sx={{ color: group.color }} />
-              </ListItemIcon>
-              <ListItemText
-                primary={lesson.name}
-                secondary={`${lesson.name_vi} · ${DIFFICULTY_LABELS[lesson.difficulty] || lesson.difficulty}`}
-              />
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                  ml: 1,
-                  flexShrink: 0,
-                }}
-              >
-                <ScoreBadge score={lesson.best_score} label="" />
-                <LessonStatusChip status={lesson.status} />
-              </Box>
-            </ListItemButton>
-          ))}
-        </List>
+              <ScoreBadge score={lesson.best_score} label="" />
+              <LessonStatusChip status={lesson.status} />
+            </Box>
+          </ListItemButton>
+        ))}
+      </List>
 
-        <Box sx={{ mt: 1 }}>
-          <Chip
-            label={`${group.lessons.length} bài học`}
-            size="small"
-            sx={{ backgroundColor: group.color, color: 'common.white' }}
-          />
-        </Box>
-      </CardContent>
-    </Card>
+      <Box sx={{ mt: 1 }}>
+        <Chip
+          label={`${group.lessons.length} bài học`}
+          size="small"
+          sx={{ backgroundColor: group.color, color: 'common.white' }}
+        />
+      </Box>
+    </PixelFrame>
   );
 }

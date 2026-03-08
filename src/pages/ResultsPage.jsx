@@ -5,12 +5,12 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
+import { PixelFrame, PixelDivider } from '../components/pixel/index.js';
+import { FONT } from '../theme/pixelUtils.js';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
 import { CheckCircleIcon, CancelIcon } from '../components/pixel/icons.jsx';
 import Fade from '@mui/material/Fade';
 import LessonStatusChip from '../components/progress/LessonStatusChip.jsx';
@@ -66,12 +66,18 @@ export default function ResultsPage() {
 
         {/* Summary */}
         <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{ fontFamily: FONT.pixel, fontSize: '1.3rem' }}
+          >
             Kết quả chi tiết
           </Typography>
           <Typography
             variant="h5"
             color={score >= 70 ? 'success.main' : 'error.main'}
+            sx={{ fontFamily: FONT.pixel, fontSize: '1.2rem' }}
           >
             {correct.length}/{results.length} ({score}%)
           </Typography>
@@ -97,7 +103,7 @@ export default function ResultsPage() {
           {results.map((ex, index) => {
             const hasAttempt = ex.user_answer != null;
             return (
-              <Paper key={ex.exercise_id} variant="outlined" sx={{ p: 2 }}>
+              <PixelFrame key={ex.exercise_id} variant="default" sx={{ p: 2 }}>
                 <Box
                   sx={{
                     display: 'flex',
@@ -148,7 +154,7 @@ export default function ResultsPage() {
                       </Typography>
                     )}
 
-                    <Divider sx={{ my: 1 }} />
+                    <PixelDivider sx={{ my: 1 }} />
 
                     {/* User's answer vs correct */}
                     {hasAttempt && (
@@ -188,7 +194,10 @@ export default function ResultsPage() {
 
                     {/* Explanation */}
                     {ex.explanation_vi && (
-                      <Paper sx={{ p: 1.5, bgcolor: 'action.hover', mt: 1 }}>
+                      <PixelFrame
+                        variant="inset"
+                        sx={{ p: 1.5, bgcolor: 'action.hover', mt: 1 }}
+                      >
                         <Typography variant="body2">
                           {ex.explanation_vi}
                         </Typography>
@@ -201,11 +210,11 @@ export default function ResultsPage() {
                             {ex.explanation}
                           </Typography>
                         )}
-                      </Paper>
+                      </PixelFrame>
                     )}
                   </Box>
                 </Box>
-              </Paper>
+              </PixelFrame>
             );
           })}
         </Stack>
