@@ -4,25 +4,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import ButtonBase from '@mui/material/ButtonBase';
 import Tooltip from '@mui/material/Tooltip';
-
-const PICO_COLORS = [
-  { hex: '#000000', name: 'Black' },
-  { hex: '#1D2B53', name: 'Dark Blue' },
-  { hex: '#7E2553', name: 'Dark Purple' },
-  { hex: '#008751', name: 'Dark Green' },
-  { hex: '#AB5236', name: 'Brown' },
-  { hex: '#5F574F', name: 'Dark Grey' },
-  { hex: '#C2C3C7', name: 'Light Grey' },
-  { hex: '#FFF1E8', name: 'White' },
-  { hex: '#FF004D', name: 'Red' },
-  { hex: '#FFA300', name: 'Orange' },
-  { hex: '#FFEC27', name: 'Yellow' },
-  { hex: '#00E436', name: 'Green' },
-  { hex: '#29ADFF', name: 'Blue' },
-  { hex: '#83769C', name: 'Lavender' },
-  { hex: '#FF77A8', name: 'Pink' },
-  { hex: '#FFCCAA', name: 'Peach' },
-];
+import { PALETTE_SWATCHES } from '../../theme/palette.js';
 
 const HEX_REGEX = /^#[0-9A-Fa-f]{6}$/;
 
@@ -62,7 +44,7 @@ export default function ColorPickerField({
         </Typography>
       )}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
-        {PICO_COLORS.map((c) => (
+        {PALETTE_SWATCHES.map((c) => (
           <Tooltip key={c.hex} title={c.name}>
             <ButtonBase
               onClick={() => handleSwatchClick(c.hex)}

@@ -11,7 +11,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import CircularProgress from '@mui/material/CircularProgress';
-import { PICO } from '../../theme/pixelTheme.js';
+import { COZY } from '../../theme/pixelTheme.js';
 import { fetchAdminReviewStats } from '../../api/admin.js';
 
 export async function loader() {
@@ -20,26 +20,26 @@ export async function loader() {
 }
 
 const STAT_CARDS = [
-  { key: 'total_enrolled', label: 'Total Enrolled', color: PICO.blue },
-  { key: 'due_today', label: 'Due Today', color: PICO.red },
-  { key: 'due_this_week', label: 'Due This Week', color: PICO.orange },
-  { key: 'unique_sessions', label: 'Sessions', color: PICO.green },
+  { key: 'total_enrolled', label: 'Total Enrolled', color: COZY.deco.sky },
+  { key: 'due_today', label: 'Due Today', color: COZY.error.main },
+  { key: 'due_this_week', label: 'Due This Week', color: COZY.warning.main },
+  { key: 'unique_sessions', label: 'Sessions', color: COZY.success.main },
 ];
 
 const EASE_COLORS = [
-  PICO.red,
-  PICO.orange,
-  PICO.yellow,
-  PICO.green,
-  PICO.blue,
-  PICO.lavender,
+  COZY.error.main,
+  COZY.warning.main,
+  COZY.deco.gold,
+  COZY.success.main,
+  COZY.deco.sky,
+  COZY.deco.plum,
 ];
 const INTERVAL_COLORS = [
-  PICO.red,
-  PICO.orange,
-  PICO.yellow,
-  PICO.green,
-  PICO.blue,
+  COZY.error.main,
+  COZY.warning.main,
+  COZY.deco.gold,
+  COZY.success.main,
+  COZY.deco.sky,
 ];
 
 function CssBarChart({ data, colors, title }) {

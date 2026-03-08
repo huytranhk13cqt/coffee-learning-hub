@@ -56,11 +56,7 @@ const SIDEBAR_WIDTH = 240;
 const SIDEBAR_COLLAPSED = 64;
 const COLLAPSE_KEY = 'admin_sidebar_collapsed';
 
-// Subtle pixel dot pattern for sidebar background texture
-const SIDEBAR_PATTERN_LIGHT =
-  'radial-gradient(circle, rgba(29,43,83,0.04) 1px, transparent 1px)';
-const SIDEBAR_PATTERN_DARK =
-  'radial-gradient(circle, rgba(255,241,232,0.02) 1px, transparent 1px)';
+// Sidebar texture is now handled by MuiDrawer overrides in pixelTheme.js
 
 export async function loader() {
   const { authenticated } = await adminVerify();
@@ -182,7 +178,7 @@ function SidebarContent({ collapsed, onToggle, onLogout, location }) {
                   inset: 4,
                   bgcolor: 'primary.main',
                   transform: 'rotate(45deg)',
-                  boxShadow: '0 0 10px rgba(41,173,255,0.4)',
+                  boxShadow: '0 0 10px rgba(91,82,163,0.4)',
                 },
                 '&::after': {
                   content: '""',
@@ -198,7 +194,7 @@ function SidebarContent({ collapsed, onToggle, onLogout, location }) {
               sx={{
                 color: 'primary.main',
                 whiteSpace: 'nowrap',
-                textShadow: '0 0 12px rgba(41,173,255,0.25)',
+                textShadow: '0 0 12px rgba(91,82,163,0.25)',
               }}
             >
               LH Admin
@@ -265,7 +261,7 @@ function SidebarContent({ collapsed, onToggle, onLogout, location }) {
                               isActive
                                 ? {
                                     filter:
-                                      'drop-shadow(0 0 4px rgba(41,173,255,0.5))',
+                                      'drop-shadow(0 0 4px rgba(91,82,163,0.5))',
                                   }
                                 : undefined
                             }
@@ -371,21 +367,16 @@ function AdminLayoutContent() {
     />
   );
 
-  // Shared sidebar paper styles — pixel dot texture + subtle gradient
+  // Sidebar paper styles — texture handled by MuiDrawer overrides,
+  // only add the subtle vertical gradient for depth
   const sidebarPaperSx = {
     bgcolor: 'background.paper',
-    backgroundImage: SIDEBAR_PATTERN_LIGHT,
-    backgroundSize: '4px 4px',
-    '[data-color-scheme="dark"] &': {
-      backgroundImage: SIDEBAR_PATTERN_DARK,
-    },
-    // Subtle vertical gradient overlay for depth
     '&::before': {
       content: '""',
       position: 'absolute',
       inset: 0,
       background:
-        'linear-gradient(180deg, transparent 0%, rgba(29,43,83,0.03) 100%)',
+        'linear-gradient(180deg, transparent 0%, rgba(44,42,53,0.03) 100%)',
       pointerEvents: 'none',
     },
   };

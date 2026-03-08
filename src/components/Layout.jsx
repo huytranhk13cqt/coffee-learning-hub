@@ -6,7 +6,9 @@ import {
   useRouteLoaderData,
   Link as RouterLink,
 } from 'react-router';
+import '@fontsource/press-start-2p/400.css';
 import '@fontsource/silkscreen/400.css';
+import '@fontsource/vt323/400.css';
 import { ThemeProvider, useColorScheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
@@ -24,7 +26,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import theme from '../theme/theme.js';
+import pixelTheme from '../theme/pixelTheme.js';
 import MuiLink from '@mui/material/Link';
 import SearchBar from './search/SearchBar.jsx';
 import PageSkeleton from './skeletons/PageSkeleton.jsx';
@@ -235,7 +237,7 @@ function LayoutContent() {
 
 export default function Layout() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={pixelTheme}>
       <CssBaseline enableColorScheme />
       <LayoutContent />
     </ThemeProvider>

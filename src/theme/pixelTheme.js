@@ -1,242 +1,422 @@
 import { createTheme } from '@mui/material/styles';
+import { COZY } from './palette.js';
+import { FONT, DITHER, pixelShadows } from './pixelUtils.js';
 
-// ────────────────────────────────────────────────────────
-// PICO-8 palette — the retro DNA of the design system
-// ────────────────────────────────────────────────────────
-const PICO = {
-  black: '#000000',
-  darkBlue: '#1D2B53',
-  darkPurple: '#7E2553',
-  darkGreen: '#008751',
-  brown: '#AB5236',
-  darkGrey: '#5F574F',
-  lightGrey: '#C2C3C7',
-  white: '#FFF1E8',
-  red: '#FF004D',
-  orange: '#FFA300',
-  yellow: '#FFEC27',
-  green: '#00E436',
-  blue: '#29ADFF',
-  lavender: '#83769C',
-  pink: '#FF77A8',
-  peach: '#FFCCAA',
-};
+// ═══════════════════════════════════════════════════════════
+// Unified Pixel Art Theme — Cozy Study Edition
+// Stardew Valley-inspired 64-bit aesthetic
+// Used by BOTH user-facing Layout and Admin Layout
+// ═══════════════════════════════════════════════════════════
 
-// ────────────────────────────────────────────────────────
-// 128-bit shadow system — color-tinted, layered depth
-// ────────────────────────────────────────────────────────
-const shadows = [
-  'none',
-  '0 1px 3px rgba(29,43,83,0.10), 0 1px 2px rgba(0,0,0,0.06)',
-  '0 2px 6px rgba(29,43,83,0.12), 0 1px 3px rgba(0,0,0,0.08)',
-  '0 4px 12px rgba(29,43,83,0.14), 0 2px 4px rgba(0,0,0,0.08)',
-  '0 6px 16px rgba(29,43,83,0.16), 0 3px 6px rgba(0,0,0,0.08)',
-  '0 8px 24px rgba(29,43,83,0.18), 0 4px 8px rgba(0,0,0,0.08)',
-  ...Array(19).fill(
-    '0 8px 24px rgba(29,43,83,0.18), 0 4px 8px rgba(0,0,0,0.08)',
-  ),
-];
-
-// Legacy pixel border helpers — kept for backward compatibility
-const pixelBorder = (color) => `
-  2px 0 0 0 ${color},
-  -2px 0 0 0 ${color},
-  0 2px 0 0 ${color},
-  0 -2px 0 0 ${color}
-`;
-
-const pixelBorderThick = (color) => `
-  4px 0 0 0 ${color},
-  -4px 0 0 0 ${color},
-  0 4px 0 0 ${color},
-  0 -4px 0 0 ${color}
-`;
-
-// ────────────────────────────────────────────────────────
-// CSS custom properties for pixel-art textures
-// ────────────────────────────────────────────────────────
-const PIXEL_PATTERN_LIGHT =
-  'radial-gradient(circle, rgba(29,43,83,0.035) 1px, transparent 1px)';
-const PIXEL_PATTERN_DARK =
-  'radial-gradient(circle, rgba(255,241,232,0.025) 1px, transparent 1px)';
-
-// ────────────────────────────────────────────────────────
-// 128-bit Pixel Art Theme — PS2/GameCube era refinement
-// ────────────────────────────────────────────────────────
 const pixelTheme = createTheme({
   cssVariables: { colorSchemeSelector: 'data-color-scheme' },
-  shadows,
+  shadows: pixelShadows,
 
+  // ── Color Schemes ──────────────────────────────────────
   colorSchemes: {
-    dark: {
-      palette: {
-        primary: { main: PICO.blue },
-        secondary: { main: PICO.pink },
-        success: { main: PICO.green },
-        warning: { main: PICO.orange },
-        error: { main: PICO.red },
-        info: { main: PICO.lavender },
-        background: {
-          default: '#141a2e',
-          paper: '#1c2340',
-        },
-        text: {
-          primary: '#eae6df',
-          secondary: '#9b97a0',
-        },
-        divider: 'rgba(255,255,255,0.08)',
-      },
-    },
     light: {
       palette: {
-        primary: { main: '#1a56db' },
-        secondary: { main: PICO.darkPurple },
-        success: { main: '#15803d' },
-        warning: { main: '#b45309' },
-        error: { main: '#be123c' },
-        info: { main: PICO.lavender },
+        primary: {
+          main: COZY.primary.main,
+          light: COZY.primary[100],
+          dark: COZY.primary[700],
+          contrastText: '#FEFCF8',
+        },
+        secondary: {
+          main: COZY.secondary.main,
+          light: COZY.secondary[100],
+          dark: COZY.secondary[700],
+          contrastText: '#FEFCF8',
+        },
+        success: {
+          main: COZY.success.main,
+          dark: COZY.success.dark,
+          light: COZY.success[50],
+        },
+        warning: {
+          main: COZY.warning.main,
+          dark: COZY.warning.dark,
+          light: COZY.warning[50],
+        },
+        error: {
+          main: COZY.error.main,
+          dark: COZY.error.dark,
+          light: COZY.error[50],
+        },
+        info: {
+          main: COZY.info.main,
+          dark: COZY.info.dark,
+          light: COZY.info[50],
+        },
+        grey: COZY.grey,
         background: {
-          default: '#f5f1eb',
-          paper: '#ffffff',
+          default: COZY.bg.light.cream,
+          paper: COZY.bg.light.paper,
         },
         text: {
-          primary: '#1a1a2e',
-          secondary: '#5c5a65',
+          primary: COZY.text.light.ink,
+          secondary: COZY.text.light.graphite,
+          disabled: COZY.text.light.mist,
         },
-        divider: 'rgba(0,0,0,0.08)',
+        divider: 'rgba(44, 42, 53, 0.10)',
+        action: {
+          hover: 'rgba(91, 82, 163, 0.06)',
+          selected: 'rgba(91, 82, 163, 0.10)',
+          disabledBackground: COZY.bg.light.stone,
+          disabled: COZY.text.light.mist,
+        },
+        // Custom tokens for pixel effects
+        AppBar: {
+          defaultBg: COZY.primary.main,
+        },
+      },
+    },
+
+    dark: {
+      palette: {
+        primary: {
+          main: COZY.primary.light,
+          light: COZY.primary[200],
+          dark: COZY.primary.main,
+          contrastText: COZY.bg.dark.midnight,
+        },
+        secondary: {
+          main: COZY.secondary.light,
+          light: COZY.secondary[200],
+          dark: COZY.secondary.main,
+        },
+        success: {
+          main: COZY.success.light,
+          dark: COZY.success.main,
+          light: COZY.success[50],
+        },
+        warning: {
+          main: COZY.warning.light,
+          dark: COZY.warning.main,
+          light: COZY.warning[50],
+        },
+        error: {
+          main: COZY.error.light,
+          dark: COZY.error.main,
+          light: COZY.error[50],
+        },
+        info: {
+          main: COZY.info.light,
+          dark: COZY.info.main,
+          light: COZY.info[50],
+        },
+        grey: COZY.grey,
+        background: {
+          default: COZY.bg.dark.midnight,
+          paper: COZY.bg.dark.slate,
+        },
+        text: {
+          primary: COZY.text.dark.cream,
+          secondary: COZY.text.dark.silver,
+          disabled: COZY.text.dark.shadow,
+        },
+        divider: 'rgba(232, 228, 220, 0.08)',
+        action: {
+          hover: 'rgba(155, 147, 215, 0.08)',
+          selected: 'rgba(155, 147, 215, 0.14)',
+          disabledBackground: COZY.bg.dark.abyss,
+          disabled: COZY.text.dark.shadow,
+        },
+        AppBar: {
+          defaultBg: COZY.bg.dark.abyss,
+        },
       },
     },
   },
 
+  // ── Shape ──────────────────────────────────────────────
   shape: {
-    borderRadius: 4,
+    borderRadius: 2, // Pixel-sharp corners
   },
 
+  // ── Typography ─────────────────────────────────────────
+  // Silkscreen: headings, buttons, nav, labels (pixel UI chrome)
+  // VT323: body text, data, secondary info (pixel monospace)
+  // Inter/system: lesson content, long reading (readability)
+
   typography: {
-    fontFamily: '"VT323", "Courier New", monospace',
+    fontFamily: FONT.mono,
     fontSize: 16,
+
+    // Page titles — pixel display
     h1: {
-      fontFamily: '"Silkscreen", cursive',
+      fontFamily: FONT.pixel,
       fontSize: '1.75rem',
       lineHeight: 1.6,
       fontWeight: 400,
+      letterSpacing: '0.02em',
     },
+    // Section headings
     h2: {
-      fontFamily: '"Silkscreen", cursive',
+      fontFamily: FONT.pixel,
       fontSize: '1.4rem',
       lineHeight: 1.6,
       fontWeight: 400,
     },
+    // Subsection headings
     h3: {
-      fontFamily: '"Silkscreen", cursive',
+      fontFamily: FONT.pixel,
       fontSize: '1.15rem',
       lineHeight: 1.5,
       fontWeight: 400,
     },
-    h4: { fontFamily: '"Silkscreen", cursive', fontSize: '1.25rem' },
-    h5: { fontFamily: '"Silkscreen", cursive', fontSize: '1.1rem' },
-    h6: { fontFamily: '"Silkscreen", cursive', fontSize: '1rem' },
-    subtitle1: { fontFamily: '"Silkscreen", cursive', fontSize: '0.95rem' },
-    subtitle2: { fontFamily: '"Silkscreen", cursive', fontSize: '0.85rem' },
+    h4: {
+      fontFamily: FONT.pixel,
+      fontSize: '1.05rem',
+      lineHeight: 1.5,
+    },
+    h5: {
+      fontFamily: FONT.pixel,
+      fontSize: '0.95rem',
+      lineHeight: 1.4,
+    },
+    h6: {
+      fontFamily: FONT.pixel,
+      fontSize: '0.875rem',
+      lineHeight: 1.4,
+    },
+    // Subtitles — pixel
+    subtitle1: {
+      fontFamily: FONT.pixel,
+      fontSize: '0.95rem',
+      lineHeight: 1.4,
+    },
+    subtitle2: {
+      fontFamily: FONT.pixel,
+      fontSize: '0.85rem',
+      lineHeight: 1.4,
+    },
+    // Body text — pixel monospace
     body1: {
-      fontFamily: '"VT323", monospace',
+      fontFamily: FONT.mono,
       fontSize: '1.25rem',
       lineHeight: 1.6,
     },
     body2: {
-      fontFamily: '"VT323", monospace',
+      fontFamily: FONT.mono,
       fontSize: '1.1rem',
       lineHeight: 1.5,
     },
+    // Buttons & labels — pixel
     button: {
-      fontFamily: '"Silkscreen", cursive',
+      fontFamily: FONT.pixel,
       fontSize: '0.875rem',
       textTransform: 'none',
+      letterSpacing: '0.02em',
     },
-    caption: { fontFamily: '"VT323", monospace', fontSize: '1rem' },
-    overline: { fontFamily: '"Silkscreen", cursive', fontSize: '0.7rem' },
+    caption: {
+      fontFamily: FONT.mono,
+      fontSize: '1rem',
+      lineHeight: 1.4,
+    },
+    overline: {
+      fontFamily: FONT.pixel,
+      fontSize: '0.7rem',
+      letterSpacing: '0.12em',
+    },
   },
 
+  // ── Component Overrides ────────────────────────────────
   components: {
+    // ▸ Global baseline — pixel texture overlay + font rendering
     MuiCssBaseline: {
       styleOverrides: {
         body: {
           imageRendering: 'pixelated',
-          // Subtle pixel dot overlay — the "128-bit texture"
+          // Subtle pixel dot texture — the "retro scanline" effect
           '&::after': {
             content: '""',
             position: 'fixed',
             inset: 0,
-            backgroundImage: PIXEL_PATTERN_LIGHT,
-            backgroundSize: '4px 4px',
+            backgroundImage: DITHER.dots.light,
+            backgroundSize: DITHER.dots.size,
             pointerEvents: 'none',
             zIndex: 9999,
+            opacity: 0.8,
           },
-          // Dark mode swap via data attribute
           '[data-color-scheme="dark"] &::after': {
-            backgroundImage: PIXEL_PATTERN_DARK,
+            backgroundImage: DITHER.dots.dark,
+          },
+        },
+        // Smooth scrollbar with pixel aesthetics
+        '*::-webkit-scrollbar': {
+          width: 8,
+          height: 8,
+        },
+        '*::-webkit-scrollbar-track': {
+          background: 'var(--mui-palette-background-default)',
+        },
+        '*::-webkit-scrollbar-thumb': {
+          background: 'var(--mui-palette-divider)',
+          border: '2px solid var(--mui-palette-background-default)',
+          '&:hover': {
+            background: 'var(--mui-palette-action-hover)',
           },
         },
       },
     },
 
+    // ▸ Button — pixel press effect
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 3,
+          borderRadius: 2,
           textTransform: 'none',
-          border: '1px solid transparent',
-          boxShadow: '0 1px 3px rgba(29,43,83,0.10)',
+          border: '2px solid transparent',
+          boxShadow: `2px 2px 0 0 rgba(91,82,163,0.12)`,
+          transition:
+            'transform 0.1s steps(2, end), box-shadow 0.1s steps(2, end)',
           '&:hover': {
             transform: 'translateY(-1px)',
-            boxShadow: '0 3px 8px rgba(29,43,83,0.18)',
+            boxShadow: `3px 3px 0 0 rgba(91,82,163,0.18)`,
           },
           '&:active': {
-            transform: 'translateY(0)',
-            boxShadow: '0 1px 2px rgba(29,43,83,0.10)',
+            transform: 'translateY(1px)',
+            boxShadow: 'none',
           },
-          transition: 'transform 0.15s ease-out, box-shadow 0.15s ease-out',
+        },
+        contained: {
+          border: '2px solid',
+          borderColor: 'rgba(0,0,0,0.15)',
+          borderBottomColor: 'rgba(0,0,0,0.25)',
+          borderRightColor: 'rgba(0,0,0,0.20)',
+          '&:hover': {
+            borderColor: 'rgba(0,0,0,0.20)',
+          },
         },
         containedPrimary: {
           '&:hover': {
-            boxShadow: '0 3px 12px rgba(41,173,255,0.35)',
+            boxShadow: `3px 3px 0 0 ${COZY.primary.main}44`,
+          },
+        },
+        outlined: {
+          borderWidth: 2,
+          '&:hover': {
+            borderWidth: 2,
+          },
+        },
+        text: {
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
+            backgroundColor: 'var(--mui-palette-action-hover)',
+          },
+          '&:active': {
+            transform: 'translateY(1px)',
+          },
+        },
+        sizeSmall: {
+          fontSize: '0.8rem',
+          padding: '4px 12px',
+        },
+        sizeLarge: {
+          fontSize: '1rem',
+          padding: '10px 28px',
+        },
+      },
+    },
+
+    // ▸ IconButton — pixel circle
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 2,
+          transition:
+            'transform 0.1s steps(2, end), background-color 0.15s steps(3, end)',
+          '&:hover': {
+            transform: 'translateY(-1px)',
+          },
+          '&:active': {
+            transform: 'translateY(1px)',
           },
         },
       },
     },
 
+    // ▸ Card — pixel frame with warm shadow
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 6,
-          border: '1px solid var(--mui-palette-divider)',
+          borderRadius: 2,
+          border: '2px solid var(--mui-palette-divider)',
           backgroundImage: 'none',
-          boxShadow: '0 2px 8px rgba(29,43,83,0.08)',
-          transition: 'box-shadow 0.2s ease-out, transform 0.2s ease-out',
+          boxShadow: '3px 3px 0 0 rgba(91,82,163,0.08)',
+          transition:
+            'box-shadow 0.15s steps(3, end), transform 0.15s steps(3, end)',
           '&:hover': {
-            boxShadow:
-              '0 4px 16px rgba(41,173,255,0.12), 0 2px 6px rgba(29,43,83,0.08)',
+            boxShadow: `4px 4px 0 0 rgba(91,82,163,0.14)`,
+            transform: 'translateY(-1px)',
           },
         },
       },
     },
 
+    // ▸ Paper — clean pixel surface
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 6,
+          borderRadius: 2,
+          backgroundImage: 'none',
+        },
+        outlined: {
+          borderWidth: 2,
+          borderStyle: 'solid',
+        },
+      },
+    },
+
+    // ▸ AppBar — solid pixel header
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+          boxShadow: '0 2px 0 0 var(--mui-palette-divider)',
+          borderBottom: '2px solid',
+          borderColor: 'rgba(0,0,0,0.12)',
           backgroundImage: 'none',
         },
       },
     },
 
+    // ▸ Toolbar — standard spacing
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          minHeight: 56,
+        },
+      },
+    },
+
+    // ▸ Drawer — pixel sidebar
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 0,
+          backgroundImage: DITHER.dots.light,
+          backgroundSize: DITHER.dots.size,
+          '[data-color-scheme="dark"] &': {
+            backgroundImage: DITHER.dots.dark,
+          },
+        },
+      },
+    },
+
+    // ▸ TextField / Input — pixel input field
     MuiTextField: {
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: 4,
+            borderRadius: 2,
+            fontFamily: FONT.mono,
+            fontSize: '1.1rem',
             '& fieldset': {
-              borderWidth: 1.5,
+              borderWidth: 2,
+              transition: 'border-color 0.15s steps(3, end)',
             },
             '&:hover fieldset': {
               borderWidth: 2,
@@ -249,42 +429,143 @@ const pixelTheme = createTheme({
       },
     },
 
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 2,
+          '& fieldset': {
+            borderWidth: 2,
+          },
+          '&:hover fieldset': {
+            borderWidth: 2,
+          },
+          '&.Mui-focused fieldset': {
+            borderWidth: 2,
+          },
+        },
+      },
+    },
+
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          fontFamily: FONT.mono,
+          fontSize: '1.1rem',
+        },
+      },
+    },
+
+    // ▸ Select — pixel dropdown
+    MuiSelect: {
+      styleOverrides: {
+        outlined: {
+          borderRadius: 2,
+        },
+      },
+    },
+
+    // ▸ Chip — pixel tag
     MuiChip: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
-          fontFamily: '"VT323", monospace',
+          borderRadius: 2,
+          fontFamily: FONT.mono,
           fontSize: '1rem',
+          border: '1px solid var(--mui-palette-divider)',
+          transition: 'transform 0.1s steps(2, end)',
+          '&:hover': {
+            transform: 'translateY(-1px)',
+          },
+        },
+        outlined: {
+          borderWidth: 2,
         },
       },
     },
 
+    // ▸ Alert — pixel notification frame
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          borderRadius: 2,
+          border: '2px solid',
+          fontFamily: FONT.mono,
+          fontSize: '1.05rem',
+          '& .MuiAlert-icon': {
+            fontSize: '1.4rem',
+          },
+        },
+        standardSuccess: {
+          borderColor: COZY.success.main,
+          backgroundColor: COZY.success[50],
+          '[data-color-scheme="dark"] &': {
+            borderColor: COZY.success.light,
+            backgroundColor: 'rgba(107, 196, 144, 0.08)',
+          },
+        },
+        standardError: {
+          borderColor: COZY.error.main,
+          backgroundColor: COZY.error[50],
+          '[data-color-scheme="dark"] &': {
+            borderColor: COZY.error.light,
+            backgroundColor: 'rgba(232, 112, 112, 0.08)',
+          },
+        },
+        standardWarning: {
+          borderColor: COZY.warning.main,
+          backgroundColor: COZY.warning[50],
+          '[data-color-scheme="dark"] &': {
+            borderColor: COZY.warning.light,
+            backgroundColor: 'rgba(232, 169, 77, 0.08)',
+          },
+        },
+        standardInfo: {
+          borderColor: COZY.info.main,
+          backgroundColor: COZY.info[50],
+          '[data-color-scheme="dark"] &': {
+            borderColor: COZY.info.light,
+            backgroundColor: 'rgba(107, 191, 191, 0.08)',
+          },
+        },
+      },
+    },
+
+    // ▸ Dialog — pixel modal frame
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 4,
+          border: '2px solid var(--mui-palette-divider)',
+          boxShadow: '6px 6px 0 0 rgba(91,82,163,0.12)',
+        },
+      },
+    },
+
+    // ▸ LinearProgress — chunky pixel progress bar
     MuiLinearProgress: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
-          height: 6,
-        },
-      },
-    },
-
-    MuiDrawer: {
-      styleOverrides: {
-        paper: {
           borderRadius: 0,
+          height: 8,
+          border: '2px solid var(--mui-palette-divider)',
+          backgroundColor: 'var(--mui-palette-action-disabledBackground)',
+          '& .MuiLinearProgress-bar': {
+            borderRadius: 0,
+          },
         },
       },
     },
 
+    // ▸ ListItemButton — pixel nav item
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
+          borderRadius: 2,
           margin: '1px 4px',
           position: 'relative',
+          transition: 'background 0.15s steps(3, end)',
           '&.Mui-selected': {
-            background:
-              'linear-gradient(90deg, rgba(41,173,255,0.15) 0%, rgba(41,173,255,0.05) 70%, transparent 100%)',
+            background: `linear-gradient(90deg, var(--mui-palette-action-selected) 0%, transparent 100%)`,
             borderLeft: '3px solid var(--mui-palette-primary-main)',
             '&::before': {
               content: '""',
@@ -295,53 +576,329 @@ const pixelTheme = createTheme({
               width: 3,
               height: '60%',
               background: 'var(--mui-palette-primary-main)',
-              boxShadow: '0 0 8px rgba(41,173,255,0.5)',
-              borderRadius: 1,
+              boxShadow: `0 0 8px var(--mui-palette-primary-main)`,
+              borderRadius: 0,
             },
             '&:hover': {
-              background:
-                'linear-gradient(90deg, rgba(41,173,255,0.20) 0%, rgba(41,173,255,0.08) 70%, transparent 100%)',
+              background: `linear-gradient(90deg, var(--mui-palette-action-hover) 0%, transparent 100%)`,
             },
           },
           '&:hover': {
-            background: 'rgba(41,173,255,0.06)',
+            background: 'var(--mui-palette-action-hover)',
           },
-          transition: 'background 0.15s ease-out',
         },
       },
     },
 
-    MuiAlert: {
+    // ▸ Divider — pixel line
+    MuiDivider: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
+          borderBottomWidth: 2,
         },
       },
     },
 
-    MuiDialog: {
-      styleOverrides: {
-        paper: {
-          borderRadius: 8,
-        },
-      },
-    },
-
-    MuiTableCell: {
-      styleOverrides: {
-        head: {
-          fontFamily: '"Silkscreen", cursive',
-          fontSize: '0.8rem',
-        },
-      },
-    },
-
+    // ▸ Tooltip — pixel tooltip
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
-          borderRadius: 4,
-          fontFamily: '"VT323", monospace',
+          borderRadius: 2,
+          fontFamily: FONT.mono,
           fontSize: '0.95rem',
+          border: '2px solid var(--mui-palette-divider)',
+          boxShadow: '2px 2px 0 0 rgba(0,0,0,0.15)',
+          padding: '6px 10px',
+        },
+      },
+    },
+
+    // ▸ Table — pixel grid
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderBottomWidth: 2,
+          fontFamily: FONT.mono,
+          fontSize: '1.05rem',
+        },
+        head: {
+          fontFamily: FONT.pixel,
+          fontSize: '0.8rem',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+        },
+      },
+    },
+
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          borderRadius: 2,
+          border: '2px solid var(--mui-palette-divider)',
+        },
+      },
+    },
+
+    // ▸ Tabs — pixel tab bar
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontFamily: FONT.pixel,
+          fontSize: '0.85rem',
+          textTransform: 'none',
+          minHeight: 44,
+          transition: 'color 0.15s steps(3, end)',
+        },
+      },
+    },
+
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          height: 3,
+          borderRadius: 0,
+        },
+      },
+    },
+
+    // ▸ Badge — pixel counter
+    MuiBadge: {
+      styleOverrides: {
+        badge: {
+          fontFamily: FONT.pixel,
+          fontSize: '0.65rem',
+          borderRadius: 2,
+          minWidth: 18,
+          height: 18,
+          border: '2px solid var(--mui-palette-background-paper)',
+        },
+      },
+    },
+
+    // ▸ Switch — pixel toggle
+    MuiSwitch: {
+      styleOverrides: {
+        root: {
+          '& .MuiSwitch-track': {
+            borderRadius: 2,
+            border: '2px solid var(--mui-palette-divider)',
+          },
+          '& .MuiSwitch-thumb': {
+            borderRadius: 2,
+            boxShadow: '1px 1px 0 0 rgba(0,0,0,0.15)',
+          },
+        },
+      },
+    },
+
+    // ▸ Slider — pixel range
+    MuiSlider: {
+      styleOverrides: {
+        root: {
+          '& .MuiSlider-track': {
+            borderRadius: 0,
+            border: 'none',
+          },
+          '& .MuiSlider-rail': {
+            borderRadius: 0,
+            opacity: 0.3,
+          },
+          '& .MuiSlider-thumb': {
+            borderRadius: 2,
+            width: 16,
+            height: 16,
+            boxShadow: '2px 2px 0 0 rgba(0,0,0,0.15)',
+            '&:hover': {
+              boxShadow: '2px 2px 0 0 rgba(0,0,0,0.25)',
+            },
+          },
+        },
+      },
+    },
+
+    // ▸ Accordion — pixel collapsible
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          borderRadius: '2px !important',
+          border: '2px solid var(--mui-palette-divider)',
+          '&:before': {
+            display: 'none',
+          },
+          '&.Mui-expanded': {
+            margin: '0 0 8px 0',
+          },
+        },
+      },
+    },
+
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          fontFamily: FONT.pixel,
+          fontSize: '0.9rem',
+        },
+      },
+    },
+
+    // ▸ Menu — pixel dropdown menu
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 2,
+          border: '2px solid var(--mui-palette-divider)',
+          boxShadow: '4px 4px 0 0 rgba(91,82,163,0.10)',
+        },
+      },
+    },
+
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontFamily: FONT.mono,
+          fontSize: '1.05rem',
+          borderRadius: 2,
+          margin: '1px 4px',
+          transition: 'background 0.1s steps(2, end)',
+        },
+      },
+    },
+
+    // ▸ Snackbar — pixel toast
+    MuiSnackbar: {
+      styleOverrides: {
+        root: {
+          '& .MuiSnackbarContent-root': {
+            borderRadius: 2,
+            border: '2px solid var(--mui-palette-divider)',
+            fontFamily: FONT.mono,
+            fontSize: '1.05rem',
+          },
+        },
+      },
+    },
+
+    // ▸ Skeleton — pixel loading placeholder
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 2,
+        },
+        rectangular: {
+          borderRadius: 2,
+        },
+      },
+    },
+
+    // ▸ Link — pixel underline
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          textDecorationThickness: 2,
+          textUnderlineOffset: 3,
+          transition: 'color 0.1s steps(2, end)',
+        },
+      },
+    },
+
+    // ▸ Breadcrumbs — pixel path
+    MuiBreadcrumbs: {
+      styleOverrides: {
+        root: {
+          fontFamily: FONT.mono,
+          fontSize: '1rem',
+        },
+        separator: {
+          fontFamily: FONT.mono,
+        },
+      },
+    },
+
+    // ▸ Pagination — pixel page nav
+    MuiPaginationItem: {
+      styleOverrides: {
+        root: {
+          borderRadius: 2,
+          fontFamily: FONT.pixel,
+          fontSize: '0.8rem',
+          border: '2px solid var(--mui-palette-divider)',
+          '&.Mui-selected': {
+            fontWeight: 400,
+          },
+        },
+      },
+    },
+
+    // ▸ ToggleButton — pixel toggle
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 2,
+          borderWidth: 2,
+          fontFamily: FONT.pixel,
+          fontSize: '0.85rem',
+          textTransform: 'none',
+          transition: 'background 0.1s steps(2, end)',
+        },
+      },
+    },
+
+    // ▸ FormLabel — pixel label
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontFamily: FONT.pixel,
+          fontSize: '0.85rem',
+        },
+      },
+    },
+
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontFamily: FONT.pixel,
+          fontSize: '0.9rem',
+        },
+      },
+    },
+
+    // ▸ FormHelperText
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          fontFamily: FONT.mono,
+          fontSize: '0.95rem',
+        },
+      },
+    },
+
+    // ▸ Checkbox & Radio — pixel controls
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          '& .MuiSvgIcon-root': {
+            fontSize: '1.3rem',
+          },
+        },
+      },
+    },
+
+    MuiRadio: {
+      styleOverrides: {
+        root: {
+          '& .MuiSvgIcon-root': {
+            fontSize: '1.3rem',
+          },
+        },
+      },
+    },
+
+    // ▸ Stepper — pixel steps
+    MuiStepLabel: {
+      styleOverrides: {
+        label: {
+          fontFamily: FONT.pixel,
+          fontSize: '0.85rem',
         },
       },
     },
@@ -349,4 +906,4 @@ const pixelTheme = createTheme({
 });
 
 export default pixelTheme;
-export { PICO, pixelBorder, pixelBorderThick };
+export { COZY };

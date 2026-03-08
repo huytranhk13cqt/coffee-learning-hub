@@ -9,25 +9,45 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ArticleIcon from '@mui/icons-material/Article';
 import RouteIcon from '@mui/icons-material/Route';
-import { PICO } from '../../theme/pixelTheme.js';
+import { COZY } from '../../theme/pixelTheme.js';
 
 const STAT_CARDS = [
-  { key: 'topics', label: 'Topics', icon: FolderOpenIcon, color: PICO.blue },
+  {
+    key: 'topics',
+    label: 'Topics',
+    icon: FolderOpenIcon,
+    color: COZY.deco.sky,
+  },
   {
     key: 'categories',
     label: 'Categories',
     icon: CategoryIcon,
-    color: PICO.lavender,
+    color: COZY.deco.plum,
   },
-  { key: 'lessons', label: 'Lessons', icon: MenuBookIcon, color: PICO.green },
+  {
+    key: 'lessons',
+    label: 'Lessons',
+    icon: MenuBookIcon,
+    color: COZY.deco.sage,
+  },
   {
     key: 'exercises',
     label: 'Exercises',
     icon: AssignmentIcon,
-    color: PICO.orange,
+    color: COZY.deco.gold,
   },
-  { key: 'sections', label: 'Sections', icon: ArticleIcon, color: PICO.pink },
-  { key: 'learning_paths', label: 'Paths', icon: RouteIcon, color: PICO.peach },
+  {
+    key: 'sections',
+    label: 'Sections',
+    icon: ArticleIcon,
+    color: COZY.secondary.light,
+  },
+  {
+    key: 'learning_paths',
+    label: 'Paths',
+    icon: RouteIcon,
+    color: COZY.deco.coral,
+  },
 ];
 
 export default function AdminStatsCards({ stats }) {
@@ -45,7 +65,7 @@ export default function AdminStatsCards({ stats }) {
               overflow: 'hidden',
               '&:hover': {
                 transform: 'translateY(-3px) scale(1.02)',
-                boxShadow: `0 6px 20px ${color}22, 0 3px 8px rgba(29,43,83,0.10)`,
+                boxShadow: `0 6px 20px ${color}22, 0 3px 8px rgba(91,82,163,0.10)`,
               },
               transition: 'transform 0.2s ease-out, box-shadow 0.2s ease-out',
             }}
