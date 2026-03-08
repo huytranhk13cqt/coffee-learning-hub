@@ -10,6 +10,7 @@ import Alert from '@mui/material/Alert';
 import { PixelFrame } from '../../components/pixel/index.js';
 import { LockIcon } from '../../components/pixel/icons.jsx';
 import pixelTheme from '../../theme/pixelTheme.js';
+import { FONT } from '../../theme/pixelUtils.js';
 import { adminVerify } from '../../api/admin.js';
 import { useAdminAuth } from '../../hooks/useAdminAuth.js';
 
@@ -57,7 +58,11 @@ export default function AdminLoginPage() {
             <LockIcon
               sx={{ fontSize: '2.5rem', color: 'primary.main', mb: 2 }}
             />
-            <Typography variant="h2" gutterBottom>
+            <Typography
+              variant="h2"
+              gutterBottom
+              sx={{ fontFamily: FONT.pixel }}
+            >
               ADMIN LOGIN
             </Typography>
             <Typography variant="body2" color="text.secondary">

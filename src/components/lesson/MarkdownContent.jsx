@@ -100,7 +100,7 @@ export default function MarkdownContent({ content, sx }) {
         '& pre': {
           bgcolor: 'background.paper',
           p: 2,
-          borderRadius: 1,
+          borderRadius: 0,
           overflow: 'auto',
           mb: 1.5,
           '& code': {
@@ -122,7 +122,7 @@ export default function MarkdownContent({ content, sx }) {
         '& img': {
           maxWidth: '100%',
           height: 'auto',
-          borderRadius: 1,
+          borderRadius: 0,
           my: 1.5,
           display: 'block',
         },

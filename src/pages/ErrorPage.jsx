@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import { FONT } from '../theme/pixelUtils.js';
 
 function getErrorInfo(error) {
   const status = error?.status;
@@ -43,7 +44,12 @@ export default function ErrorPage() {
 
   return (
     <Box sx={{ textAlign: 'center', py: 8 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        sx={{ fontFamily: FONT.pixel }}
+      >
         {title}
       </Typography>
       <Typography color="text.secondary" sx={{ mb: 3 }}>

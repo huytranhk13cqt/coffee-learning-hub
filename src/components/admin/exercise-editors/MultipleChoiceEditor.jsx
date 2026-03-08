@@ -71,7 +71,7 @@ export default function MultipleChoiceEditor({ form, setForm, errors }) {
           sx={{
             border: 1,
             borderColor: 'divider',
-            borderRadius: 1,
+            borderRadius: 0,
             p: 2,
             mb: 1.5,
           }}

@@ -9,6 +9,7 @@ import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { PixelFrame, PixelDivider } from '../../components/pixel/index.js';
 import { ArrowBackIcon, SaveIcon } from '../../components/pixel/icons.jsx';
+import { FONT } from '../../theme/pixelUtils.js';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import exerciseEditorRegistry from '../../components/admin/exercise-editors/index.js';
 import {
@@ -315,7 +316,7 @@ export default function AdminExerciseFormPage() {
         >
           Back
         </Button>
-        <Typography variant="h2">
+        <Typography variant="h2" sx={{ fontFamily: FONT.pixel }}>
           {isEdit ? 'Edit Exercise' : 'New Exercise'}
         </Typography>
       </Box>

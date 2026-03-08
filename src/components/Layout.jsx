@@ -15,7 +15,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import LinearProgress from '@mui/material/LinearProgress';
+import { PixelProgressBar } from './pixel/index.js';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -147,7 +147,7 @@ function LayoutContent() {
               bgcolor: 'background.paper',
               px: 2,
               py: 1,
-              borderRadius: 1,
+              borderRadius: 0,
               boxShadow: 3,
             },
           }}
@@ -240,8 +240,10 @@ function LayoutContent() {
             </Tooltip>
           </Toolbar>
           {isLoading && (
-            <LinearProgress
-              color="secondary"
+            <PixelProgressBar
+              indeterminate
+              segments={12}
+              color="secondary.main"
               sx={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}
             />
           )}

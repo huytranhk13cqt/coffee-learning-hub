@@ -13,14 +13,17 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Fade from '@mui/material/Fade';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import { PixelFrame, PixelProgressBar } from '../components/pixel/index.js';
+import {
+  PixelFrame,
+  PixelProgressBar,
+  PixelDivider,
+} from '../components/pixel/index.js';
 import { FONT, ANIMATION } from '../theme/pixelUtils.js';
 import {
   RouteIcon,
@@ -395,7 +398,11 @@ function TopicDetailView({ topic, onBack }) {
           <TopicIcon sx={{ color: topic.color, fontSize: 32 }} />
         </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="h4" component="h1" sx={{ lineHeight: 1.3 }}>
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{ lineHeight: 1.3, fontFamily: FONT.pixel }}
+          >
             {topic.name}
           </Typography>
           <Typography variant="body1" color="text.secondary">
@@ -411,7 +418,7 @@ function TopicDetailView({ topic, onBack }) {
         </IconButton>
       </Box>
 
-      <Divider sx={{ mb: 3 }} />
+      <PixelDivider sx={{ mb: 3 }} />
 
       {/* Category cards */}
       <Grid container spacing={3}>

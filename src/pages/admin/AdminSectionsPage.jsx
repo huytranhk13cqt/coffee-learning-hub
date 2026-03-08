@@ -41,6 +41,7 @@ import {
   reorderAdminSections,
 } from '../../api/admin.js';
 import DeleteConfirmDialog from '../../components/admin/DeleteConfirmDialog.jsx';
+import { FONT } from '../../theme/pixelUtils.js';
 
 const SECTION_TYPES = [
   'markdown',
@@ -359,7 +360,7 @@ export default function AdminSectionsPage() {
         >
           Back
         </Button>
-        <Typography variant="h2">
+        <Typography variant="h2" sx={{ fontFamily: FONT.pixel }}>
           Sections: {lesson?.name || 'Loading...'}
         </Typography>
       </Box>

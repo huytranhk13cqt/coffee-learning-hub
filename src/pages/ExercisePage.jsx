@@ -22,7 +22,7 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Fade from '@mui/material/Fade';
 import { CheckCircleOutlineIcon } from '../components/pixel/icons.jsx';
-import { ANIMATION } from '../theme/pixelUtils.js';
+import { ANIMATION, FONT } from '../theme/pixelUtils.js';
 
 export async function loader({ params, request }) {
   const exercises = await fetchExercises(params.lessonId, {
@@ -109,7 +109,12 @@ export default function ExercisePage() {
               ...ANIMATION.bounce,
             }}
           />
-          <Typography variant="h4" component="h1" gutterBottom>
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{ fontFamily: FONT.pixel }}
+          >
             Hoàn thành!
           </Typography>
           <Typography variant="body1" color="text.secondary" gutterBottom>

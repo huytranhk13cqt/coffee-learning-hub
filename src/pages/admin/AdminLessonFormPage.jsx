@@ -9,6 +9,7 @@ import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { PixelFrame, PixelDivider } from '../../components/pixel/index.js';
 import { ArrowBackIcon, SaveIcon } from '../../components/pixel/icons.jsx';
+import { FONT } from '../../theme/pixelUtils.js';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
 import {
   fetchAdminLesson,
@@ -148,7 +149,7 @@ export default function AdminLessonFormPage() {
         >
           Back
         </Button>
-        <Typography variant="h2">
+        <Typography variant="h2" sx={{ fontFamily: FONT.pixel }}>
           {isEdit ? 'Edit Lesson' : 'New Lesson'}
         </Typography>
       </Box>

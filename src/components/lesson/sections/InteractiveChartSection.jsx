@@ -101,7 +101,7 @@ export default function InteractiveChartSection({ section }) {
   const tooltipStyle = {
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.divider}`,
-    borderRadius: 4,
+    borderRadius: 0,
     color: theme.palette.text.primary,
   };
 

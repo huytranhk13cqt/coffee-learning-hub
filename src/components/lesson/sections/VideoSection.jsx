@@ -30,7 +30,7 @@ const RESPONSIVE_WRAPPER_SX = {
     width: '100%',
     height: '100%',
     border: 'none',
-    borderRadius: 1,
+    borderRadius: 0,
   },
 };
 

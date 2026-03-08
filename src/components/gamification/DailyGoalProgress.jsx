@@ -33,7 +33,7 @@ export default function DailyGoalProgress({
           alignItems: 'center',
           gap: 0.5,
           cursor: isClickable ? 'pointer' : 'default',
-          borderRadius: 1,
+          borderRadius: 0,
           px: isClickable ? 0.5 : 0,
           '&:hover': isClickable
             ? { bgcolor: 'action.hover', transition: 'background-color 0.2s' }

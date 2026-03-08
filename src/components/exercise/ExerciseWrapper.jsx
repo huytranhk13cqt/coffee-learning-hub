@@ -83,7 +83,7 @@ export default function ExerciseWrapper({
           sx={{
             maxWidth: '100%',
             height: 'auto',
-            borderRadius: 1,
+            borderRadius: 0,
             mb: 2,
             display: 'block',
           }}

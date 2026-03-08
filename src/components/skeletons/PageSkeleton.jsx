@@ -8,9 +8,9 @@ export default function PageSkeleton() {
       <Skeleton variant="text" width="40%" height={42} sx={{ mb: 1 }} />
       <Skeleton variant="text" width="60%" height={24} sx={{ mb: 4 }} />
       <Stack spacing={3}>
-        <Skeleton variant="rectangular" height={160} sx={{ borderRadius: 1 }} />
-        <Skeleton variant="rectangular" height={120} sx={{ borderRadius: 1 }} />
-        <Skeleton variant="rectangular" height={160} sx={{ borderRadius: 1 }} />
+        <Skeleton variant="rectangular" height={160} sx={{ borderRadius: 0 }} />
+        <Skeleton variant="rectangular" height={120} sx={{ borderRadius: 0 }} />
+        <Skeleton variant="rectangular" height={160} sx={{ borderRadius: 0 }} />
       </Stack>
     </Box>
   );

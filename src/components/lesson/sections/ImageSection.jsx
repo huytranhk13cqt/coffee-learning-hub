@@ -30,7 +30,7 @@ export default function ImageSection({ section }) {
           sx={{
             maxWidth: '100%',
             height: 'auto',
-            borderRadius: 1,
+            borderRadius: 0,
             display: 'block',
           }}
         />

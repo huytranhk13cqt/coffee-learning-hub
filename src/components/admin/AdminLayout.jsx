@@ -23,7 +23,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import LinearProgress from '@mui/material/LinearProgress';
+import { PixelProgressBar } from '../pixel/index.js';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -418,8 +418,10 @@ function AdminLayoutContent() {
         }}
       >
         {isLoading && (
-          <LinearProgress
-            color="primary"
+          <PixelProgressBar
+            indeterminate
+            segments={16}
+            color="primary.main"
             sx={{
               position: 'fixed',
               top: 0,

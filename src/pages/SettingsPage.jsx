@@ -247,7 +247,7 @@ export default function SettingsPage() {
                   mt: 1.5,
                   p: 1.5,
                   bgcolor: 'action.hover',
-                  borderRadius: 1,
+                  borderRadius: 0,
                   fontSize: '0.85rem',
                   whiteSpace: 'pre-wrap',
                   fontFamily: 'inherit',

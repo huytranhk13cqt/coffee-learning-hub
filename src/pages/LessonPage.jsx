@@ -47,6 +47,8 @@ import {
   DIFFICULTY_COLORS,
 } from '../constants/difficulty.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
+import { FONT } from '../theme/pixelUtils.js';
+import { PixelDivider } from '../components/pixel/index.js';
 
 export async function loader({ params, request }) {
   const lesson = await fetchLesson(params.slug, { signal: request.signal });
@@ -179,7 +181,12 @@ export default function LessonPage() {
           }}
         >
           <Box>
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ fontFamily: FONT.pixel }}
+            >
               {lesson.name}
             </Typography>
             <Typography variant="h6" color="text.secondary" gutterBottom>
@@ -284,7 +291,7 @@ export default function LessonPage() {
 
         {/* Exercise CTA */}
         <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Divider sx={{ mb: 4 }} />
+          <PixelDivider sx={{ mb: 4 }} />
           <Typography variant="h6" gutterBottom>
             Sẵn sàng luyện tập?
           </Typography>
@@ -317,7 +324,7 @@ export default function LessonPage() {
         {lesson.navigation &&
           (lesson.navigation.prev || lesson.navigation.next) && (
             <Box sx={{ mt: 4 }}>
-              <Divider sx={{ mb: 3 }} />
+              <PixelDivider sx={{ mb: 3 }} />
               <Stack direction="row" justifyContent="space-between">
                 {lesson.navigation.prev ? (
                   <Button

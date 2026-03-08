@@ -33,6 +33,7 @@ import {
   AddIcon,
 } from '../../components/pixel/icons.jsx';
 import AdminFormField from '../../components/admin/AdminFormField.jsx';
+import { FONT } from '../../theme/pixelUtils.js';
 import IconPickerField from '../../components/admin/IconPickerField.jsx';
 import {
   fetchAdminPath,
@@ -314,7 +315,7 @@ export default function AdminLearningPathFormPage() {
         >
           Back
         </Button>
-        <Typography variant="h2">
+        <Typography variant="h2" sx={{ fontFamily: FONT.pixel }}>
           {isEdit ? 'Edit Learning Path' : 'New Learning Path'}
         </Typography>
       </Box>
