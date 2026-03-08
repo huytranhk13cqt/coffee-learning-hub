@@ -51,12 +51,12 @@ import { generateChartData, getDefaultParams } from './chartGenerators.js';
  */
 
 const DEFAULT_COLORS = [
-  '#6366f1',
-  '#ec4899',
-  '#10b981',
-  '#f59e0b',
-  '#3b82f6',
-  '#8b5cf6',
+  '#5B52A3', // primary indigo
+  '#A3527A', // secondary rose
+  '#3D8B5E', // sage green
+  '#C07B2A', // warm amber
+  '#6B9EC4', // sky blue
+  '#9B6BA8', // plum purple
 ];
 
 export default function InteractiveChartSection({ section }) {
