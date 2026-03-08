@@ -51,6 +51,7 @@ import pixelTheme from '../../theme/pixelTheme.js';
 import { adminVerify } from '../../api/admin.js';
 import { useAdminAuth } from '../../hooks/useAdminAuth.js';
 import PageSkeleton from '../skeletons/PageSkeleton.jsx';
+import PixelLogo from '../pixel/PixelLogo.jsx';
 
 const SIDEBAR_WIDTH = 240;
 const SIDEBAR_COLLAPSED = 64;
@@ -165,30 +166,7 @@ function SidebarContent({ collapsed, onToggle, onLogout, location }) {
       >
         {!collapsed && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            {/* Pixel diamond logo mark */}
-            <Box
-              sx={{
-                width: 28,
-                height: 28,
-                position: 'relative',
-                flexShrink: 0,
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  inset: 4,
-                  bgcolor: 'primary.main',
-                  transform: 'rotate(45deg)',
-                  boxShadow: '0 0 10px rgba(91,82,163,0.4)',
-                },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  inset: 8,
-                  bgcolor: 'background.paper',
-                  transform: 'rotate(45deg)',
-                },
-              }}
-            />
+            <PixelLogo size={28} />
             <Typography
               variant="h3"
               sx={{

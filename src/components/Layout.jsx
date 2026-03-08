@@ -27,7 +27,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import pixelTheme from '../theme/pixelTheme.js';
+import { FONT } from '../theme/pixelUtils.js';
 import MuiLink from '@mui/material/Link';
+import PixelLogo from './pixel/PixelLogo.jsx';
 import SearchBar from './search/SearchBar.jsx';
 import PageSkeleton from './skeletons/PageSkeleton.jsx';
 import StreakDisplay from './gamification/StreakDisplay.jsx';
@@ -150,22 +152,42 @@ function LayoutContent() {
         >
           Bỏ qua thanh điều hướng
         </MuiLink>
-        <AppBar position="sticky" component="nav">
-          <Toolbar>
-            <SchoolIcon aria-hidden="true" sx={{ mr: 1.5 }} />
-            <Typography
-              variant="h6"
+        <AppBar
+          position="sticky"
+          component="nav"
+          elevation={0}
+          sx={{
+            borderBottom: '2px solid',
+            borderColor: 'divider',
+            boxShadow: 'none',
+          }}
+        >
+          <Toolbar sx={{ gap: 0.5 }}>
+            {/* Pixel diamond logo + title */}
+            <Box
               component={RouterLink}
               to="/"
               sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
                 textDecoration: 'none',
                 color: 'inherit',
                 mr: 2,
-                display: { xs: 'none', sm: 'block' },
               }}
             >
-              Learning Hub
-            </Typography>
+              <PixelLogo size={24} />
+              <Typography
+                variant="h6"
+                sx={{
+                  fontFamily: FONT.pixel,
+                  display: { xs: 'none', sm: 'block' },
+                  textShadow: '0 0 12px rgba(91,82,163,0.25)',
+                }}
+              >
+                Learning Hub
+              </Typography>
+            </Box>
             <Box sx={{ flexGrow: 1 }} />
             <GamificationBar />
             <SearchBar />
